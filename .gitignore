@@ -1,0 +1,6 @@
+# 仓库只跟踪 4_CCB_odyssey/ccb-adventure 项目
+/*
+!/4_CCB_odyssey/
+/4_CCB_odyssey/*
+!/4_CCB_odyssey/ccb-adventure/
+!/.gitignore

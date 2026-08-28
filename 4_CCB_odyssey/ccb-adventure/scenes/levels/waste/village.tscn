@@ -1,0 +1,160 @@
+[gd_scene format=3 uid="uid://dp3yexeuxib83"]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/quarter_note/Enemy.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://cxrtqx43ajm45" path="res://scenes/enemies/eighth_note/RangedEnemy.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/items/Clue.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/ui/EndingScreen.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/items/Checkpoint.tscn" id="8"]
+[ext_resource type="Script" uid="uid://ckaw7b6xpu0ir" path="res://scripts/game/GameFlow.gd" id="9"]
+[ext_resource type="Script" uid="uid://brs4fnt10gxgr" path="res://scripts/game/Door.gd" id="10"]
+[ext_resource type="Script" uid="uid://sr3bmykavvns" path="res://scripts/game/SpawnPoint.gd" id="11"]
+[ext_resource type="Script" uid="uid://7mmxvmumm5nr" path="res://scripts/game/DialogueTrigger.gd" id="12"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="13"]
+[ext_resource type="PackedScene" path="res://scenes/items/MagicDashPickup.tscn" id="14"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(1150, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 600)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(40, 160)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dialog"]
+size = Vector2(200, 140)
+
+[node name="Village" type="Node2D" unique_id=1864216793]
+
+[node name="GameFlow" type="Node" parent="." unique_id=1605766874]
+script = ExtResource("9")
+
+[node name="Player" parent="." unique_id=1310101753 instance=ExtResource("1")]
+position = Vector2(90, 560)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1402881094]
+
+[node name="village_from_forest" type="Marker2D" parent="SpawnPoints" unique_id=151459157]
+position = Vector2(90, 560)
+script = ExtResource("11")
+id = "village_from_forest"
+
+[node name="village_from_musichall" type="Marker2D" parent="SpawnPoints" unique_id=868129483]
+position = Vector2(1050, 560)
+script = ExtResource("11")
+id = "village_from_musichall"
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=435353331]
+position = Vector2(575, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1985483622]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="Polygon2D" parent="Ground" unique_id=160474788]
+color = Color(0.45, 0.42, 0.3, 1)
+polygon = PackedVector2Array(-575, -30, 575, -30, 575, 30, -575, 30)
+
+[node name="WallLeft" type="StaticBody2D" parent="." unique_id=101033761]
+position = Vector2(16, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=2093892163]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallLeft" unique_id=1939122054]
+color = Color(0.4, 0.45, 0.55, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="WallRight" type="StaticBody2D" parent="." unique_id=1349135392]
+position = Vector2(1134, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=243643814]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallRight" unique_id=1678695639]
+color = Color(0.4, 0.45, 0.55, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="Decor" type="Node2D" parent="." unique_id=1332975318]
+
+[node name="House1Body" type="Polygon2D" parent="Decor" unique_id=417963103]
+position = Vector2(200, 520)
+color = Color(0.55, 0.45, 0.3, 1)
+polygon = PackedVector2Array(-70, -45, 70, -45, 70, 45, -70, 45)
+
+[node name="House1Roof" type="Polygon2D" parent="Decor" unique_id=148887047]
+position = Vector2(200, 468)
+color = Color(0.4, 0.28, 0.22, 1)
+polygon = PackedVector2Array(-80, -8, 0, -45, 80, -8)
+
+[node name="House2Body" type="Polygon2D" parent="Decor" unique_id=1698864688]
+position = Vector2(650, 520)
+color = Color(0.55, 0.45, 0.3, 1)
+polygon = PackedVector2Array(-60, -40, 60, -40, 60, 40, -60, 40)
+
+[node name="House2Roof" type="Polygon2D" parent="Decor" unique_id=516054115]
+position = Vector2(650, 472)
+color = Color(0.4, 0.28, 0.22, 1)
+polygon = PackedVector2Array(-70, -8, 0, -40, 70, -8)
+
+[node name="Clue1" parent="." unique_id=1418925317 instance=ExtResource("4")]
+position = Vector2(900, 570)
+clue_cue = "clue_village_note"
+clue_id = "clue_village_note"
+
+[node name="DiaryVillage" parent="." unique_id=1120842857 instance=ExtResource("4")]
+position = Vector2(250, 570)
+clue_cue = "diary_village"
+clue_id = "diary_village"
+
+[node name="MagicDashPickup" parent="." unique_id=731303783 instance=ExtResource("14")]
+position = Vector2(600, 560)
+
+[node name="Checkpoint_village" parent="." unique_id=618250214 instance=ExtResource("8")]
+position = Vector2(500, 560)
+
+[node name="Enemy3" parent="." unique_id=859574710 instance=ExtResource("2")]
+position = Vector2(300, 574)
+
+[node name="RangedEnemy2" parent="." unique_id=1102927781 instance=ExtResource("3")]
+position = Vector2(800, 574)
+
+[node name="Door_forest" type="Area2D" parent="." unique_id=489937170]
+position = Vector2(20, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("10")
+target_scene = "res://scenes/levels/forest.tscn"
+target_spawn_id = "forest_from_village"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door_forest" unique_id=313291363]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="Door_musichall" type="Area2D" parent="." unique_id=24958369]
+position = Vector2(1130, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("10")
+target_scene = "res://scenes/levels/musichall.tscn"
+target_spawn_id = "musichall_from_village"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door_musichall" unique_id=2062339796]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="DT_clue1" type="Area2D" parent="." unique_id=1928972426]
+position = Vector2(850, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("12")
+cue = "dt_clue1"
+trigger_id = "dt_clue1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DT_clue1" unique_id=1138407642]
+shape = SubResource("RectangleShape2D_dialog")
+
+[node name="HUD" parent="." unique_id=30571721 instance=ExtResource("5")]
+
+[node name="EndingScreen" parent="." unique_id=837069096 instance=ExtResource("7")]
+
+[node name="PauseMenu" parent="." unique_id=453419865 instance=ExtResource("13")]

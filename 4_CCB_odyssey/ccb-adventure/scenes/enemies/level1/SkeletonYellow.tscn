@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://dordl11s5iiwa"]
+
+[ext_resource type="Script" uid="uid://ciruj7fstbqo" path="res://scripts/enemy/level1/Skeleton.gd" id="1"]
+[ext_resource type="SpriteFrames" uid="uid://c4742v7nxj3b3" path="res://art/enemy/level 1/Skeleton_Yellow_frames.tres" id="2_frames"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(71, 141)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hit"]
+size = Vector2(145, 73)
+
+[node name="Skeleton" type="CharacterBody2D" unique_id=2047480213]
+collision_layer = 4
+collision_mask = 17
+platform_floor_layers = 4294967057
+script = ExtResource("1")
+"生命值" = 20
+"索敌范围" = 300.0
+"攻击范围" = 126.0
+"攻击冷却" = 3.0
+"攻击1命中帧" = 7
+"攻击2命中帧" = 5
+"击退力度" = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1075785914]
+position = Vector2(-7.5, -4.5)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=364628572]
+position = Vector2(0, -32)
+scale = Vector2(3, 3)
+sprite_frames = ExtResource("2_frames")
+animation = &"attack1"
+frame = 9
+frame_progress = 1.0
+
+[node name="AttackHitbox" type="Area2D" parent="." unique_id=956236864]
+position = Vector2(24, -20)
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=2025586954]
+position = Vector2(46.5, -13.5)
+shape = SubResource("RectangleShape2D_hit")

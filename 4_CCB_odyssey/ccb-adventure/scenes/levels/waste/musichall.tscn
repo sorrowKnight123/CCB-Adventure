@@ -1,0 +1,123 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/boss/Boss.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/ui/EndingScreen.tscn" id="5"]
+[ext_resource type="Script" path="res://scripts/game/GameFlow.gd" id="6"]
+[ext_resource type="Script" path="res://scripts/game/Door.gd" id="7"]
+[ext_resource type="Script" path="res://scripts/game/SpawnPoint.gd" id="8"]
+[ext_resource type="Script" path="res://scripts/game/DialogueTrigger.gd" id="9"]
+[ext_resource type="PackedScene" path="res://scenes/items/Clue.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://scenes/items/MagicFlightPickup.tscn" id="13"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(1150, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 600)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(40, 160)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dialog"]
+size = Vector2(200, 140)
+
+[node name="MusicHall" type="Node2D"]
+
+[node name="GameFlow" type="Node" parent="."]
+script = ExtResource("6")
+is_boss_room = true
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(90, 560)
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="musichall_from_village" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(90, 560)
+script = ExtResource("8")
+id = "musichall_from_village"
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(575, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="Polygon2D" parent="Ground"]
+color = Color(0.42, 0.38, 0.5, 1)
+polygon = PackedVector2Array(-575, -30, 575, -30, 575, 30, -575, 30)
+
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2(16, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallLeft"]
+color = Color(0.4, 0.45, 0.55, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(1134, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallRight"]
+color = Color(0.4, 0.45, 0.55, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="Decor" type="Node2D" parent="."]
+
+[node name="Column1" type="Polygon2D" parent="Decor"]
+position = Vector2(70, 480)
+color = Color(0.45, 0.4, 0.55, 1)
+polygon = PackedVector2Array(-15, -90, 15, -90, 15, 90, -15, 90)
+
+[node name="Column2" type="Polygon2D" parent="Decor"]
+position = Vector2(210, 480)
+color = Color(0.45, 0.4, 0.55, 1)
+polygon = PackedVector2Array(-15, -90, 15, -90, 15, 90, -15, 90)
+
+[node name="Boss" parent="." instance=ExtResource("2")]
+position = Vector2(850, 546)
+
+[node name="LetterMusichall" parent="." instance=ExtResource("10")]
+position = Vector2(400, 560)
+clue_cue = "letter_musichall"
+clue_id = "letter_musichall"
+
+[node name="Door_village" type="Area2D" parent="."]
+position = Vector2(20, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("7")
+target_scene = "res://scenes/levels/village.tscn"
+target_spawn_id = "village_from_musichall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door_village"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="DT_boss" type="Area2D" parent="."]
+position = Vector2(700, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("9")
+cue = "dt_boss"
+trigger_id = "dt_boss"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DT_boss"]
+shape = SubResource("RectangleShape2D_dialog")
+
+
+[node name="MagicFlightPickup" parent="." instance=ExtResource("13")]
+position = Vector2(300, 540)
+[node name="HUD" parent="." instance=ExtResource("3")]
+
+[node name="EndingScreen" parent="." instance=ExtResource("5")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("11")]
+

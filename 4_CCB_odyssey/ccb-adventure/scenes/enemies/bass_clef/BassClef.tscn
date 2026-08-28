@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://csw2kb2qhxblb"]
+
+[ext_resource type="Script" uid="uid://3x2hnm6ebmoq" path="res://scripts/enemy/BassClef.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://b3v5x5u6ixyhi" path="res://art/enemy/d_body.png" id="2_body"]
+[ext_resource type="Texture2D" uid="uid://w7fptw58osks" path="res://art/enemy/d_dot1.png" id="3_dot1"]
+[ext_resource type="Texture2D" uid="uid://5i3gx627rts5" path="res://art/enemy/d_dot2.png" id="4_dot2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(90, 105)
+
+[node name="BassClef" type="CharacterBody2D" unique_id=809664740]
+scale = Vector2(-1, 1)
+collision_layer = 4
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=593277657]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Body" type="Sprite2D" parent="." unique_id=2050838261]
+position = Vector2(-11, -1)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_body")
+
+[node name="DotL" type="Sprite2D" parent="." unique_id=422584347]
+position = Vector2(41, -38)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_dot1")
+
+[node name="DotR" type="Sprite2D" parent="." unique_id=1474773819]
+position = Vector2(41, -6)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("4_dot2")
+
+[node name="Muzzle" type="Node2D" parent="." unique_id=1536075662]
+position = Vector2(0, 10)

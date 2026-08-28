@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tools/resize_dorm_2560.gd" id="1"]
+
+[node name="ResizeDorm2560" type="Node"]
+script = ExtResource("1")

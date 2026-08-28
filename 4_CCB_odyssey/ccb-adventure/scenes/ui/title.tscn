@@ -1,0 +1,214 @@
+[gd_scene format=3 uid="uid://bbn8uolahrvb8"]
+
+[ext_resource type="VideoStream" uid="uid://d1smbfn8woo06" path="res://art/menu/fly_final.ogv" id="1_p6dhs"]
+[ext_resource type="AudioStream" path="res://audio/music/arabesque.mp3" id="2_pyl7j"]
+[ext_resource type="Texture2D" uid="uid://d2qe0oshb7whn" path="res://art/menu/logo.png" id="3_b3w7a"]
+[ext_resource type="Script" uid="uid://crpa8bxnlwerv" path="res://scripts/hud/TitleScreen.gd" id="4_abcd1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4rr2b"]
+bg_color = Color(0.12, 0.11, 0.14, 0.55)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yql1r"]
+bg_color = Color(0.09, 0.07, 0.18, 0.72)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ia1n6"]
+bg_color = Color(0.22, 0.15, 0.36, 0.82)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hiwto"]
+bg_color = Color(0.09, 0.07, 0.18, 0.72)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w65of"]
+bg_color = Color(0.05, 0.04, 0.12, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ygloa"]
+bg_color = Color(0.1, 0.08, 0.19, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.35)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Theme" id="Theme_6civk"]
+Button/colors/font_color = Color(1, 1, 1, 0.95)
+Button/colors/font_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/font_sizes/font_size = 26
+Button/styles/disabled = SubResource("StyleBoxFlat_4rr2b")
+Button/styles/focus = SubResource("StyleBoxFlat_yql1r")
+Button/styles/hover = SubResource("StyleBoxFlat_ia1n6")
+Button/styles/normal = SubResource("StyleBoxFlat_hiwto")
+Button/styles/pressed = SubResource("StyleBoxFlat_w65of")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_ygloa")
+
+[node name="TitleScreen" type="Control" unique_id=843831596]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource("Theme_6civk")
+script = ExtResource("4_abcd1")
+
+[node name="VideoBG" type="VideoStreamPlayer" parent="." unique_id=785538179]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+audio_track = -1
+stream = ExtResource("1_p6dhs")
+autoplay = true
+expand = true
+loop = true
+
+[node name="BGM" type="AudioStreamPlayer" parent="." unique_id=1007020913]
+stream = ExtResource("2_pyl7j")
+volume_db = -2.0
+autoplay = true
+
+[node name="Logo" type="TextureRect" parent="." unique_id=1163849783]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 712.00006
+offset_top = 11.0
+offset_right = 1292.0
+offset_bottom = 349.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.3, 0.3)
+mouse_filter = 2
+texture = ExtResource("3_b3w7a")
+stretch_mode = 5
+
+[node name="StartBtn" type="Button" parent="." unique_id=44101566]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 205.0
+offset_top = 415.0
+offset_right = 485.0
+offset_bottom = 475.0
+grow_horizontal = 2
+text = "开始游戏"
+
+[node name="ContinueBtn" type="Button" parent="." unique_id=683567900]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 205.0
+offset_top = 495.0
+offset_right = 485.0
+offset_bottom = 555.0
+grow_horizontal = 2
+text = "继续游戏"
+
+[node name="SettingsBtn" type="Button" parent="." unique_id=1673791665]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 205.0
+offset_top = 575.0
+offset_right = 485.0
+offset_bottom = 635.0
+grow_horizontal = 2
+text = "设置"
+
+[node name="SettingsPanel" type="Control" parent="." unique_id=1669686835]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Dim" type="ColorRect" parent="SettingsPanel" unique_id=1765772239]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.55)
+
+[node name="Box" type="PanelContainer" parent="SettingsPanel" unique_id=785232337]
+custom_minimum_size = Vector2(480, 300)
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -150.0
+offset_right = 240.0
+offset_bottom = 150.0
+
+[node name="VBox" type="VBoxContainer" parent="SettingsPanel/Box" unique_id=1089676390]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="SettingsPanel/Box/VBox" unique_id=934930129]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "设置"
+horizontal_alignment = 1
+
+[node name="PlaceholderLabel" type="Label" parent="SettingsPanel/Box/VBox" unique_id=1624243720]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.6)
+theme_override_font_sizes/font_size = 20
+text = "（设置功能制作中…）"
+horizontal_alignment = 1
+
+[node name="BackBtn" type="Button" parent="SettingsPanel/Box/VBox" unique_id=1271349846]
+custom_minimum_size = Vector2(200, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "返回"

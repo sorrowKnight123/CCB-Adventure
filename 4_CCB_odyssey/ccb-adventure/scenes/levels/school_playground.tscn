@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://bnf5ouc1s2n7l"]
+
+[ext_resource type="PackedScene" uid="uid://b8dv7bgghb2ci" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/ui/EndingScreen.tscn" id="4"]
+[ext_resource type="Script" uid="uid://ckaw7b6xpu0ir" path="res://scripts/game/GameFlow.gd" id="5"]
+[ext_resource type="Script" uid="uid://brs4fnt10gxgr" path="res://scripts/game/Door.gd" id="6"]
+[ext_resource type="Script" uid="uid://sr3bmykavvns" path="res://scripts/game/SpawnPoint.gd" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="8"]
+[ext_resource type="PackedScene" uid="uid://dordl11s5iiwa" path="res://scenes/enemies/level1/SkeletonYellow.tscn" id="9_jtn1k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(1150, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 600)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(40, 160)
+
+[node name="Playground" type="Node2D" unique_id=1030485706]
+
+[node name="GameFlow" type="Node" parent="." unique_id=863538885]
+script = ExtResource("5")
+
+[node name="占位_操场_下一阶段重做" type="Node2D" parent="." unique_id=449841462]
+
+[node name="Player" parent="." unique_id=2068438998 instance=ExtResource("1")]
+position = Vector2(90, 560)
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=1046507889]
+
+[node name="playground_from_dorm" type="Marker2D" parent="SpawnPoints" unique_id=1444366884]
+position = Vector2(90, 560)
+script = ExtResource("7")
+id = "playground_from_dorm"
+
+[node name="playground_from_forest" type="Marker2D" parent="SpawnPoints" unique_id=1613586161]
+position = Vector2(1050, 560)
+script = ExtResource("7")
+id = "playground_from_forest"
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=1361692219]
+position = Vector2(575, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=583234739]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="Polygon2D" parent="Ground" unique_id=689262727]
+color = Color(0.5, 0.48, 0.4, 1)
+polygon = PackedVector2Array(-575, -30, 575, -30, 575, 30, -575, 30)
+
+[node name="WallLeft" type="StaticBody2D" parent="." unique_id=1768763500]
+position = Vector2(16, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=30840769]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallLeft" unique_id=557188654]
+color = Color(0.4, 0.45, 0.55, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="WallRight" type="StaticBody2D" parent="." unique_id=1177528208]
+position = Vector2(1134, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=1465966217]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallRight" unique_id=76903426]
+color = Color(0.4, 0.45, 0.55, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="Door_dorm" type="Area2D" parent="." unique_id=2042128344]
+position = Vector2(20, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6")
+target_scene = "res://scenes/levels/main_new.tscn"
+target_spawn_id = "school_from_playground"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door_dorm" unique_id=997072681]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="Door_forest" type="Area2D" parent="." unique_id=729141427]
+position = Vector2(1130, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6")
+target_scene = "res://scenes/levels/forest.tscn"
+target_spawn_id = "forest_from_school"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door_forest" unique_id=1019739739]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="HUD" parent="." unique_id=2050131173 instance=ExtResource("2")]
+
+[node name="EndingScreen" parent="." unique_id=1261358732 instance=ExtResource("4")]
+
+[node name="PauseMenu" parent="." unique_id=2025051815 instance=ExtResource("8")]
+
+[node name="Skeleton" parent="." unique_id=2047480213 instance=ExtResource("9_jtn1k")]
+position = Vector2(789, 524)

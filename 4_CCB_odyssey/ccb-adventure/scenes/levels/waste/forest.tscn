@@ -1,0 +1,251 @@
+[gd_scene load_steps=20 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/quarter_note/Enemy.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/eighth_note/RangedEnemy.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/items/Clue.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/ui/EndingScreen.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/items/DoubleJumpPickup.tscn" id="8"]
+[ext_resource type="Script" path="res://scripts/game/GameFlow.gd" id="9"]
+[ext_resource type="Script" path="res://scripts/game/Door.gd" id="10"]
+[ext_resource type="Script" path="res://scripts/game/SpawnPoint.gd" id="11"]
+[ext_resource type="Script" path="res://scripts/game/DialogueTrigger.gd" id="12"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="13"]
+[ext_resource type="PackedScene" path="res://scenes/items/MagicBarrier.tscn" id="14"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(1150, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 600)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(40, 160)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step"]
+size = Vector2(140, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ledge"]
+size = Vector2(220, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dialog"]
+size = Vector2(200, 140)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_secret_dialog"]
+size = Vector2(220, 90)
+
+[node name="Forest" type="Node2D"]
+
+[node name="GameFlow" type="Node" parent="."]
+script = ExtResource("9")
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(90, 560)
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="forest_from_school" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(90, 560)
+script = ExtResource("11")
+id = "forest_from_school"
+
+[node name="forest_from_village" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(1050, 560)
+script = ExtResource("11")
+id = "forest_from_village"
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(575, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="Polygon2D" parent="Ground"]
+color = Color(0.3, 0.42, 0.28, 1)
+polygon = PackedVector2Array(-575, -30, 575, -30, 575, 30, -575, 30)
+
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2(16, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallLeft"]
+color = Color(0.4, 0.45, 0.55, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(1134, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallRight"]
+color = Color(0.4, 0.45, 0.55, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="Decor" type="Node2D" parent="."]
+
+[node name="Tree1Canopy" type="Polygon2D" parent="Decor"]
+position = Vector2(100, 470)
+color = Color(0.2, 0.45, 0.25, 1)
+polygon = PackedVector2Array(-45, -70, 45, -70, 45, 70, -45, 70)
+
+[node name="Tree1Trunk" type="Polygon2D" parent="Decor"]
+position = Vector2(100, 560)
+color = Color(0.45, 0.3, 0.2, 1)
+polygon = PackedVector2Array(-12, -25, 12, -25, 12, 25, -12, 25)
+
+[node name="Tree2Canopy" type="Polygon2D" parent="Decor"]
+position = Vector2(950, 480)
+color = Color(0.2, 0.45, 0.25, 1)
+polygon = PackedVector2Array(-50, -75, 50, -75, 50, 75, -50, 75)
+
+[node name="Tree2Trunk" type="Polygon2D" parent="Decor"]
+position = Vector2(950, 565)
+color = Color(0.45, 0.3, 0.2, 1)
+polygon = PackedVector2Array(-12, -22, 12, -22, 12, 22, -12, 22)
+
+[node name="Step1" type="StaticBody2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+position = Vector2(390, 545)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1"]
+shape = SubResource("RectangleShape2D_step")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step1"]
+color = Color(0.55, 0.45, 0.3, 1)
+polygon = PackedVector2Array(-70, -10, 70, -10, 70, 10, -70, 10)
+
+[node name="Ledge" type="StaticBody2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+position = Vector2(490, 470)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ledge"]
+shape = SubResource("RectangleShape2D_ledge")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Ledge"]
+color = Color(0.55, 0.45, 0.3, 1)
+polygon = PackedVector2Array(-110, -10, 110, -10, 110, 10, -110, 10)
+
+[node name="SecretFakeWall" type="Polygon2D" parent="."]
+position = Vector2(395, 435)
+color = Color(0.35, 0.32, 0.38, 1)
+polygon = PackedVector2Array(-12, -25, 12, -25, 12, 25, -12, 25)
+
+[node name="Clue2" parent="." instance=ExtResource("4")]
+position = Vector2(530, 430)
+clue_cue = "clue_forest_secret"
+clue_id = "clue_forest_secret"
+
+[node name="FakeWall2" type="Polygon2D" parent="."]
+position = Vector2(700, 530)
+color = Color(0.32, 0.36, 0.3, 1)
+polygon = PackedVector2Array(-15, -60, 15, -60, 15, 60, -15, 60)
+
+[node name="DoubleJumpPickup" parent="." instance=ExtResource("8")]
+position = Vector2(770, 540)
+
+[node name="ChamberEntrance" type="StaticBody2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+position = Vector2(880, 420)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChamberEntrance"]
+shape = SubResource("RectangleShape2D_step")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="ChamberEntrance"]
+color = Color(0.55, 0.45, 0.3, 1)
+polygon = PackedVector2Array(-70, -10, 70, -10, 70, 10, -70, 10)
+
+[node name="ChamberFloor" type="StaticBody2D" parent="."]
+position = Vector2(1060, 420)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChamberFloor"]
+shape = SubResource("RectangleShape2D_ledge")
+
+[node name="Visual" type="Polygon2D" parent="ChamberFloor"]
+color = Color(0.5, 0.42, 0.3, 1)
+polygon = PackedVector2Array(-110, -10, 110, -10, 110, 10, -110, 10)
+
+[node name="ChamberCeiling" type="StaticBody2D" parent="."]
+position = Vector2(1060, 250)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ChamberCeiling"]
+shape = SubResource("RectangleShape2D_ledge")
+
+[node name="Visual" type="Polygon2D" parent="ChamberCeiling"]
+color = Color(0.42, 0.38, 0.3, 1)
+polygon = PackedVector2Array(-110, -10, 110, -10, 110, 10, -110, 10)
+
+[node name="MagicBarrier" parent="." instance=ExtResource("14")]
+position = Vector2(1000, 335)
+height = 150.0
+
+[node name="DiaryForest" parent="." instance=ExtResource("4")]
+position = Vector2(1080, 380)
+clue_cue = "diary_forest"
+clue_id = "diary_forest"
+
+[node name="Enemy2" parent="." instance=ExtResource("2")]
+position = Vector2(200, 574)
+
+[node name="RangedEnemy1" parent="." instance=ExtResource("3")]
+position = Vector2(900, 574)
+
+[node name="Door_school" type="Area2D" parent="."]
+position = Vector2(20, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("10")
+target_scene = "res://scenes/levels/main_new.tscn"
+target_spawn_id = "school_from_forest"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door_school"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="Door_village" type="Area2D" parent="."]
+position = Vector2(1130, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("10")
+target_scene = "res://scenes/levels/village.tscn"
+target_spawn_id = "village_from_forest"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door_village"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="DT_forest" type="Area2D" parent="."]
+position = Vector2(120, 560)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("12")
+cue = "dt_forest"
+trigger_id = "dt_forest"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DT_forest"]
+shape = SubResource("RectangleShape2D_dialog")
+
+[node name="DT_secret" type="Area2D" parent="."]
+position = Vector2(490, 470)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("12")
+cue = "dt_secret"
+trigger_id = "dt_secret"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DT_secret"]
+shape = SubResource("RectangleShape2D_secret_dialog")
+
+[node name="HUD" parent="." instance=ExtResource("5")]
+
+[node name="EndingScreen" parent="." instance=ExtResource("7")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("13")]
+

@@ -1,0 +1,120 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="2"]
+[ext_resource type="Script" path="res://tests/enemy_lab.gd" id="3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(1400, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 600)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.08, 0.08, 0.12, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.3)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="EnemyLab" type="Node2D"]
+script = ExtResource("3")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(700, 620)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="Polygon2D" parent="Ground"]
+color = Color(0.25, 0.25, 0.3, 1)
+polygon = PackedVector2Array(-700, -20, 700, -20, 700, 20, -700, 20)
+
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2(16, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallLeft"]
+color = Color(0.3, 0.3, 0.38, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(1384, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="Polygon2D" parent="WallRight"]
+color = Color(0.3, 0.3, 0.38, 1)
+polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(200, 560)
+
+[node name="HUD" parent="." instance=ExtResource("2")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="PanelContainer" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -380.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="UI/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="UI/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "敌人实验室"
+horizontal_alignment = 1
+
+[node name="SpawnQuarter" type="Button" parent="UI/Panel/VBox"]
+layout_mode = 2
+text = "生成 四分音符（近战）"
+
+[node name="SpawnEighth" type="Button" parent="UI/Panel/VBox"]
+layout_mode = 2
+text = "生成 八分音符（远程）"
+
+[node name="SpawnBass" type="Button" parent="UI/Panel/VBox"]
+layout_mode = 2
+text = "生成 低音谱号"
+
+[node name="SpawnSharp" type="Button" parent="UI/Panel/VBox"]
+layout_mode = 2
+text = "生成 升号"
+
+[node name="SpawnRest" type="Button" parent="UI/Panel/VBox"]
+layout_mode = 2
+text = "生成 休止符"
+
+[node name="SpawnPiano" type="Button" parent="UI/Panel/VBox"]
+layout_mode = 2
+text = "生成 钢琴（精英）"
+
+[node name="Clear" type="Button" parent="UI/Panel/VBox"]
+layout_mode = 2
+text = "清除全部敌人"
+
+[node name="ResetPlayer" type="Button" parent="UI/Panel/VBox"]
+layout_mode = 2
+text = "重置玩家状态/位置"
