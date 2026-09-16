@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b2l6kyc2g4ue0"]
 
 [ext_resource type="Script" uid="uid://dtd50kr7t3uxr" path="res://scripts/hud/HUD.gd" id="1"]
-[ext_resource type="Texture2D" uid="uid://m8pxqua3c5tp" path="res://art/hud/note.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://m8pxqua3c5tp" path="res://art/icons/note.png" id="2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_bg"]
 bg_color = Color(0.08, 0.05, 0.06, 0.85)
@@ -119,18 +119,6 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 22
 text = "0"
-
-[node name="NotesNameLabel" type="Label" parent="Control"]
-layout_mode = 0
-offset_left = 104.0
-offset_top = 19.0
-offset_right = 270.0
-offset_bottom = 44.0
-theme_override_colors/font_color = Color(1, 1, 1, 0.9)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 16
-text = "绕梁余音"
 
 [node name="SaveToast" type="Label" parent="Control" unique_id=403622839]
 modulate = Color(1, 1, 1, 0)

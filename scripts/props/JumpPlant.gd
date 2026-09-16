@@ -19,7 +19,7 @@ const PIANO_NOTES: Array[AudioStream] = [
 	preload("res://audio/enemy/effect/piano_notes_C4-C5/B4.wav"),
 	preload("res://audio/enemy/effect/piano_notes_C4-C5/C5.wav"),
 ]
-const NOTE_TEXTURE: Texture2D = preload("res://art/hud/note.png")
+const NOTE_TEXTURE: Texture2D = preload("res://art/icons/note.png")
 # 音符随机颜色池（等概率取一个）
 const NOTE_COLORS: Array[Color] = [
 	Color(1.0, 0.25, 0.3), Color(1.0, 0.6, 0.1), Color(1.0, 0.9, 0.2),

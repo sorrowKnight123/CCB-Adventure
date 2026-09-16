@@ -5,7 +5,6 @@ extends CanvasLayer
 @onready var hp_bar: ProgressBar = $Control/HpBar
 @onready var music_bar: ProgressBar = $Control/MusicBar
 @onready var notes_label: Label = $Control/NotesLabel
-@onready var notes_name_label: Label = get_node_or_null("Control/NotesNameLabel")
 @onready var collect_label: Label = get_node_or_null("Control/CollectLabel")
 @onready var sheet_label: Label = get_node_or_null("Control/SheetLabel")
 @onready var ability_label: Label = get_node_or_null("Control/AbilityLabel")
@@ -24,8 +23,6 @@ func _ready() -> void:
 	music_bar.max_value = GameState.MAX_MUSIC_INSPIRATION
 	music_bar.value = GameState.music_inspiration
 	notes_label.text = str(GameState.notes)
-	if notes_name_label:
-		notes_name_label.text = "绕梁余音"
 	set_collect_count(GameState.collected_ids.size(), GameState.COLLECT_TOTAL)
 	set_sheet_count(GameState.sheet_count(), GameState.SHEET_TOTAL)
 	refresh_abilities()
@@ -88,7 +85,8 @@ func refresh_abilities() -> void:
 
 
 func show_note_toast(amount: int) -> void:
-	_show_toast("绕梁余音 +%d" % amount)
+	# 图标优先：只报数字，含义由左上角的音符图标承担（agent.md §11.5）
+	_show_toast("+%d" % amount)
 
 
 func _on_notes_changed(total: int) -> void:
