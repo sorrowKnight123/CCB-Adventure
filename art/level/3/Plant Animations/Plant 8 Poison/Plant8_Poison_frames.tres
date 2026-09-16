@@ -1,0 +1,135 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00000.png" id="1_g4odc"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00001.png" id="2_wj3bv"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00002.png" id="3_gteuf"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00003.png" id="4_k7no8"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00004.png" id="5_oa82b"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00005.png" id="6_n2d05"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00006.png" id="7_td3u1"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00007.png" id="8_j4psq"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00008.png" id="9_5o7pa"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00009.png" id="10_0wfrv"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00010.png" id="11_6pxkj"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00011.png" id="12_mwgwm"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00012.png" id="13_sqs3p"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00013.png" id="14_7mjyr"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00014.png" id="15_rer4l"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00015.png" id="16_b2fk0"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00016.png" id="17_rxilp"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00017.png" id="18_67fko"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00018.png" id="19_hj1re"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00019.png" id="20_julql"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00020.png" id="21_npn3m"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00021.png" id="22_4oajv"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00022.png" id="23_omuw5"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00023.png" id="24_l6af3"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00024.png" id="25_3k3rl"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00025.png" id="26_orfvy"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00026.png" id="27_1gi0e"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00027.png" id="28_qyjxc"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00028.png" id="29_yap16"]
+[ext_resource type="Texture2D" path="res://art/level/3/Plant Animations/Plant 8 Poison/PlantPosion_00029.png" id="30_0d86e"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_g4odc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_wj3bv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_gteuf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_k7no8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_oa82b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_n2d05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_td3u1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_j4psq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_5o7pa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_0wfrv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_6pxkj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_mwgwm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_sqs3p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_7mjyr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_rer4l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_b2fk0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_rxilp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_67fko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_hj1re")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_julql")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_npn3m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_4oajv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_omuw5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_l6af3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_3k3rl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_orfvy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_1gi0e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_qyjxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_yap16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_0d86e")
+}],
+"loop": 1,
+"name": &"anim",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]

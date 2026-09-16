@@ -1,0 +1,68 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_00.png" id="idle_00"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_01.png" id="idle_01"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_02.png" id="idle_02"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_03.png" id="idle_03"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_04.png" id="idle_04"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_05.png" id="idle_05"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_06.png" id="idle_06"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_07.png" id="idle_07"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_08.png" id="idle_08"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_09.png" id="idle_09"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_10.png" id="idle_10"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_11.png" id="idle_11"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_12.png" id="idle_12"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_13.png" id="idle_13"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_14.png" id="idle_14"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_15.png" id="idle_15"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_16.png" id="idle_16"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_17.png" id="idle_17"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_18.png" id="idle_18"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/idle_19.png" id="idle_19"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_00.png" id="walk_00"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_01.png" id="walk_01"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_02.png" id="walk_02"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_03.png" id="walk_03"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_04.png" id="walk_04"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_05.png" id="walk_05"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_06.png" id="walk_06"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_07.png" id="walk_07"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_08.png" id="walk_08"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_09.png" id="walk_09"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_10.png" id="walk_10"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_11.png" id="walk_11"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_12.png" id="walk_12"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_13.png" id="walk_13"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_14.png" id="walk_14"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_15.png" id="walk_15"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_16.png" id="walk_16"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_17.png" id="walk_17"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_18.png" id="walk_18"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/walk_19.png" id="walk_19"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/jump_00.png" id="jump_00"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/jump_01.png" id="jump_01"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/jump_02.png" id="jump_02"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/jump_03.png" id="jump_03"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/jump_04.png" id="jump_04"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/jump_05.png" id="jump_05"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/jump_06.png" id="jump_06"]
+[ext_resource type="Texture2D" path="res://art/npc/blue_wizard/jump_07.png" id="jump_07"]
+
+[resource]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("idle_00")}, {"duration": 1.0, "texture": ExtResource("idle_01")}, {"duration": 1.0, "texture": ExtResource("idle_02")}, {"duration": 1.0, "texture": ExtResource("idle_03")}, {"duration": 1.0, "texture": ExtResource("idle_04")}, {"duration": 1.0, "texture": ExtResource("idle_05")}, {"duration": 1.0, "texture": ExtResource("idle_06")}, {"duration": 1.0, "texture": ExtResource("idle_07")}, {"duration": 1.0, "texture": ExtResource("idle_08")}, {"duration": 1.0, "texture": ExtResource("idle_09")}, {"duration": 1.0, "texture": ExtResource("idle_10")}, {"duration": 1.0, "texture": ExtResource("idle_11")}, {"duration": 1.0, "texture": ExtResource("idle_12")}, {"duration": 1.0, "texture": ExtResource("idle_13")}, {"duration": 1.0, "texture": ExtResource("idle_14")}, {"duration": 1.0, "texture": ExtResource("idle_15")}, {"duration": 1.0, "texture": ExtResource("idle_16")}, {"duration": 1.0, "texture": ExtResource("idle_17")}, {"duration": 1.0, "texture": ExtResource("idle_18")}, {"duration": 1.0, "texture": ExtResource("idle_19")}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}, {
+"frames": [{"duration": 1.0, "texture": ExtResource("walk_00")}, {"duration": 1.0, "texture": ExtResource("walk_01")}, {"duration": 1.0, "texture": ExtResource("walk_02")}, {"duration": 1.0, "texture": ExtResource("walk_03")}, {"duration": 1.0, "texture": ExtResource("walk_04")}, {"duration": 1.0, "texture": ExtResource("walk_05")}, {"duration": 1.0, "texture": ExtResource("walk_06")}, {"duration": 1.0, "texture": ExtResource("walk_07")}, {"duration": 1.0, "texture": ExtResource("walk_08")}, {"duration": 1.0, "texture": ExtResource("walk_09")}, {"duration": 1.0, "texture": ExtResource("walk_10")}, {"duration": 1.0, "texture": ExtResource("walk_11")}, {"duration": 1.0, "texture": ExtResource("walk_12")}, {"duration": 1.0, "texture": ExtResource("walk_13")}, {"duration": 1.0, "texture": ExtResource("walk_14")}, {"duration": 1.0, "texture": ExtResource("walk_15")}, {"duration": 1.0, "texture": ExtResource("walk_16")}, {"duration": 1.0, "texture": ExtResource("walk_17")}, {"duration": 1.0, "texture": ExtResource("walk_18")}, {"duration": 1.0, "texture": ExtResource("walk_19")}],
+"loop": true,
+"name": &"walk",
+"speed": 12.0
+}, {
+"frames": [{"duration": 1.0, "texture": ExtResource("jump_00")}, {"duration": 1.0, "texture": ExtResource("jump_01")}, {"duration": 1.0, "texture": ExtResource("jump_02")}, {"duration": 1.0, "texture": ExtResource("jump_03")}, {"duration": 1.0, "texture": ExtResource("jump_04")}, {"duration": 1.0, "texture": ExtResource("jump_05")}, {"duration": 1.0, "texture": ExtResource("jump_06")}, {"duration": 1.0, "texture": ExtResource("jump_07")}],
+"loop": false,
+"name": &"jump",
+"speed": 12.0
+}]

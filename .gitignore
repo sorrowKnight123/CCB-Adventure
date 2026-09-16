@@ -1,0 +1,13 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# 编辑器 / 临时备份产物
+*.bak
+*.tmp
+*.orig
+*~
+
+# 已删除调试脚本遗留的孤儿 .uid（源 .gd 已不存在）
+test_collision.gd.uid
+tests/_debug_*.uid

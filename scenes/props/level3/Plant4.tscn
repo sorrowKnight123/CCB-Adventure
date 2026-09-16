@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://7nv25rl0umnn"]
+
+[ext_resource type="SpriteFrames" path="res://art/level/3/Plant Animations/Plant 4/Plant4_frames.tres" id="1_frames"]
+
+[node name="Plant4" type="AnimatedSprite2D" unique_id=1866258059]
+scale = Vector2(0.3, 0.3)
+sprite_frames = ExtResource("1_frames")
+animation = &"anim"
+autoplay = "anim"
+frame_progress = 0.16142713

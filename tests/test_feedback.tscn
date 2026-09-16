@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://tests/test_feedback.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/level1/SkeletonWhite.tscn" id="3_skel"]
+
+[node name="TestFeedback" type="Node"]
+process_mode = 3
+script = ExtResource("1_test")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="Skeleton" parent="." instance=ExtResource("3_skel")]
+position = Vector2(100, 0)

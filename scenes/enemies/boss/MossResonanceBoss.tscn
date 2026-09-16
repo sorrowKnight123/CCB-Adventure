@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://crp56uldnkof7"]
+
+[ext_resource type="Script" uid="uid://cqhirgqeqkf4s" path="res://scripts/enemy/boss/MossResonanceBoss.gd" id="1_boss"]
+[ext_resource type="Script" uid="uid://dye6ep0adwbmo" path="res://scripts/enemy/boss/BossQTEController.gd" id="5_qte"]
+[ext_resource type="SpriteFrames" uid="uid://b3yphmbvw6xc3" path="res://art/enemies/boss/moss_boss_frames.tres" id="6_frames"]
+[ext_resource type="SpriteFrames" uid="uid://buqpqe3f8fha3" path="res://art/character/animations/finisher_pull_frames.tres" id="7_pull_frames"]
+[ext_resource type="Texture2D" uid="uid://pocmo1hax6fj" path="res://art/enemies/boss/dead/dead.png" id="8_dead"]
+[ext_resource type="Texture2D" uid="uid://c3hguuepr1m2f" path="res://art/enemies/boss/fx/phase2_aura.png" id="10_aura_fx"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4eh0m"]
+points = PackedVector2Array(110.50001, 124, 110.49999, -137, 33.499992, -151, -48.5, -73.99999, -50.5, 58.000004, 35.500008, 136)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
+size = Vector2(221, 198)
+
+[node name="MossResonanceBoss" type="CharacterBody2D" unique_id=1972006400]
+collision_layer = 4
+script = ExtResource("1_boss")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=696061962]
+position = Vector2(0, -43.5)
+rotation = 1.5707964
+shape = SubResource("ConvexPolygonShape2D_4eh0m")
+
+[node name="Visual" type="Polygon2D" parent="." unique_id=1364438574]
+visible = false
+z_index = 1
+position = Vector2(2.500002, 69)
+scale = Vector2(1.7604167, 1.173611)
+color = Color(0.18, 0.55, 0.34, 1)
+polygon = PackedVector2Array(-48, -144, 48, -144, 48, 0, -48, 0)
+
+[node name="BossSprite" type="AnimatedSprite2D" parent="." unique_id=1101239718]
+z_index = 1
+position = Vector2(6.9999995, -36)
+scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("6_frames")
+animation = &"jump"
+autoplay = "idle"
+
+[node name="FinisherPullSprite" type="AnimatedSprite2D" parent="." unique_id=21672827]
+visible = false
+z_index = 50
+scale = Vector2(0.8, 0.8)
+sprite_frames = ExtResource("7_pull_frames")
+animation = &"pull_loop"
+
+[node name="DeadSprite" type="Sprite2D" parent="." unique_id=978156972]
+visible = false
+z_index = 1
+position = Vector2(7, -36)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("8_dead")
+
+[node name="PhaseAuraSprite" type="Sprite2D" parent="." unique_id=1466352816]
+visible = false
+position = Vector2(7, -70)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("10_aura_fx")
+
+[node name="AttackHitbox" type="Area2D" parent="." unique_id=863651749]
+visible = false
+position = Vector2(-44, -72)
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=1467273471]
+position = Vector2(-50.5, 43)
+shape = SubResource("RectangleShape2D_attack")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=880987195]
+
+[node name="QTEController" type="Node" parent="." unique_id=1559463063]
+script = ExtResource("5_qte")
+
+[node name="SfxPlayer" type="AudioStreamPlayer" parent="." unique_id=1559463064]
+bus = &"SFX"

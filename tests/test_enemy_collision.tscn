@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://tests/test_enemy_collision.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/level1/SkeletonWhite.tscn" id="3_skel"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(400, 20)
+
+[node name="TestEnemyCollision" type="Node"]
+process_mode = 3
+script = ExtResource("1_test")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="Skeleton" parent="." instance=ExtResource("3_skel")]
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 100)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_floor")

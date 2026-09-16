@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy/boss/BossShockwave.gd" id="1_wave"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss/fx/jump_shockwave.png" id="2_jump_fx"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss/fx/slam_shockwave.png" id="3_slam_fx"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss/fx/slam_impact.png" id="4_impact_fx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wave"]
+size = Vector2(72, 24)
+
+[node name="BossShockwave" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_wave")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_wave")
+
+[node name="JumpVisual" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 27)
+texture = ExtResource("2_jump_fx")
+scale = Vector2(0.55, 0.55)
+
+[node name="SlamVisual" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 29)
+texture = ExtResource("3_slam_fx")
+scale = Vector2(0.55, 0.55)
+
+[node name="ImpactVisual" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -1)
+texture = ExtResource("4_impact_fx")
+scale = Vector2(0.45, 0.45)

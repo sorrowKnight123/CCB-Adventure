@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://tests/test_bat.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/level1/Bat.tscn" id="2_bat"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(40, 150)
+
+[node name="TestBat" type="Node"]
+process_mode = 3
+script = ExtResource("1_test")
+
+[node name="Bat" parent="." instance=ExtResource("2_bat")]
+
+[node name="FakePlayer" type="CharacterBody2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FakePlayer"]
+position = Vector2(0, -75)
+shape = SubResource("RectangleShape2D_player")

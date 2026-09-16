@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://xuf30h0rco77"]
+
+[ext_resource type="Script" uid="uid://c7gucwhjn87fc" path="res://scripts/enemy/PianoElite.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bkcpkqy1131jk" path="res://art/enemy/piano.png" id="2_akaf6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(240, 170)
+
+[node name="PianoElite" type="CharacterBody2D" unique_id=715265778]
+position = Vector2(300, -90)
+collision_layer = 4
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=101124888]
+visible = false
+position = Vector2(0, -50)
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1282586726]
+position = Vector2(0, -62)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_akaf6")

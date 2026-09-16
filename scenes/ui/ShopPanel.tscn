@@ -1,0 +1,169 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/ShopPanel.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.055, 0.08, 0.14, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.7, 0.78, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 34.0
+content_margin_top = 28.0
+content_margin_right = 34.0
+content_margin_bottom = 28.0
+
+[node name="ShopPanel" type="CanvasLayer"]
+layer = 80
+process_mode = 3
+script = ExtResource("1_script")
+
+[node name="Overlay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Dim" type="ColorRect" parent="Overlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 0.72)
+
+[node name="Center" type="CenterContainer" parent="Overlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Overlay/Center"]
+custom_minimum_size = Vector2(680, 500)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="Overlay/Center/Panel"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Overlay/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "交换旋律"
+horizontal_alignment = 1
+
+[node name="Currency" type="Label" parent="Overlay/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.5, 1)
+theme_override_font_sizes/font_size = 22
+text = "绕梁余音：0"
+horizontal_alignment = 1
+
+[node name="Spent" type="Label" parent="Overlay/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.82)
+theme_override_font_sizes/font_size = 18
+text = "累计交换：0 / 100"
+horizontal_alignment = 1
+
+[node name="UpgradesPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HpName" type="Label" parent="Overlay/Center/Panel/Margin/VBox/UpgradesPage"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "生机勃勃的圆舞曲"
+
+[node name="HpDescription" type="Label" parent="Overlay/Center/Panel/Margin/VBox/UpgradesPage"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.82)
+theme_override_font_sizes/font_size = 18
+text = "最大 HP +1，当前 HP 回满。最多交换 5 次。"
+
+[node name="HpStatus" type="Label" parent="Overlay/Center/Panel/Margin/VBox/UpgradesPage"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "已交换 0 / 5"
+
+[node name="HpPrice" type="Label" parent="Overlay/Center/Panel/Margin/VBox/UpgradesPage"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "当前价格：18 绕梁余音"
+
+[node name="HpBuyButton" type="Button" parent="Overlay/Center/Panel/Margin/VBox/UpgradesPage"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "交换"
+
+[node name="AttackName" type="Label" parent="Overlay/Center/Panel/Margin/VBox/UpgradesPage"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "强劲有力的进行曲"
+
+[node name="AttackDescription" type="Label" parent="Overlay/Center/Panel/Margin/VBox/UpgradesPage"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.65)
+theme_override_font_sizes/font_size = 18
+text = "攻击力强化，后续开放。"
+
+[node name="AttackBuyButton" type="Button" parent="Overlay/Center/Panel/Margin/VBox/UpgradesPage"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "暂不可购买"
+disabled = true
+
+[node name="RecordsPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/VBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RecordName" type="Label" parent="Overlay/Center/Panel/Margin/VBox/RecordsPage"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Brahms 唱片"
+autowrap_mode = 2
+horizontal_alignment = 1
+
+[node name="RecordDescription" type="Label" parent="Overlay/Center/Panel/Margin/VBox/RecordsPage"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.82)
+theme_override_font_sizes/font_size = 18
+text = "唱片图标与盾反效果暂时占位。"
+horizontal_alignment = 1
+
+[node name="RecordStatus" type="Label" parent="Overlay/Center/Panel/Margin/VBox/RecordsPage"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "免费领取"
+horizontal_alignment = 1
+
+[node name="RecordClaimButton" type="Button" parent="Overlay/Center/Panel/Margin/VBox/RecordsPage"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "领取"
+
+[node name="CloseButton" type="Button" parent="Overlay/Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "离开"

@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy/level1/Slime.gd" id="1_slime"]
+[ext_resource type="SpriteFrames" path="res://art/enemy/level 1/SlimeOrange_frames.tres" id="2_frames"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(112, 72)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
+radius = 220.0
+
+[node name="SlimeOrange" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 17
+script = ExtResource("1_slime")
+"行为模式" = 1
+"生命值" = 7
+"接触伤害" = 1
+"掉落普通音符数" = 6
+"接触伤害冷却" = 0.8
+"追踪速度" = 70.0
+"最大追踪距离" = 320.0
+"返航速度" = 55.0
+"失去目标延迟" = 0.25
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -37)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -37)
+scale = Vector2(0.23, 0.23)
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_detection")

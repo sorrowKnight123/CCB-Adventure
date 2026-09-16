@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://tests/test_ability_cutscene.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+
+[node name="TestAbilityCutscene" type="Node"]
+process_mode = 3
+script = ExtResource("1_test")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]

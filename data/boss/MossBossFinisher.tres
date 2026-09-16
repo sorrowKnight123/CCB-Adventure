@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BossFinisherConfig" format=3 uid="uid://b01yjsv2he7mp"]
+
+[ext_resource type="Script" uid="uid://dtq7eueb8th7e" path="res://scripts/enemy/boss/BossFinisherConfig.gd" id="1_config"]
+
+[resource]
+script = ExtResource("1_config")
+note_count = 25
+first_note_delay = 5.05
+note_interval = 0.35
+required_perfect = 0
+intro_duration = 0.0
+outro_duration = 0.0
+note_spawn_times = PackedFloat32Array(7.2, 7.5, 7.73, 8.04, 10.89, 11.33, 11.78, 13.69, 14.18, 14.64, 15.66, 15.99, 16.28, 16.63, 19.4, 20.38, 23.08, 24.12, 25.27)
+success_intro_duration = 0.0
+violin_pull_duration = 2.0416667

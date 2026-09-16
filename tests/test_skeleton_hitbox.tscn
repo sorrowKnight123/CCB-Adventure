@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://tests/test_skeleton_hitbox.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/level1/SkeletonWhite.tscn" id="2_white"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/level1/SkeletonYellow.tscn" id="3_yellow"]
+
+[node name="TestSkeletonHitbox" type="Node"]
+process_mode = 3
+script = ExtResource("1_test")
+
+[node name="SkeletonWhite" parent="." instance=ExtResource("2_white")]
+position = Vector2(0, 200)
+
+[node name="SkeletonYellow" parent="." instance=ExtResource("3_yellow")]
+position = Vector2(400, 200)
+
+[node name="FakePlayer" type="CharacterBody2D" parent="."]

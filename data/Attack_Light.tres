@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AttackData" format=3 uid="uid://cyumrcai4mjau"]
+
+[ext_resource type="Script" uid="uid://c7lwyr7q61kjr" path="res://scripts/game/AttackData.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+shake_strength = 5.0

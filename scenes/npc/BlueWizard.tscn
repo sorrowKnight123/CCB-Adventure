@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cvmto7nf4gsyk"]
+
+[ext_resource type="Script" uid="uid://bt4udomysbrba" path="res://scripts/npc/BlueWizard.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://art/npc/blue_wizard/blue_wizard_frames.tres" id="2_frames"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_area"]
+radius = 37.0
+height = 118.0
+
+[node name="BlueWizard" type="Node2D" unique_id=1672644185]
+script = ExtResource("1_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1833504317]
+position = Vector2(1.0000014, -3.8146973e-06)
+scale = Vector2(0.4, 0.4)
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="npc_area" type="Area2D" parent="." unique_id=582425326]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="npc_area" unique_id=1087215520]
+shape = SubResource("CapsuleShape2D_area")

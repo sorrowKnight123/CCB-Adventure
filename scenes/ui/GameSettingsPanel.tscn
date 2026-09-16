@@ -1,0 +1,143 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/hud/GameSettingsPanel.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.055, 0.08, 0.14, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.7, 0.78, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 36.0
+content_margin_top = 28.0
+content_margin_right = 36.0
+content_margin_bottom = 28.0
+
+[node name="GameSettingsPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0, 0, 0, 0.78)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(480, 440)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "游戏设置"
+horizontal_alignment = 1
+
+[node name="TotalRow" type="HBoxContainer" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Center/Panel/Margin/VBox/TotalRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "总音量"
+
+[node name="Value" type="Label" parent="Center/Panel/Margin/VBox/TotalRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(48, 0)
+theme_override_font_sizes/font_size = 22
+text = "60"
+horizontal_alignment = 2
+
+[node name="TotalSlider" type="HSlider" parent="Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+value = 60.0
+
+[node name="MusicRow" type="HBoxContainer" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Center/Panel/Margin/VBox/MusicRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "音乐"
+
+[node name="Value" type="Label" parent="Center/Panel/Margin/VBox/MusicRow"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "60"
+horizontal_alignment = 2
+
+[node name="MusicSlider" type="HSlider" parent="Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+value = 60.0
+
+[node name="SfxRow" type="HBoxContainer" parent="Center/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Center/Panel/Margin/VBox/SfxRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "音效"
+
+[node name="Value" type="Label" parent="Center/Panel/Margin/VBox/SfxRow"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "60"
+horizontal_alignment = 2
+
+[node name="SfxSlider" type="HSlider" parent="Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+value = 60.0
+
+[node name="BackButton" type="Button" parent="Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "返回"

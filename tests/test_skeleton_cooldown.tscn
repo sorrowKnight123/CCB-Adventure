@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://tests/test_skeleton_cooldown.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/level1/SkeletonWhite.tscn" id="2_white"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(400, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(40, 150)
+
+[node name="TestSkeletonCooldown" type="Node"]
+process_mode = 3
+script = ExtResource("1_test")
+
+[node name="SkeletonWhite" parent="." instance=ExtResource("2_white")]
+position = Vector2(0, 200)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 217)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="FakePlayer" type="CharacterBody2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FakePlayer"]
+position = Vector2(0, -75)
+shape = SubResource("RectangleShape2D_player")

@@ -1,0 +1,1417 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://b3yphmbvw6xc3"]
+
+[ext_resource type="Texture2D" uid="uid://owfqloi2qing" path="res://art/enemies/boss/finisher_fall/000.png" id="1_qp2f0"]
+[ext_resource type="Texture2D" uid="uid://g0oedx8ocxp8" path="res://art/enemies/boss/finisher_fall/001.png" id="2_378e6"]
+[ext_resource type="Texture2D" uid="uid://bk4c2nvol5tjm" path="res://art/enemies/boss/finisher_fall/002.png" id="3_2guwh"]
+[ext_resource type="Texture2D" uid="uid://0jp1i5ydy2hs" path="res://art/enemies/boss/finisher_fall/003.png" id="4_a7ruu"]
+[ext_resource type="Texture2D" uid="uid://dvt3eu42ksxw0" path="res://art/enemies/boss/finisher_fall/004.png" id="5_uv43a"]
+[ext_resource type="Texture2D" uid="uid://4vmjuqmtke46" path="res://art/enemies/boss/finisher_fall/005.png" id="6_t5x0o"]
+[ext_resource type="Texture2D" uid="uid://bsexq8cgdeavb" path="res://art/enemies/boss/finisher_fall/006.png" id="7_aacsw"]
+[ext_resource type="Texture2D" uid="uid://cawektbwn30uy" path="res://art/enemies/boss/finisher_fall/007.png" id="8_4r2ko"]
+[ext_resource type="Texture2D" uid="uid://conk3h8qrcncu" path="res://art/enemies/boss/finisher_fall/008.png" id="9_wx8n4"]
+[ext_resource type="Texture2D" uid="uid://lncst3iyqnhg" path="res://art/enemies/boss/finisher_fall/009.png" id="10_68m0i"]
+[ext_resource type="Texture2D" uid="uid://b33605bnjirpx" path="res://art/enemies/boss/finisher_fall/010.png" id="11_r8i8w"]
+[ext_resource type="Texture2D" uid="uid://b4xmjrcjbl5e7" path="res://art/enemies/boss/finisher_fall/011.png" id="12_57jcq"]
+[ext_resource type="Texture2D" uid="uid://dkdxbcrhkt3q1" path="res://art/enemies/boss/finisher_fall/012.png" id="13_h00qv"]
+[ext_resource type="Texture2D" uid="uid://bod7qakyk5vup" path="res://art/enemies/boss/finisher_fall/013.png" id="14_ij8pm"]
+[ext_resource type="Texture2D" uid="uid://rui0u6gs8sn5" path="res://art/enemies/boss/finisher_fall/014.png" id="15_76el3"]
+[ext_resource type="Texture2D" uid="uid://byt428wnf2v41" path="res://art/enemies/boss/finisher_fall/015.png" id="16_jr2ia"]
+[ext_resource type="Texture2D" uid="uid://cilvyxiftxpaa" path="res://art/enemies/boss/finisher_fall/016.png" id="17_fryhg"]
+[ext_resource type="Texture2D" uid="uid://phl7bkydunxq" path="res://art/enemies/boss/finisher_fall/017.png" id="18_yx5xd"]
+[ext_resource type="Texture2D" uid="uid://ctevxnkpkcmdq" path="res://art/enemies/boss/finisher_fall/018.png" id="19_61qfv"]
+[ext_resource type="Texture2D" uid="uid://cxalib4vxm340" path="res://art/enemies/boss/finisher_fall/019.png" id="20_am8ml"]
+[ext_resource type="Texture2D" uid="uid://cv3okthsdps0y" path="res://art/enemies/boss/finisher_fall/020.png" id="21_rsjwd"]
+[ext_resource type="Texture2D" uid="uid://dq6l5hcjaeo04" path="res://art/enemies/boss/finisher_fall/021.png" id="22_03q7t"]
+[ext_resource type="Texture2D" uid="uid://cmsd117txy4yx" path="res://art/enemies/boss/finisher_fall/022.png" id="23_u7r03"]
+[ext_resource type="Texture2D" uid="uid://dr7sx620c4s0j" path="res://art/enemies/boss/finisher_fall/023.png" id="24_amuq5"]
+[ext_resource type="Texture2D" uid="uid://chwwaxyqaijyy" path="res://art/enemies/boss/finisher_fall/024.png" id="25_5k7qw"]
+[ext_resource type="Texture2D" uid="uid://dlu0h0j7jreke" path="res://art/enemies/boss/finisher_fall/025.png" id="26_lpwwl"]
+[ext_resource type="Texture2D" uid="uid://bm8smk4kfiqx6" path="res://art/enemies/boss/finisher_fall/026.png" id="27_p3mjf"]
+[ext_resource type="Texture2D" uid="uid://xo6dt56rx057" path="res://art/enemies/boss/finisher_fall/027.png" id="28_nbrp0"]
+[ext_resource type="Texture2D" uid="uid://dtgloqwdqhrcs" path="res://art/enemies/boss/finisher_fall/028.png" id="29_k2iks"]
+[ext_resource type="Texture2D" uid="uid://dqlv0fd7smky7" path="res://art/enemies/boss/finisher_fall/029.png" id="30_ougyj"]
+[ext_resource type="Texture2D" uid="uid://bmtawbbw6wlo2" path="res://art/enemies/boss/finisher_fall/030.png" id="31_xnv4x"]
+[ext_resource type="Texture2D" uid="uid://dgnmvxgpktqjp" path="res://art/enemies/boss/finisher_fall/031.png" id="32_kywx5"]
+[ext_resource type="Texture2D" uid="uid://bp5n6shbr722" path="res://art/enemies/boss/finisher_fall/032.png" id="33_l5wom"]
+[ext_resource type="Texture2D" uid="uid://bg6qivtrwup36" path="res://art/enemies/boss/finisher_fall/033.png" id="34_uyqfx"]
+[ext_resource type="Texture2D" uid="uid://bb1a05eygqi32" path="res://art/enemies/boss/finisher_fall/034.png" id="35_sihcu"]
+[ext_resource type="Texture2D" uid="uid://80ji3dgmlc7l" path="res://art/enemies/boss/finisher_fall/035.png" id="36_8ehwc"]
+[ext_resource type="Texture2D" uid="uid://dxhcfasskrslc" path="res://art/enemies/boss/finisher_fall/036.png" id="37_x5v5d"]
+[ext_resource type="Texture2D" uid="uid://b1aay62ogoo75" path="res://art/enemies/boss/finisher_fall/037.png" id="38_ati2e"]
+[ext_resource type="Texture2D" uid="uid://d154aq53ps8ne" path="res://art/enemies/boss/finisher_fall/038.png" id="39_l6btg"]
+[ext_resource type="Texture2D" uid="uid://b5o85y7m64075" path="res://art/enemies/boss/finisher_fall/039.png" id="40_1xhr7"]
+[ext_resource type="Texture2D" uid="uid://denj8n7whjb6s" path="res://art/enemies/boss/finisher_fall/040.png" id="41_b5d04"]
+[ext_resource type="Texture2D" uid="uid://dc2xlh0dnwo0k" path="res://art/enemies/boss/finisher_fall/041.png" id="42_3vitg"]
+[ext_resource type="Texture2D" uid="uid://d2ubxgeryakrv" path="res://art/enemies/boss/finisher_fall/042.png" id="43_gnyyy"]
+[ext_resource type="Texture2D" uid="uid://btfaq3bh65gic" path="res://art/enemies/boss/finisher_fall/043.png" id="44_07ema"]
+[ext_resource type="Texture2D" uid="uid://bn5pocemsnbcf" path="res://art/enemies/boss/finisher_fall/044.png" id="45_3ytyj"]
+[ext_resource type="Texture2D" uid="uid://bfu2f70wqofut" path="res://art/enemies/boss/finisher_fall/045.png" id="46_y3coh"]
+[ext_resource type="Texture2D" uid="uid://evyn7kircg7i" path="res://art/enemies/boss/finisher_fall/046.png" id="47_c6mxg"]
+[ext_resource type="Texture2D" uid="uid://df882pi8chbu6" path="res://art/enemies/boss/finisher_fall/047.png" id="48_otjm6"]
+[ext_resource type="Texture2D" uid="uid://cvs6pw4warkb5" path="res://art/enemies/boss/finisher_fall/048.png" id="49_2ykm0"]
+[ext_resource type="Texture2D" uid="uid://7j7uv3flj4tv" path="res://art/enemies/boss/idle/000.png" id="50_au50d"]
+[ext_resource type="Texture2D" uid="uid://cy4i1m0sq5llg" path="res://art/enemies/boss/idle/001.png" id="51_gdfse"]
+[ext_resource type="Texture2D" uid="uid://bec5gl7ocdbq4" path="res://art/enemies/boss/idle/002.png" id="52_kxgsu"]
+[ext_resource type="Texture2D" uid="uid://d3evn8a0hrckx" path="res://art/enemies/boss/idle/003.png" id="53_yyp3p"]
+[ext_resource type="Texture2D" uid="uid://bsbbtve2rr03r" path="res://art/enemies/boss/idle/004.png" id="54_xs58q"]
+[ext_resource type="Texture2D" uid="uid://wpr6xm33n7js" path="res://art/enemies/boss/idle/005.png" id="55_t3dyk"]
+[ext_resource type="Texture2D" uid="uid://dfo1rg8xpg040" path="res://art/enemies/boss/idle/006.png" id="56_27wny"]
+[ext_resource type="Texture2D" uid="uid://cgbwalwvt37sx" path="res://art/enemies/boss/idle/007.png" id="57_uetlf"]
+[ext_resource type="Texture2D" uid="uid://cyh8kpxjrvc1l" path="res://art/enemies/boss/idle/008.png" id="58_dx0e0"]
+[ext_resource type="Texture2D" uid="uid://dthld4n8i1ld3" path="res://art/enemies/boss/idle/009.png" id="59_pg2ly"]
+[ext_resource type="Texture2D" uid="uid://dnrggssm4ydfb" path="res://art/enemies/boss/idle/010.png" id="60_mv27n"]
+[ext_resource type="Texture2D" uid="uid://d2c4qfspm3jcx" path="res://art/enemies/boss/idle/011.png" id="61_nqbyt"]
+[ext_resource type="Texture2D" uid="uid://tox4hte0mxp5" path="res://art/enemies/boss/idle/012.png" id="62_h0e3i"]
+[ext_resource type="Texture2D" uid="uid://bt6gqu8w2voov" path="res://art/enemies/boss/idle/013.png" id="63_qoc1m"]
+[ext_resource type="Texture2D" uid="uid://bdotw845tj3ct" path="res://art/enemies/boss/idle/014.png" id="64_fhtt8"]
+[ext_resource type="Texture2D" uid="uid://bq6m0pvagjvt7" path="res://art/enemies/boss/idle/015.png" id="65_oj5r0"]
+[ext_resource type="Texture2D" uid="uid://d0ee5tidwhadl" path="res://art/enemies/boss/idle/016.png" id="66_ynbpv"]
+[ext_resource type="Texture2D" uid="uid://cmjgdphe5o6ue" path="res://art/enemies/boss/idle/017.png" id="67_l6s5e"]
+[ext_resource type="Texture2D" uid="uid://17mibhbwfgkj" path="res://art/enemies/boss/idle/018.png" id="68_my5tq"]
+[ext_resource type="Texture2D" uid="uid://djmeiot6loyhd" path="res://art/enemies/boss/idle/019.png" id="69_tjaxv"]
+[ext_resource type="Texture2D" uid="uid://y5xns3bfb3x" path="res://art/enemies/boss/idle/020.png" id="70_8jp3v"]
+[ext_resource type="Texture2D" uid="uid://dleu53bds4sc6" path="res://art/enemies/boss/idle/021.png" id="71_qlubv"]
+[ext_resource type="Texture2D" uid="uid://b8sp10nw075fi" path="res://art/enemies/boss/idle/022.png" id="72_h4nm0"]
+[ext_resource type="Texture2D" uid="uid://oq5wnjsydlge" path="res://art/enemies/boss/idle/023.png" id="73_cvnfu"]
+[ext_resource type="Texture2D" uid="uid://bv28woo7b5ikh" path="res://art/enemies/boss/idle/024.png" id="74_hrcj5"]
+[ext_resource type="Texture2D" uid="uid://dsta4qtqsy3rg" path="res://art/enemies/boss/idle/025.png" id="75_5h675"]
+[ext_resource type="Texture2D" uid="uid://ntf7f5i5nwc0" path="res://art/enemies/boss/idle/026.png" id="76_dhvt1"]
+[ext_resource type="Texture2D" uid="uid://nrfvo44jymm2" path="res://art/enemies/boss/idle/027.png" id="77_tqjvb"]
+[ext_resource type="Texture2D" uid="uid://uukrgcglg5op" path="res://art/enemies/boss/idle/028.png" id="78_fbf0m"]
+[ext_resource type="Texture2D" uid="uid://kyc3lkxw74pw" path="res://art/enemies/boss/idle/029.png" id="79_us1s0"]
+[ext_resource type="Texture2D" uid="uid://cj086yuda5hdr" path="res://art/enemies/boss/idle/030.png" id="80_46hhf"]
+[ext_resource type="Texture2D" uid="uid://bnxnr61o6gnqo" path="res://art/enemies/boss/idle/031.png" id="81_cl57f"]
+[ext_resource type="Texture2D" uid="uid://blq44eb5pdlrt" path="res://art/enemies/boss/idle/032.png" id="82_wckx6"]
+[ext_resource type="Texture2D" uid="uid://cubjisnt5pe66" path="res://art/enemies/boss/idle/033.png" id="83_fsath"]
+[ext_resource type="Texture2D" uid="uid://bvpqnlwjuol7k" path="res://art/enemies/boss/idle/034.png" id="84_lhjl0"]
+[ext_resource type="Texture2D" uid="uid://bdfue3k3567g7" path="res://art/enemies/boss/idle/035.png" id="85_bhew4"]
+[ext_resource type="Texture2D" uid="uid://blf6sbt07tiqp" path="res://art/enemies/boss/idle/036.png" id="86_5yij0"]
+[ext_resource type="Texture2D" uid="uid://dana3qhw1en83" path="res://art/enemies/boss/idle/037.png" id="87_26hv4"]
+[ext_resource type="Texture2D" uid="uid://e52fwgag4x5v" path="res://art/enemies/boss/idle/038.png" id="88_fst3y"]
+[ext_resource type="Texture2D" uid="uid://b2uusuepmdhns" path="res://art/enemies/boss/idle/039.png" id="89_fmja3"]
+[ext_resource type="Texture2D" uid="uid://b7aakf7waejs7" path="res://art/enemies/boss/idle/040.png" id="90_mg2ow"]
+[ext_resource type="Texture2D" uid="uid://dltoo42yl3ud1" path="res://art/enemies/boss/idle/041.png" id="91_aqu4h"]
+[ext_resource type="Texture2D" uid="uid://d08oywtfav4f0" path="res://art/enemies/boss/idle/042.png" id="92_b7afu"]
+[ext_resource type="Texture2D" uid="uid://ye3wjm75e2pt" path="res://art/enemies/boss/idle/043.png" id="93_xj2n6"]
+[ext_resource type="Texture2D" uid="uid://b6okw282rq6gw" path="res://art/enemies/boss/idle/044.png" id="94_iv6ld"]
+[ext_resource type="Texture2D" uid="uid://dt3cqwtexlf7c" path="res://art/enemies/boss/idle/045.png" id="95_n62vs"]
+[ext_resource type="Texture2D" uid="uid://7nio1edhgr3x" path="res://art/enemies/boss/idle/046.png" id="96_ajcjw"]
+[ext_resource type="Texture2D" uid="uid://v00rogdc77mm" path="res://art/enemies/boss/idle/047.png" id="97_6vm3l"]
+[ext_resource type="Texture2D" uid="uid://bf8mc2ptpj72r" path="res://art/enemies/boss/idle/048.png" id="98_e2mgt"]
+[ext_resource type="Texture2D" uid="uid://dcvmuqb7eq4o5" path="res://art/enemies/boss/jump/000.png" id="99_trjnu"]
+[ext_resource type="Texture2D" uid="uid://n83w7mcbxxqs" path="res://art/enemies/boss/jump/001.png" id="100_g5pwl"]
+[ext_resource type="Texture2D" uid="uid://bv2q8l0lnnpma" path="res://art/enemies/boss/jump/002.png" id="101_jcggo"]
+[ext_resource type="Texture2D" uid="uid://b7ijxx8xcjnlf" path="res://art/enemies/boss/jump/003.png" id="102_in551"]
+[ext_resource type="Texture2D" uid="uid://c5y0a1ajpbe14" path="res://art/enemies/boss/jump/004.png" id="103_e72n6"]
+[ext_resource type="Texture2D" uid="uid://cr50upxi0tyt2" path="res://art/enemies/boss/jump/005.png" id="104_0388j"]
+[ext_resource type="Texture2D" uid="uid://bkbb5sajbckbs" path="res://art/enemies/boss/jump/006.png" id="105_g4kv5"]
+[ext_resource type="Texture2D" uid="uid://dpnswfh5bo1sc" path="res://art/enemies/boss/jump/007.png" id="106_b1sju"]
+[ext_resource type="Texture2D" uid="uid://d0l8du3f6hq8c" path="res://art/enemies/boss/jump/008.png" id="107_lbdym"]
+[ext_resource type="Texture2D" uid="uid://858dnwwp6l0y" path="res://art/enemies/boss/jump/009.png" id="108_4txlp"]
+[ext_resource type="Texture2D" uid="uid://cr4h7ugyhu470" path="res://art/enemies/boss/jump/010.png" id="109_l61ra"]
+[ext_resource type="Texture2D" uid="uid://d4jvgj78j6b6u" path="res://art/enemies/boss/jump/011.png" id="110_7nokx"]
+[ext_resource type="Texture2D" uid="uid://cvof177ul55gf" path="res://art/enemies/boss/jump/012.png" id="111_on81q"]
+[ext_resource type="Texture2D" uid="uid://edwbmepsoha4" path="res://art/enemies/boss/jump/013.png" id="112_2s8nx"]
+[ext_resource type="Texture2D" uid="uid://johpn0npjpie" path="res://art/enemies/boss/jump/014.png" id="113_c32uj"]
+[ext_resource type="Texture2D" uid="uid://dr80fy6mdv8re" path="res://art/enemies/boss/jump/015.png" id="114_sda1g"]
+[ext_resource type="Texture2D" uid="uid://dfqr1j7iu5qeg" path="res://art/enemies/boss/jump/016.png" id="115_wwl3v"]
+[ext_resource type="Texture2D" uid="uid://nawk4k1sprej" path="res://art/enemies/boss/jump/017.png" id="116_3na2e"]
+[ext_resource type="Texture2D" uid="uid://5t6252112sse" path="res://art/enemies/boss/jump/018.png" id="117_vgn0w"]
+[ext_resource type="Texture2D" uid="uid://dh84ukpws4pcy" path="res://art/enemies/boss/jump/019.png" id="118_iphw7"]
+[ext_resource type="Texture2D" uid="uid://t045ljvao1m4" path="res://art/enemies/boss/jump/020.png" id="119_psrbw"]
+[ext_resource type="Texture2D" uid="uid://btoqk8gnn3olq" path="res://art/enemies/boss/jump/021.png" id="120_5q37w"]
+[ext_resource type="Texture2D" uid="uid://bvcdrfrj4my2u" path="res://art/enemies/boss/jump/022.png" id="121_myp4e"]
+[ext_resource type="Texture2D" uid="uid://cj3jsep2yd5q4" path="res://art/enemies/boss/jump/023.png" id="122_23iqa"]
+[ext_resource type="Texture2D" uid="uid://b2ntr6fd7simo" path="res://art/enemies/boss/jump/024.png" id="123_ok8un"]
+[ext_resource type="Texture2D" uid="uid://dcu0tmioiqi8r" path="res://art/enemies/boss/jump/025.png" id="124_q3lak"]
+[ext_resource type="Texture2D" uid="uid://cvojnbd5lae5f" path="res://art/enemies/boss/jump/026.png" id="125_7gyk8"]
+[ext_resource type="Texture2D" uid="uid://c0yhio46pogcm" path="res://art/enemies/boss/jump/027.png" id="126_m3vrc"]
+[ext_resource type="Texture2D" uid="uid://ephjlohyw1if" path="res://art/enemies/boss/jump/028.png" id="127_3wqcu"]
+[ext_resource type="Texture2D" uid="uid://celln1nlyepuu" path="res://art/enemies/boss/jump/029.png" id="128_7ax5c"]
+[ext_resource type="Texture2D" uid="uid://dy105lqyvpnyh" path="res://art/enemies/boss/jump/030.png" id="129_uv3dx"]
+[ext_resource type="Texture2D" uid="uid://cmkj2836vaguo" path="res://art/enemies/boss/jump/031.png" id="130_fe07o"]
+[ext_resource type="Texture2D" uid="uid://ceytw3ae0lt7j" path="res://art/enemies/boss/jump/032.png" id="131_hkeb4"]
+[ext_resource type="Texture2D" uid="uid://cwj17fdom0xbd" path="res://art/enemies/boss/jump/033.png" id="132_rup4t"]
+[ext_resource type="Texture2D" uid="uid://i62l2fgopbxc" path="res://art/enemies/boss/jump/034.png" id="133_oiepf"]
+[ext_resource type="Texture2D" uid="uid://bieau46d46cof" path="res://art/enemies/boss/jump/035.png" id="134_i43fg"]
+[ext_resource type="Texture2D" uid="uid://bxytek6lisch5" path="res://art/enemies/boss/jump/036.png" id="135_idjel"]
+[ext_resource type="Texture2D" uid="uid://dk77fo7mwxynm" path="res://art/enemies/boss/jump/037.png" id="136_1voe2"]
+[ext_resource type="Texture2D" uid="uid://cisrkydsudd0p" path="res://art/enemies/boss/jump/038.png" id="137_iqjeb"]
+[ext_resource type="Texture2D" uid="uid://bcsm5pf3xx1m6" path="res://art/enemies/boss/jump/039.png" id="138_yu6tm"]
+[ext_resource type="Texture2D" uid="uid://carn1umu38287" path="res://art/enemies/boss/jump/040.png" id="139_utcw4"]
+[ext_resource type="Texture2D" uid="uid://brrdvnamqsnqp" path="res://art/enemies/boss/jump/041.png" id="140_aqy7f"]
+[ext_resource type="Texture2D" uid="uid://d28dtg80rt7hc" path="res://art/enemies/boss/jump/042.png" id="141_72y0y"]
+[ext_resource type="Texture2D" uid="uid://bhwjav0seax1" path="res://art/enemies/boss/jump/043.png" id="142_brrrw"]
+[ext_resource type="Texture2D" uid="uid://tn1oqmvb0l51" path="res://art/enemies/boss/jump/044.png" id="143_0vn5t"]
+[ext_resource type="Texture2D" uid="uid://bnu7v8mrvsyh4" path="res://art/enemies/boss/jump/045.png" id="144_sv8f7"]
+[ext_resource type="Texture2D" uid="uid://cq1ld3i73l4fd" path="res://art/enemies/boss/jump/046.png" id="145_icew4"]
+[ext_resource type="Texture2D" uid="uid://dmlgiojhlc86d" path="res://art/enemies/boss/jump/047.png" id="146_7pr2y"]
+[ext_resource type="Texture2D" uid="uid://bymto11o3sbkx" path="res://art/enemies/boss/jump/048.png" id="147_1u2jn"]
+[ext_resource type="Texture2D" uid="uid://chfqf07lw0ddp" path="res://art/enemies/boss/note_cast/000.png" id="148_3rmp0"]
+[ext_resource type="Texture2D" uid="uid://b3n2ldf2pckbi" path="res://art/enemies/boss/note_cast/001.png" id="149_7fk31"]
+[ext_resource type="Texture2D" uid="uid://da7m7uuruk884" path="res://art/enemies/boss/note_cast/002.png" id="150_gue0t"]
+[ext_resource type="Texture2D" uid="uid://wr2qrep5y0r" path="res://art/enemies/boss/note_cast/003.png" id="151_8oxr0"]
+[ext_resource type="Texture2D" uid="uid://ddh5ohmbp22aa" path="res://art/enemies/boss/note_cast/004.png" id="152_7klwu"]
+[ext_resource type="Texture2D" uid="uid://b1hchak5ba0tv" path="res://art/enemies/boss/note_cast/005.png" id="153_74hyp"]
+[ext_resource type="Texture2D" uid="uid://bk40tqav2ovxi" path="res://art/enemies/boss/note_cast/006.png" id="154_3mr8g"]
+[ext_resource type="Texture2D" uid="uid://cweja0rwe6a0j" path="res://art/enemies/boss/note_cast/007.png" id="155_r4oaj"]
+[ext_resource type="Texture2D" uid="uid://c8y3j0ppoqvy3" path="res://art/enemies/boss/note_cast/008.png" id="156_dg73i"]
+[ext_resource type="Texture2D" uid="uid://x0fo7g5jilbr" path="res://art/enemies/boss/note_cast/009.png" id="157_ckfkg"]
+[ext_resource type="Texture2D" uid="uid://bwguye70uv6fs" path="res://art/enemies/boss/note_cast/010.png" id="158_khf47"]
+[ext_resource type="Texture2D" uid="uid://brswkohxmxid0" path="res://art/enemies/boss/note_cast/011.png" id="159_vanh3"]
+[ext_resource type="Texture2D" uid="uid://bqnsmnh226hfq" path="res://art/enemies/boss/note_cast/012.png" id="160_oo6q2"]
+[ext_resource type="Texture2D" uid="uid://3y2yy1b3qxam" path="res://art/enemies/boss/note_cast/013.png" id="161_6me1r"]
+[ext_resource type="Texture2D" uid="uid://cbkqh4sji6scs" path="res://art/enemies/boss/note_cast/014.png" id="162_qgmle"]
+[ext_resource type="Texture2D" uid="uid://c0uf30fc75nr8" path="res://art/enemies/boss/note_cast/015.png" id="163_nfpij"]
+[ext_resource type="Texture2D" uid="uid://dxnd70sfmhjek" path="res://art/enemies/boss/note_cast/016.png" id="164_6n51d"]
+[ext_resource type="Texture2D" uid="uid://4hjrym4jpw3b" path="res://art/enemies/boss/note_cast/017.png" id="165_mf7rg"]
+[ext_resource type="Texture2D" uid="uid://nsx7lfvs7vw4" path="res://art/enemies/boss/note_cast/018.png" id="166_2cuqg"]
+[ext_resource type="Texture2D" uid="uid://56qebg6xk8ky" path="res://art/enemies/boss/note_cast/019.png" id="167_7vf0p"]
+[ext_resource type="Texture2D" uid="uid://c4eh1mv5npl3w" path="res://art/enemies/boss/note_cast/020.png" id="168_4k7cm"]
+[ext_resource type="Texture2D" uid="uid://cl43ochulouu0" path="res://art/enemies/boss/note_cast/021.png" id="169_pwnpu"]
+[ext_resource type="Texture2D" uid="uid://cpypdgaepcuk5" path="res://art/enemies/boss/note_cast/022.png" id="170_1qca5"]
+[ext_resource type="Texture2D" uid="uid://cjfjbdy5oxni8" path="res://art/enemies/boss/note_cast/023.png" id="171_jkle6"]
+[ext_resource type="Texture2D" uid="uid://0l81fpge40h4" path="res://art/enemies/boss/note_cast/024.png" id="172_3cdad"]
+[ext_resource type="Texture2D" uid="uid://dhj3s4e523wmk" path="res://art/enemies/boss/note_cast/025.png" id="173_ger8o"]
+[ext_resource type="Texture2D" uid="uid://g1bjp1dygk37" path="res://art/enemies/boss/note_cast/026.png" id="174_sarm5"]
+[ext_resource type="Texture2D" uid="uid://dnqis6p0l7h64" path="res://art/enemies/boss/note_cast/027.png" id="175_opbcq"]
+[ext_resource type="Texture2D" uid="uid://cyl40jiaq5sfl" path="res://art/enemies/boss/note_cast/028.png" id="176_cyo7k"]
+[ext_resource type="Texture2D" uid="uid://dy0coqaipwb1h" path="res://art/enemies/boss/note_cast/029.png" id="177_g4b2a"]
+[ext_resource type="Texture2D" uid="uid://bn08tofvrj3xn" path="res://art/enemies/boss/note_cast/030.png" id="178_8k31i"]
+[ext_resource type="Texture2D" uid="uid://drs8818u3rklw" path="res://art/enemies/boss/note_cast/031.png" id="179_6sulr"]
+[ext_resource type="Texture2D" uid="uid://cpvtvyuy27ifo" path="res://art/enemies/boss/note_cast/032.png" id="180_uo5vd"]
+[ext_resource type="Texture2D" uid="uid://3yf2qxp0q4ae" path="res://art/enemies/boss/note_cast/033.png" id="181_3iee4"]
+[ext_resource type="Texture2D" uid="uid://cxrvu7m1jpnxo" path="res://art/enemies/boss/note_cast/034.png" id="182_bayry"]
+[ext_resource type="Texture2D" uid="uid://6q37u0qy540r" path="res://art/enemies/boss/note_cast/035.png" id="183_21v68"]
+[ext_resource type="Texture2D" uid="uid://jl3mklqip4p2" path="res://art/enemies/boss/note_cast/036.png" id="184_o8ep7"]
+[ext_resource type="Texture2D" uid="uid://8xremy0hio8r" path="res://art/enemies/boss/note_cast/037.png" id="185_yog4e"]
+[ext_resource type="Texture2D" uid="uid://qlydcimbi8cc" path="res://art/enemies/boss/note_cast/038.png" id="186_8md27"]
+[ext_resource type="Texture2D" uid="uid://c30e704k3tpp8" path="res://art/enemies/boss/note_cast/039.png" id="187_cd27m"]
+[ext_resource type="Texture2D" uid="uid://bkiitrve6myk2" path="res://art/enemies/boss/note_cast/040.png" id="188_t4f3o"]
+[ext_resource type="Texture2D" uid="uid://bf13p0vv1ky7w" path="res://art/enemies/boss/note_cast/041.png" id="189_sp41e"]
+[ext_resource type="Texture2D" uid="uid://cwtebk0sl4lhc" path="res://art/enemies/boss/note_cast/042.png" id="190_3te4c"]
+[ext_resource type="Texture2D" uid="uid://bts5h02eayj0y" path="res://art/enemies/boss/note_cast/043.png" id="191_8ryqn"]
+[ext_resource type="Texture2D" uid="uid://cvtkhycukjtwo" path="res://art/enemies/boss/note_cast/044.png" id="192_b8bwd"]
+[ext_resource type="Texture2D" uid="uid://diw704n43oy1t" path="res://art/enemies/boss/note_cast/045.png" id="193_82gj5"]
+[ext_resource type="Texture2D" uid="uid://dt3f4d6p5siim" path="res://art/enemies/boss/note_cast/046.png" id="194_3oq4w"]
+[ext_resource type="Texture2D" uid="uid://51nmkl8or3at" path="res://art/enemies/boss/note_cast/047.png" id="195_rg6gx"]
+[ext_resource type="Texture2D" uid="uid://b1y0fwf5kd6nt" path="res://art/enemies/boss/note_cast/048.png" id="196_o4dhv"]
+[ext_resource type="Texture2D" uid="uid://ccc1ypobapnx2" path="res://art/enemies/boss/phase_change/000.png" id="197_n7bml"]
+[ext_resource type="Texture2D" uid="uid://dl2fw70to0mpb" path="res://art/enemies/boss/phase_change/001.png" id="198_tmrit"]
+[ext_resource type="Texture2D" uid="uid://bhq0a716p64bk" path="res://art/enemies/boss/phase_change/002.png" id="199_l8gqo"]
+[ext_resource type="Texture2D" uid="uid://dyxbwkcsvxyo" path="res://art/enemies/boss/phase_change/003.png" id="200_bmxbc"]
+[ext_resource type="Texture2D" uid="uid://ceiid1h0ou46h" path="res://art/enemies/boss/phase_change/004.png" id="201_7xkka"]
+[ext_resource type="Texture2D" uid="uid://c3247yuj46vgg" path="res://art/enemies/boss/phase_change/005.png" id="202_bjn8f"]
+[ext_resource type="Texture2D" uid="uid://crltki1rkhfu0" path="res://art/enemies/boss/phase_change/006.png" id="203_w4wyk"]
+[ext_resource type="Texture2D" uid="uid://hdtfboo38uag" path="res://art/enemies/boss/phase_change/007.png" id="204_d3ytr"]
+[ext_resource type="Texture2D" uid="uid://c8mrbsa1a1qey" path="res://art/enemies/boss/phase_change/008.png" id="205_h1awb"]
+[ext_resource type="Texture2D" uid="uid://ds54mlyp17h8v" path="res://art/enemies/boss/phase_change/009.png" id="206_hswgb"]
+[ext_resource type="Texture2D" uid="uid://vjh1c6q4h2fq" path="res://art/enemies/boss/phase_change/010.png" id="207_pk1cd"]
+[ext_resource type="Texture2D" uid="uid://ca3uat3bfp20c" path="res://art/enemies/boss/phase_change/011.png" id="208_hjk5u"]
+[ext_resource type="Texture2D" uid="uid://mvetc5v86r8h" path="res://art/enemies/boss/phase_change/012.png" id="209_obwlg"]
+[ext_resource type="Texture2D" uid="uid://bgxrarb3m2ajr" path="res://art/enemies/boss/phase_change/013.png" id="210_1g85i"]
+[ext_resource type="Texture2D" uid="uid://c0k07bpth2xma" path="res://art/enemies/boss/phase_change/014.png" id="211_ybsum"]
+[ext_resource type="Texture2D" uid="uid://brb1db2x5dbuh" path="res://art/enemies/boss/phase_change/015.png" id="212_08fr2"]
+[ext_resource type="Texture2D" uid="uid://c1ynrkmjhgqnm" path="res://art/enemies/boss/phase_change/016.png" id="213_dr3bv"]
+[ext_resource type="Texture2D" uid="uid://cjvl6ei6kbkrg" path="res://art/enemies/boss/phase_change/017.png" id="214_bpsof"]
+[ext_resource type="Texture2D" uid="uid://cp8medmd8dhrr" path="res://art/enemies/boss/phase_change/018.png" id="215_0qtuq"]
+[ext_resource type="Texture2D" uid="uid://dg3yf71jdm0h" path="res://art/enemies/boss/phase_change/019.png" id="216_uvpys"]
+[ext_resource type="Texture2D" uid="uid://dlsfe1isby4kr" path="res://art/enemies/boss/phase_change/020.png" id="217_qato4"]
+[ext_resource type="Texture2D" uid="uid://b0lby31nb3f2h" path="res://art/enemies/boss/phase_change/021.png" id="218_fojx8"]
+[ext_resource type="Texture2D" uid="uid://dxwpb75ko17lp" path="res://art/enemies/boss/phase_change/022.png" id="219_cswy6"]
+[ext_resource type="Texture2D" uid="uid://dlwrbhnslfqso" path="res://art/enemies/boss/phase_change/023.png" id="220_n0bec"]
+[ext_resource type="Texture2D" uid="uid://cm145lxo7hjjy" path="res://art/enemies/boss/phase_change/024.png" id="221_1imyf"]
+[ext_resource type="Texture2D" uid="uid://cusubqjoms85i" path="res://art/enemies/boss/phase_change/025.png" id="222_c6l4k"]
+[ext_resource type="Texture2D" uid="uid://be6fi3rnsbdep" path="res://art/enemies/boss/phase_change/026.png" id="223_ofmjg"]
+[ext_resource type="Texture2D" uid="uid://1s2yk6vopg86" path="res://art/enemies/boss/phase_change/027.png" id="224_28drp"]
+[ext_resource type="Texture2D" uid="uid://b4gjpfea82js2" path="res://art/enemies/boss/phase_change/028.png" id="225_12tsu"]
+[ext_resource type="Texture2D" uid="uid://dq7bqvrudlni5" path="res://art/enemies/boss/phase_change/029.png" id="226_lfvck"]
+[ext_resource type="Texture2D" uid="uid://c5ioclnohd1pg" path="res://art/enemies/boss/phase_change/030.png" id="227_lnswi"]
+[ext_resource type="Texture2D" uid="uid://puup0skqnbt2" path="res://art/enemies/boss/phase_change/031.png" id="228_y1pap"]
+[ext_resource type="Texture2D" uid="uid://eo0ibh8tdsar" path="res://art/enemies/boss/phase_change/032.png" id="229_aafkm"]
+[ext_resource type="Texture2D" uid="uid://b2bfjmk0ei4ol" path="res://art/enemies/boss/phase_change/033.png" id="230_uavjb"]
+[ext_resource type="Texture2D" uid="uid://f71agbibpgcs" path="res://art/enemies/boss/phase_change/034.png" id="231_djleu"]
+[ext_resource type="Texture2D" uid="uid://dpqpp3eudh0tb" path="res://art/enemies/boss/phase_change/035.png" id="232_ws7ar"]
+[ext_resource type="Texture2D" uid="uid://s2vf2m8a2v21" path="res://art/enemies/boss/phase_change/036.png" id="233_x8wyi"]
+[ext_resource type="Texture2D" uid="uid://4bsgxubu754t" path="res://art/enemies/boss/phase_change/037.png" id="234_ex07a"]
+[ext_resource type="Texture2D" uid="uid://csyy3x8f3niou" path="res://art/enemies/boss/phase_change/038.png" id="235_fbifu"]
+[ext_resource type="Texture2D" uid="uid://dvg3yu0e4vo7t" path="res://art/enemies/boss/phase_change/039.png" id="236_og20m"]
+[ext_resource type="Texture2D" uid="uid://y7ccm6dgowbh" path="res://art/enemies/boss/phase_change/040.png" id="237_1e5wy"]
+[ext_resource type="Texture2D" uid="uid://ki7as2tu8yqc" path="res://art/enemies/boss/phase_change/041.png" id="238_hhdqq"]
+[ext_resource type="Texture2D" uid="uid://b5ku6clbbm3tk" path="res://art/enemies/boss/phase_change/042.png" id="239_nv45i"]
+[ext_resource type="Texture2D" uid="uid://xkyvvf26lm1o" path="res://art/enemies/boss/phase_change/043.png" id="240_iplc2"]
+[ext_resource type="Texture2D" uid="uid://be82n00faocpr" path="res://art/enemies/boss/phase_change/044.png" id="241_7doac"]
+[ext_resource type="Texture2D" uid="uid://bodbrgq8747u8" path="res://art/enemies/boss/phase_change/045.png" id="242_iqhnt"]
+[ext_resource type="Texture2D" uid="uid://cfksnpcr5qvn0" path="res://art/enemies/boss/phase_change/046.png" id="243_hgp5o"]
+[ext_resource type="Texture2D" uid="uid://bahb0nw6ratre" path="res://art/enemies/boss/phase_change/047.png" id="244_owj6f"]
+[ext_resource type="Texture2D" uid="uid://drifmmreor30f" path="res://art/enemies/boss/phase_change/048.png" id="245_iv6gj"]
+[ext_resource type="Texture2D" uid="uid://bg6b7rfd3vpkv" path="res://art/enemies/boss/slam_left/000.png" id="246_hamv5"]
+[ext_resource type="Texture2D" uid="uid://biyp1pnsv0x2y" path="res://art/enemies/boss/slam_left/001.png" id="247_3e8ac"]
+[ext_resource type="Texture2D" uid="uid://c8o2dof1yo2cc" path="res://art/enemies/boss/slam_left/002.png" id="248_g8rqm"]
+[ext_resource type="Texture2D" uid="uid://bamg0tjt7ba3j" path="res://art/enemies/boss/slam_left/003.png" id="249_ygkm0"]
+[ext_resource type="Texture2D" uid="uid://jsl5bfiym2b2" path="res://art/enemies/boss/slam_left/004.png" id="250_5u482"]
+[ext_resource type="Texture2D" uid="uid://bao2b54lmd0qq" path="res://art/enemies/boss/slam_left/005.png" id="251_cq8d5"]
+[ext_resource type="Texture2D" uid="uid://dlupsswuw1vcq" path="res://art/enemies/boss/slam_left/006.png" id="252_rvhxr"]
+[ext_resource type="Texture2D" uid="uid://dpi1opb5h1n8f" path="res://art/enemies/boss/slam_left/007.png" id="253_760vh"]
+[ext_resource type="Texture2D" uid="uid://e1ywcyyokrdr" path="res://art/enemies/boss/slam_left/008.png" id="254_squnv"]
+[ext_resource type="Texture2D" uid="uid://buxvubj3lnyn1" path="res://art/enemies/boss/slam_left/009.png" id="255_gu1qr"]
+[ext_resource type="Texture2D" uid="uid://bnhsj8c0pv5hc" path="res://art/enemies/boss/slam_left/010.png" id="256_ss2va"]
+[ext_resource type="Texture2D" uid="uid://b6eru5oti4p3d" path="res://art/enemies/boss/slam_left/011.png" id="257_p668c"]
+[ext_resource type="Texture2D" uid="uid://dg15fn0hnhk0x" path="res://art/enemies/boss/slam_left/012.png" id="258_0vxs5"]
+[ext_resource type="Texture2D" uid="uid://bc62khls6731q" path="res://art/enemies/boss/slam_left/013.png" id="259_ddeyq"]
+[ext_resource type="Texture2D" uid="uid://bn8v2y65qvebu" path="res://art/enemies/boss/slam_left/014.png" id="260_7n2yq"]
+[ext_resource type="Texture2D" uid="uid://db41u6aawoly0" path="res://art/enemies/boss/slam_left/015.png" id="261_27ssp"]
+[ext_resource type="Texture2D" uid="uid://op6fvjfrdro3" path="res://art/enemies/boss/slam_left/016.png" id="262_iag14"]
+[ext_resource type="Texture2D" uid="uid://dresj28bltims" path="res://art/enemies/boss/slam_left/017.png" id="263_2smw6"]
+[ext_resource type="Texture2D" uid="uid://dgur37xse5y4b" path="res://art/enemies/boss/slam_left/018.png" id="264_0d50u"]
+[ext_resource type="Texture2D" uid="uid://b3xg8fbruuboo" path="res://art/enemies/boss/slam_left/019.png" id="265_yineb"]
+[ext_resource type="Texture2D" uid="uid://c1mvyo6rmifs1" path="res://art/enemies/boss/slam_left/020.png" id="266_5r6ci"]
+[ext_resource type="Texture2D" uid="uid://bc3g83ceb58vo" path="res://art/enemies/boss/slam_left/021.png" id="267_88bmh"]
+[ext_resource type="Texture2D" uid="uid://dfv4lm1a38fhc" path="res://art/enemies/boss/slam_left/022.png" id="268_1wffn"]
+[ext_resource type="Texture2D" uid="uid://5d7s3q4kqsqm" path="res://art/enemies/boss/slam_left/023.png" id="269_p3rdi"]
+[ext_resource type="Texture2D" uid="uid://dxl1so2hsvrug" path="res://art/enemies/boss/slam_left/024.png" id="270_i5wam"]
+[ext_resource type="Texture2D" uid="uid://gmpt1dyeh0vx" path="res://art/enemies/boss/slam_left/025.png" id="271_0t5yb"]
+[ext_resource type="Texture2D" uid="uid://dqa3aprjjd1d7" path="res://art/enemies/boss/slam_left/026.png" id="272_03pjw"]
+[ext_resource type="Texture2D" uid="uid://00fpwe3nfyhj" path="res://art/enemies/boss/slam_left/027.png" id="273_uyjap"]
+[ext_resource type="Texture2D" uid="uid://bdv847lt74a6h" path="res://art/enemies/boss/slam_left/028.png" id="274_h5wm3"]
+[ext_resource type="Texture2D" uid="uid://b4vx6kb067dv7" path="res://art/enemies/boss/slam_left/029.png" id="275_ryjg1"]
+[ext_resource type="Texture2D" uid="uid://2kwl1vt5vj1b" path="res://art/enemies/boss/slam_left/030.png" id="276_8k6nv"]
+[ext_resource type="Texture2D" uid="uid://uq7heqtndq51" path="res://art/enemies/boss/slam_left/031.png" id="277_dcn11"]
+[ext_resource type="Texture2D" uid="uid://cnhgunedp83w6" path="res://art/enemies/boss/slam_left/032.png" id="278_1dlfl"]
+[ext_resource type="Texture2D" uid="uid://ltw2hhplvwth" path="res://art/enemies/boss/slam_left/033.png" id="279_qv7yg"]
+[ext_resource type="Texture2D" uid="uid://hhjc8pljko1s" path="res://art/enemies/boss/slam_left/034.png" id="280_qk10b"]
+[ext_resource type="Texture2D" uid="uid://bmwn1j0jd1eyb" path="res://art/enemies/boss/slam_left/035.png" id="281_hlx24"]
+[ext_resource type="Texture2D" uid="uid://upnk5atgdrbx" path="res://art/enemies/boss/slam_left/036.png" id="282_8qp5y"]
+[ext_resource type="Texture2D" uid="uid://bo8t74hci8xdt" path="res://art/enemies/boss/slam_left/037.png" id="283_wfft5"]
+[ext_resource type="Texture2D" uid="uid://cfw8g4fww0yua" path="res://art/enemies/boss/slam_left/038.png" id="284_13h0r"]
+[ext_resource type="Texture2D" uid="uid://cyhy4d7rtdf8q" path="res://art/enemies/boss/slam_left/039.png" id="285_rxqvp"]
+[ext_resource type="Texture2D" uid="uid://2aw8akepg3ho" path="res://art/enemies/boss/slam_left/040.png" id="286_5t5rk"]
+[ext_resource type="Texture2D" uid="uid://ca4m645sr5wt6" path="res://art/enemies/boss/slam_left/041.png" id="287_xa2nf"]
+[ext_resource type="Texture2D" uid="uid://diy35t4573mr5" path="res://art/enemies/boss/slam_left/042.png" id="288_f3hxw"]
+[ext_resource type="Texture2D" uid="uid://hpre5inkh3e0" path="res://art/enemies/boss/slam_left/043.png" id="289_hkhrg"]
+[ext_resource type="Texture2D" uid="uid://d0fhhy0duj0jn" path="res://art/enemies/boss/slam_left/044.png" id="290_abrxl"]
+[ext_resource type="Texture2D" uid="uid://te6r0kn7rhpx" path="res://art/enemies/boss/slam_left/045.png" id="291_a0hpy"]
+[ext_resource type="Texture2D" uid="uid://dx0k65w3ohfkd" path="res://art/enemies/boss/slam_left/046.png" id="292_3yy6r"]
+[ext_resource type="Texture2D" uid="uid://bxvdwqwmlyahp" path="res://art/enemies/boss/slam_left/047.png" id="293_2nf2a"]
+[ext_resource type="Texture2D" uid="uid://82anyjylejt8" path="res://art/enemies/boss/slam_left/048.png" id="294_3cweb"]
+[ext_resource type="Texture2D" uid="uid://bfkm6pekspdcc" path="res://art/enemies/boss/slam_right/000.png" id="295_w4uyv"]
+[ext_resource type="Texture2D" uid="uid://c4ucm2hxsm3pa" path="res://art/enemies/boss/slam_right/001.png" id="296_o7pd7"]
+[ext_resource type="Texture2D" uid="uid://djb0cbqmt1j4y" path="res://art/enemies/boss/slam_right/002.png" id="297_jg2jh"]
+[ext_resource type="Texture2D" uid="uid://tnduryfwiucl" path="res://art/enemies/boss/slam_right/003.png" id="298_mbiht"]
+[ext_resource type="Texture2D" uid="uid://dhfg6yr54t3hn" path="res://art/enemies/boss/slam_right/004.png" id="299_yce4p"]
+[ext_resource type="Texture2D" uid="uid://bohshvk3r61n4" path="res://art/enemies/boss/slam_right/005.png" id="300_crqep"]
+[ext_resource type="Texture2D" uid="uid://36nt0qatd6py" path="res://art/enemies/boss/slam_right/006.png" id="301_js5t8"]
+[ext_resource type="Texture2D" uid="uid://cbvpayylhjc25" path="res://art/enemies/boss/slam_right/007.png" id="302_nsxja"]
+[ext_resource type="Texture2D" uid="uid://c4idwtktrecam" path="res://art/enemies/boss/slam_right/008.png" id="303_bhtdt"]
+[ext_resource type="Texture2D" uid="uid://52ylab8jfty5" path="res://art/enemies/boss/slam_right/009.png" id="304_jb3d1"]
+[ext_resource type="Texture2D" uid="uid://dkicirodfn3lk" path="res://art/enemies/boss/slam_right/010.png" id="305_dpkdi"]
+[ext_resource type="Texture2D" uid="uid://tjaunyhmbcgc" path="res://art/enemies/boss/slam_right/011.png" id="306_qi42o"]
+[ext_resource type="Texture2D" uid="uid://n0ft4ojtwamd" path="res://art/enemies/boss/slam_right/012.png" id="307_751jb"]
+[ext_resource type="Texture2D" uid="uid://bv1id61uced44" path="res://art/enemies/boss/slam_right/013.png" id="308_numfn"]
+[ext_resource type="Texture2D" uid="uid://dvotxkfn5dde1" path="res://art/enemies/boss/slam_right/014.png" id="309_j100d"]
+[ext_resource type="Texture2D" uid="uid://b8q4a73e34elh" path="res://art/enemies/boss/slam_right/015.png" id="310_g7pxo"]
+[ext_resource type="Texture2D" uid="uid://cnsmrknyupkmd" path="res://art/enemies/boss/slam_right/016.png" id="311_lo053"]
+[ext_resource type="Texture2D" uid="uid://8y2kpmmrrete" path="res://art/enemies/boss/slam_right/017.png" id="312_0aori"]
+[ext_resource type="Texture2D" uid="uid://cdd0rb3ijq557" path="res://art/enemies/boss/slam_right/018.png" id="313_5o07q"]
+[ext_resource type="Texture2D" uid="uid://dfvi6f08luosq" path="res://art/enemies/boss/slam_right/019.png" id="314_afb7r"]
+[ext_resource type="Texture2D" uid="uid://b3rthbvbfnebk" path="res://art/enemies/boss/slam_right/020.png" id="315_vtnnp"]
+[ext_resource type="Texture2D" uid="uid://cmbvloqxi2fw0" path="res://art/enemies/boss/slam_right/021.png" id="316_dmg0k"]
+[ext_resource type="Texture2D" uid="uid://clxtw8vhkus2j" path="res://art/enemies/boss/slam_right/022.png" id="317_66n7o"]
+[ext_resource type="Texture2D" uid="uid://y4m5tlblccky" path="res://art/enemies/boss/slam_right/023.png" id="318_35uth"]
+[ext_resource type="Texture2D" uid="uid://cdtrhxydwcwj3" path="res://art/enemies/boss/slam_right/024.png" id="319_lluxw"]
+[ext_resource type="Texture2D" uid="uid://b8itknftwlufq" path="res://art/enemies/boss/slam_right/025.png" id="320_emo54"]
+[ext_resource type="Texture2D" uid="uid://o6iw86qu1oxk" path="res://art/enemies/boss/slam_right/026.png" id="321_ekowk"]
+[ext_resource type="Texture2D" uid="uid://dbfh5i1ej4hi7" path="res://art/enemies/boss/slam_right/027.png" id="322_idqn0"]
+[ext_resource type="Texture2D" uid="uid://roe1wm04gdej" path="res://art/enemies/boss/slam_right/028.png" id="323_ba10m"]
+[ext_resource type="Texture2D" uid="uid://dtgx4atkqcy4r" path="res://art/enemies/boss/slam_right/029.png" id="324_4rni2"]
+[ext_resource type="Texture2D" uid="uid://bwpikh80owd00" path="res://art/enemies/boss/slam_right/030.png" id="325_7ykxc"]
+[ext_resource type="Texture2D" uid="uid://chspcthpw3dd1" path="res://art/enemies/boss/slam_right/031.png" id="326_1m73f"]
+[ext_resource type="Texture2D" uid="uid://cwkggw0twmpqt" path="res://art/enemies/boss/slam_right/032.png" id="327_sur7n"]
+[ext_resource type="Texture2D" uid="uid://bbf7jkc5p1ihg" path="res://art/enemies/boss/slam_right/033.png" id="328_gp75n"]
+[ext_resource type="Texture2D" uid="uid://b4iji6mrqk3rg" path="res://art/enemies/boss/slam_right/034.png" id="329_xlop7"]
+[ext_resource type="Texture2D" uid="uid://2ui8vku85gbi" path="res://art/enemies/boss/slam_right/035.png" id="330_rltgs"]
+[ext_resource type="Texture2D" uid="uid://b5yr87uo4uvnx" path="res://art/enemies/boss/slam_right/036.png" id="331_aadxc"]
+[ext_resource type="Texture2D" uid="uid://bn06g6v33bhql" path="res://art/enemies/boss/slam_right/037.png" id="332_w85sj"]
+[ext_resource type="Texture2D" uid="uid://43iraqqi8r45" path="res://art/enemies/boss/slam_right/038.png" id="333_vdt37"]
+[ext_resource type="Texture2D" uid="uid://xa0e27hco27c" path="res://art/enemies/boss/slam_right/039.png" id="334_ijovm"]
+[ext_resource type="Texture2D" uid="uid://cmf83qn47gbxp" path="res://art/enemies/boss/slam_right/040.png" id="335_i1mwq"]
+[ext_resource type="Texture2D" uid="uid://btguwsau330fm" path="res://art/enemies/boss/slam_right/041.png" id="336_a2ns7"]
+[ext_resource type="Texture2D" uid="uid://gw27tsgqaec" path="res://art/enemies/boss/slam_right/042.png" id="337_eb5ul"]
+[ext_resource type="Texture2D" uid="uid://b3tfn250mtil7" path="res://art/enemies/boss/slam_right/043.png" id="338_y5hhw"]
+[ext_resource type="Texture2D" uid="uid://dhcv7avvgk4f1" path="res://art/enemies/boss/slam_right/044.png" id="339_w8mq8"]
+[ext_resource type="Texture2D" uid="uid://dbjd5ijs8k6nw" path="res://art/enemies/boss/slam_right/045.png" id="340_6ka4c"]
+[ext_resource type="Texture2D" uid="uid://b2tbf88xk4e7y" path="res://art/enemies/boss/slam_right/046.png" id="341_fqxxh"]
+[ext_resource type="Texture2D" uid="uid://bjn8f5ho5ntpr" path="res://art/enemies/boss/slam_right/047.png" id="342_jdmg6"]
+[ext_resource type="Texture2D" uid="uid://d18t1lyu5l3kc" path="res://art/enemies/boss/slam_right/048.png" id="343_xoljd"]
+
+[resource]
+animations = [{
+"frames": [],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_qp2f0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_378e6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2guwh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_a7ruu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_uv43a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_t5x0o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_aacsw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_4r2ko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_wx8n4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_68m0i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_r8i8w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_57jcq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_h00qv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_ij8pm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_76el3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_jr2ia")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_fryhg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_yx5xd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_61qfv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_am8ml")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_rsjwd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_03q7t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_u7r03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_amuq5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_5k7qw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_lpwwl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_p3mjf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_nbrp0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_k2iks")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_ougyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_xnv4x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_kywx5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_l5wom")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_uyqfx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_sihcu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_8ehwc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_x5v5d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_ati2e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_l6btg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_1xhr7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_b5d04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_3vitg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_gnyyy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_07ema")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_3ytyj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_y3coh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_c6mxg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_otjm6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_2ykm0")
+}],
+"loop": 0,
+"name": &"finisher_fall",
+"speed": 24.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("50_au50d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_gdfse")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_kxgsu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_yyp3p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_xs58q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_t3dyk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_27wny")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_uetlf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_dx0e0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_pg2ly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_mv27n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_nqbyt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_h0e3i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_qoc1m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_fhtt8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_oj5r0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_ynbpv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_l6s5e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_my5tq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_tjaxv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_8jp3v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_qlubv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_h4nm0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_cvnfu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_hrcj5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_5h675")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_dhvt1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_tqjvb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_fbf0m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_us1s0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("80_46hhf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("81_cl57f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_wckx6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("83_fsath")
+}, {
+"duration": 1.0,
+"texture": ExtResource("84_lhjl0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("85_bhew4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("86_5yij0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("87_26hv4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("88_fst3y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("89_fmja3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("90_mg2ow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("91_aqu4h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("92_b7afu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("93_xj2n6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("94_iv6ld")
+}, {
+"duration": 1.0,
+"texture": ExtResource("95_n62vs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("96_ajcjw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("97_6vm3l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("98_e2mgt")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 24.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("99_trjnu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("100_g5pwl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("101_jcggo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("102_in551")
+}, {
+"duration": 1.0,
+"texture": ExtResource("103_e72n6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("104_0388j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("105_g4kv5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("106_b1sju")
+}, {
+"duration": 1.0,
+"texture": ExtResource("107_lbdym")
+}, {
+"duration": 1.0,
+"texture": ExtResource("108_4txlp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("109_l61ra")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_7nokx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_on81q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("112_2s8nx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("113_c32uj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("114_sda1g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_wwl3v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_3na2e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("117_vgn0w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("118_iphw7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("119_psrbw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("120_5q37w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("121_myp4e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("122_23iqa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("123_ok8un")
+}, {
+"duration": 1.0,
+"texture": ExtResource("124_q3lak")
+}, {
+"duration": 2.0,
+"texture": ExtResource("125_7gyk8")
+}, {
+"duration": 2.0,
+"texture": ExtResource("126_m3vrc")
+}, {
+"duration": 2.0,
+"texture": ExtResource("127_3wqcu")
+}, {
+"duration": 2.0,
+"texture": ExtResource("128_7ax5c")
+}, {
+"duration": 2.0,
+"texture": ExtResource("129_uv3dx")
+}, {
+"duration": 70.0,
+"texture": ExtResource("130_fe07o")
+}, {
+"duration": 2.0,
+"texture": ExtResource("131_hkeb4")
+}, {
+"duration": 2.0,
+"texture": ExtResource("132_rup4t")
+}, {
+"duration": 2.0,
+"texture": ExtResource("133_oiepf")
+}, {
+"duration": 2.0,
+"texture": ExtResource("134_i43fg")
+}, {
+"duration": 2.0,
+"texture": ExtResource("135_idjel")
+}, {
+"duration": 2.0,
+"texture": ExtResource("136_1voe2")
+}, {
+"duration": 2.0,
+"texture": ExtResource("137_iqjeb")
+}, {
+"duration": 2.0,
+"texture": ExtResource("138_yu6tm")
+}, {
+"duration": 2.0,
+"texture": ExtResource("139_utcw4")
+}, {
+"duration": 2.0,
+"texture": ExtResource("140_aqy7f")
+}, {
+"duration": 2.0,
+"texture": ExtResource("141_72y0y")
+}, {
+"duration": 2.0,
+"texture": ExtResource("142_brrrw")
+}, {
+"duration": 30.0,
+"texture": ExtResource("143_0vn5t")
+}, {
+"duration": 2.0,
+"texture": ExtResource("144_sv8f7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("145_icew4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("146_7pr2y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("147_1u2jn")
+}],
+"loop": 0,
+"name": &"jump",
+"speed": 96.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("148_3rmp0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("149_7fk31")
+}, {
+"duration": 1.0,
+"texture": ExtResource("150_gue0t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("151_8oxr0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("152_7klwu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("153_74hyp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("154_3mr8g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("155_r4oaj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("156_dg73i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("157_ckfkg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("158_khf47")
+}, {
+"duration": 1.0,
+"texture": ExtResource("159_vanh3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("160_oo6q2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("161_6me1r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("162_qgmle")
+}, {
+"duration": 1.0,
+"texture": ExtResource("163_nfpij")
+}, {
+"duration": 1.0,
+"texture": ExtResource("164_6n51d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("165_mf7rg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("166_2cuqg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("167_7vf0p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("168_4k7cm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("169_pwnpu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("170_1qca5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("171_jkle6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("172_3cdad")
+}, {
+"duration": 1.0,
+"texture": ExtResource("173_ger8o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("174_sarm5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("175_opbcq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("176_cyo7k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("177_g4b2a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("178_8k31i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("179_6sulr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("180_uo5vd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("181_3iee4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("182_bayry")
+}, {
+"duration": 1.0,
+"texture": ExtResource("183_21v68")
+}, {
+"duration": 1.0,
+"texture": ExtResource("184_o8ep7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("185_yog4e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("186_8md27")
+}, {
+"duration": 1.0,
+"texture": ExtResource("187_cd27m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("188_t4f3o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("189_sp41e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("190_3te4c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("191_8ryqn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("192_b8bwd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("193_82gj5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("194_3oq4w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("195_rg6gx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("196_o4dhv")
+}],
+"loop": 0,
+"name": &"note_cast",
+"speed": 24.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("197_n7bml")
+}, {
+"duration": 1.0,
+"texture": ExtResource("198_tmrit")
+}, {
+"duration": 1.0,
+"texture": ExtResource("199_l8gqo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("200_bmxbc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("201_7xkka")
+}, {
+"duration": 1.0,
+"texture": ExtResource("202_bjn8f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("203_w4wyk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("204_d3ytr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("205_h1awb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("206_hswgb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("207_pk1cd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("208_hjk5u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("209_obwlg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("210_1g85i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("211_ybsum")
+}, {
+"duration": 1.0,
+"texture": ExtResource("212_08fr2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("213_dr3bv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("214_bpsof")
+}, {
+"duration": 1.0,
+"texture": ExtResource("215_0qtuq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("216_uvpys")
+}, {
+"duration": 1.0,
+"texture": ExtResource("217_qato4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("218_fojx8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("219_cswy6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("220_n0bec")
+}, {
+"duration": 1.0,
+"texture": ExtResource("221_1imyf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("222_c6l4k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("223_ofmjg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("224_28drp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("225_12tsu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("226_lfvck")
+}, {
+"duration": 1.0,
+"texture": ExtResource("227_lnswi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("228_y1pap")
+}, {
+"duration": 1.0,
+"texture": ExtResource("229_aafkm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("230_uavjb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("231_djleu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("232_ws7ar")
+}, {
+"duration": 1.0,
+"texture": ExtResource("233_x8wyi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("234_ex07a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("235_fbifu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("236_og20m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("237_1e5wy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("238_hhdqq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("239_nv45i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("240_iplc2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("241_7doac")
+}, {
+"duration": 1.0,
+"texture": ExtResource("242_iqhnt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("243_hgp5o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("244_owj6f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("245_iv6gj")
+}],
+"loop": 0,
+"name": &"phase_change",
+"speed": 24.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("246_hamv5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("247_3e8ac")
+}, {
+"duration": 1.0,
+"texture": ExtResource("248_g8rqm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("249_ygkm0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("250_5u482")
+}, {
+"duration": 1.0,
+"texture": ExtResource("251_cq8d5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("252_rvhxr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("253_760vh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("254_squnv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("255_gu1qr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("256_ss2va")
+}, {
+"duration": 1.0,
+"texture": ExtResource("257_p668c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("258_0vxs5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("259_ddeyq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("260_7n2yq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("261_27ssp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("262_iag14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("263_2smw6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("264_0d50u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("265_yineb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("266_5r6ci")
+}, {
+"duration": 1.0,
+"texture": ExtResource("267_88bmh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("268_1wffn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("269_p3rdi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("270_i5wam")
+}, {
+"duration": 1.0,
+"texture": ExtResource("271_0t5yb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("272_03pjw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("273_uyjap")
+}, {
+"duration": 1.0,
+"texture": ExtResource("274_h5wm3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("275_ryjg1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("276_8k6nv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("277_dcn11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("278_1dlfl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("279_qv7yg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("280_qk10b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("281_hlx24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("282_8qp5y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("283_wfft5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("284_13h0r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("285_rxqvp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("286_5t5rk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("287_xa2nf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("288_f3hxw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("289_hkhrg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("290_abrxl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("291_a0hpy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("292_3yy6r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("293_2nf2a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("294_3cweb")
+}],
+"loop": 0,
+"name": &"slam_left",
+"speed": 48.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("295_w4uyv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("296_o7pd7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("297_jg2jh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("298_mbiht")
+}, {
+"duration": 1.0,
+"texture": ExtResource("299_yce4p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("300_crqep")
+}, {
+"duration": 1.0,
+"texture": ExtResource("301_js5t8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("302_nsxja")
+}, {
+"duration": 1.0,
+"texture": ExtResource("303_bhtdt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("304_jb3d1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("305_dpkdi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("306_qi42o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("307_751jb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("308_numfn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("309_j100d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("310_g7pxo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("311_lo053")
+}, {
+"duration": 1.0,
+"texture": ExtResource("312_0aori")
+}, {
+"duration": 1.0,
+"texture": ExtResource("313_5o07q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("314_afb7r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("315_vtnnp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("316_dmg0k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("317_66n7o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("318_35uth")
+}, {
+"duration": 1.0,
+"texture": ExtResource("319_lluxw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("320_emo54")
+}, {
+"duration": 1.0,
+"texture": ExtResource("321_ekowk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("322_idqn0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("323_ba10m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("324_4rni2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("325_7ykxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("326_1m73f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("327_sur7n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("328_gp75n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("329_xlop7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("330_rltgs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("331_aadxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("332_w85sj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("333_vdt37")
+}, {
+"duration": 1.0,
+"texture": ExtResource("334_ijovm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("335_i1mwq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("336_a2ns7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("337_eb5ul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("338_y5hhw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("339_w8mq8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("340_6ka4c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("341_fqxxh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("342_jdmg6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("343_xoljd")
+}],
+"loop": 0,
+"name": &"slam_right",
+"speed": 48.0
+}]

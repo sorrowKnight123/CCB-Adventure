@@ -1,0 +1,220 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 460" width="360" height="460">
+  <defs>
+    <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3A3A45"/>
+      <stop offset="0.55" stop-color="#282831"/>
+      <stop offset="1" stop-color="#1A1A21"/>
+    </linearGradient>
+    <linearGradient id="eye" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9B8FF0"/>
+      <stop offset="0.5" stop-color="#6C5CE7"/>
+      <stop offset="1" stop-color="#3E3478"/>
+    </linearGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3A3A44"/>
+      <stop offset="1" stop-color="#22222B"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8B7FE8"/>
+      <stop offset="1" stop-color="#4A3FA0"/>
+    </linearGradient>
+    <linearGradient id="rose" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9B8FF0"/>
+      <stop offset="1" stop-color="#5448B8"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F2D060"/>
+      <stop offset="1" stop-color="#C79A3A"/>
+    </linearGradient>
+    <linearGradient id="skirt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#B0B0BC"/>
+      <stop offset="1" stop-color="#8E8E9A"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8A5A34"/>
+      <stop offset="0.5" stop-color="#A9744A"/>
+      <stop offset="1" stop-color="#7A4E2C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ============ 后层：帽子缎带（蓝紫，向后飘动） ============ -->
+  <path d="M 120 100 C 100 120 88 150 84 190 C 82 210 82 230 84 246 C 90 238 94 216 96 192 C 98 160 106 126 120 100 Z" fill="url(#ribbon)" stroke="#2B2B33" stroke-width="1.5"/>
+  <path d="M 126 102 C 110 116 102 138 100 164 C 99 178 100 190 102 200 C 106 194 108 180 109 166 C 110 146 116 120 126 102 Z" fill="#6C5CE7" stroke="#2B2B33" stroke-width="1.5"/>
+
+  <!-- ============ 后层：黑色长发（及腰以下） ============ -->
+  <path d="M 130 92
+    C 122 100 116 112 114 130
+    C 111 165 110 215 114 265
+    C 116 305 121 345 127 376
+    C 130 394 133 402 138 406
+    C 148 411 160 411 170 409
+    C 180 411 192 411 202 409
+    C 214 411 226 411 234 406
+    C 239 402 242 394 245 376
+    C 251 345 256 305 258 265
+    C 262 215 261 165 258 130
+    C 256 112 250 100 242 92
+    C 218 82 154 82 130 92 Z" fill="url(#hair)" stroke="#2B2B33" stroke-width="2.5"/>
+
+  <!-- 发丝分离（一缕一缕） -->
+  <path d="M 130 130 C 122 200 120 290 126 376" stroke="#1A1A21" stroke-width="2" fill="none" opacity="0.55"/>
+  <path d="M 156 120 C 152 210 154 300 158 400" stroke="#1A1A21" stroke-width="2" fill="none" opacity="0.55"/>
+  <path d="M 180 118 C 180 210 182 310 182 408" stroke="#1A1A21" stroke-width="2" fill="none" opacity="0.55"/>
+  <path d="M 206 120 C 210 210 208 300 204 400" stroke="#1A1A21" stroke-width="2" fill="none" opacity="0.55"/>
+  <path d="M 230 130 C 238 200 240 290 234 376" stroke="#1A1A21" stroke-width="2" fill="none" opacity="0.55"/>
+  <!-- 发尾卷曲尖 -->
+  <path d="M 127 376 C 130 394 134 402 138 408 C 135 398 134 388 136 378 Z" fill="url(#hair)"/>
+  <path d="M 158 400 C 160 406 163 409 167 410 C 165 404 163 398 162 392 Z" fill="url(#hair)"/>
+  <path d="M 245 376 C 242 394 238 402 234 408 C 237 398 238 388 236 378 Z" fill="url(#hair)"/>
+
+  <!-- ============ 扫帚（木质，右侧身后） ============ -->
+  <path d="M 252 168 L 259 408 L 251 408 L 244 168 Z" fill="url(#wood)" stroke="#2B2B33" stroke-width="2"/>
+  <rect x="243" y="400" width="20" height="12" rx="4" fill="#5C3A20" stroke="#2B2B33" stroke-width="1.5"/>
+  <path d="M 255 408 L 228 438 L 236 446 L 256 428 L 276 446 L 284 438 Z" fill="#7A4E2C" stroke="#2B2B33" stroke-width="2"/>
+  <path d="M 251 412 L 234 440 M 257 412 L 253 444 M 263 412 L 271 442" stroke="#5C3A20" stroke-width="2" fill="none"/>
+
+  <!-- ============ 腿：白色过膝袜 + 黑色星星袜带 + 黑色乐福鞋 ============ -->
+  <rect x="160" y="326" width="16" height="80" rx="8" fill="#FFFFFF" stroke="#2B2B33" stroke-width="2"/>
+  <rect x="184" y="326" width="16" height="80" rx="8" fill="#FFFFFF" stroke="#2B2B33" stroke-width="2"/>
+  <rect x="160" y="382" width="16" height="24" rx="8" fill="#E6E6EE" opacity="0.6"/>
+  <rect x="184" y="382" width="16" height="24" rx="8" fill="#E6E6EE" opacity="0.6"/>
+
+  <!-- 黑色星星袜带（识别点） -->
+  <rect x="158" y="336" width="20" height="7" rx="3" fill="#1A1A21" stroke="#2B2B33" stroke-width="1.5"/>
+  <rect x="182" y="336" width="20" height="7" rx="3" fill="#1A1A21" stroke="#2B2B33" stroke-width="1.5"/>
+  <path d="M 162 339.5 l 0.7 -1.7 1.7 -0.7 -1.7 -0.7 -0.7 -1.7 -0.7 1.7 -1.7 0.7 1.7 0.7 Z" fill="#33333C"/>
+  <path d="M 168 339.5 l 0.7 -1.7 1.7 -0.7 -1.7 -0.7 -0.7 -1.7 -0.7 1.7 -1.7 0.7 1.7 0.7 Z" fill="#33333C"/>
+  <path d="M 174 339.5 l 0.7 -1.7 1.7 -0.7 -1.7 -0.7 -0.7 -1.7 -0.7 1.7 -1.7 0.7 1.7 0.7 Z" fill="#33333C"/>
+  <path d="M 186 339.5 l 0.7 -1.7 1.7 -0.7 -1.7 -0.7 -0.7 -1.7 -0.7 1.7 -1.7 0.7 1.7 0.7 Z" fill="#33333C"/>
+  <path d="M 192 339.5 l 0.7 -1.7 1.7 -0.7 -1.7 -0.7 -0.7 -1.7 -0.7 1.7 -1.7 0.7 1.7 0.7 Z" fill="#33333C"/>
+  <path d="M 198 339.5 l 0.7 -1.7 1.7 -0.7 -1.7 -0.7 -0.7 -1.7 -0.7 1.7 -1.7 0.7 1.7 0.7 Z" fill="#33333C"/>
+
+  <!-- 黑色低跟乐福鞋 -->
+  <path d="M 158 408 L 176 408 L 176 420 C 176 428 169 432 163 432 L 158 432 C 154 430 152 424 152 418 C 152 414 154 410 158 408 Z" fill="#26262E" stroke="#2B2B33" stroke-width="2"/>
+  <rect x="152" y="432" width="27" height="5" rx="2.5" fill="#1A1A21" stroke="#2B2B33" stroke-width="1.5"/>
+  <path d="M 156 413 L 166 413" stroke="#4A4A58" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 184 408 L 202 408 L 202 420 C 202 428 195 432 189 432 L 184 432 C 180 430 178 424 178 418 C 178 414 180 410 184 408 Z" fill="#26262E" stroke="#2B2B33" stroke-width="2"/>
+  <rect x="178" y="432" width="27" height="5" rx="2.5" fill="#1A1A21" stroke="#2B2B33" stroke-width="1.5"/>
+  <path d="M 182 413 L 192 413" stroke="#4A4A58" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- ============ 魔法长袍两侧下摆（前开襟） ============ -->
+  <path d="M 150 288 C 144 306 140 336 142 366 L 132 364 L 136 330 C 140 310 146 296 154 290 Z" fill="url(#robe)" stroke="#2B2B33" stroke-width="2"/>
+  <path d="M 210 288 C 216 306 220 336 218 366 L 228 364 L 224 330 C 220 310 214 296 206 290 Z" fill="url(#robe)" stroke="#2B2B33" stroke-width="2"/>
+
+  <!-- ============ 灰色百褶学院裙（中短） ============ -->
+  <path d="M 150 288 L 210 288 L 224 330 L 136 330 Z" fill="url(#skirt)" stroke="#2B2B33" stroke-width="2.5"/>
+  <path d="M 162 288 L 154 330 M 180 288 L 178 330 M 198 288 L 206 330" stroke="#7A7A88" stroke-width="2" fill="none"/>
+
+  <!-- ============ 魔法长袍上身 + 喇叭袖 ============ -->
+  <path d="M 142 190 L 218 190 L 210 290 L 150 290 Z" fill="url(#robe)" stroke="#2B2B33" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M 142 196 C 126 202 106 218 98 240 C 94 250 98 256 106 254 C 118 250 132 232 144 214 Z" fill="url(#robe)" stroke="#2B2B33" stroke-width="2.5"/>
+  <path d="M 218 196 C 234 202 254 218 262 240 C 266 250 262 256 254 254 C 242 250 228 232 216 214 Z" fill="url(#robe)" stroke="#2B2B33" stroke-width="2.5"/>
+  <ellipse cx="104" cy="250" rx="11" ry="6.5" fill="#6C5CE7" stroke="#2B2B33" stroke-width="1.5"/>
+  <ellipse cx="256" cy="250" rx="11" ry="6.5" fill="#6C5CE7" stroke="#2B2B33" stroke-width="1.5"/>
+  <!-- 袖上低调魔法阵纹样 -->
+  <path d="M 118 222 l 6 0 0 6 -6 0 Z M 128 236 l 6 0 0 6 -6 0 Z" fill="#6C5CE7" opacity="0.4"/>
+  <path d="M 236 222 l 6 0 0 6 -6 0 Z M 226 236 l 6 0 0 6 -6 0 Z" fill="#6C5CE7" opacity="0.4"/>
+
+  <!-- 白色衬衫 + 蓝紫 V 翻领 + 领带 + 星徽 -->
+  <path d="M 158 194 L 180 214 L 202 194 L 200 236 L 180 254 L 160 236 Z" fill="#FFFFFF" stroke="#2B2B33" stroke-width="1.5"/>
+  <path d="M 150 192 L 180 214 L 152 240 L 142 202 Z" fill="url(#ribbon)" stroke="#2B2B33" stroke-width="1.5"/>
+  <path d="M 210 192 L 180 214 L 208 240 L 218 202 Z" fill="url(#ribbon)" stroke="#2B2B33" stroke-width="1.5"/>
+  <path d="M 176 200 L 184 200 L 183 232 L 180 246 L 177 232 Z" fill="#5B4FC4" stroke="#2B2B33" stroke-width="1.2"/>
+  <path d="M 154 200 l 2.4 -6 6 -2.4 -6 -2.4 -2.4 -6 -2.4 6 -6 2.4 6 2.4 Z" fill="#6C5CE7" stroke="#2B2B33" stroke-width="1"/>
+
+  <!-- ============ 金色星月腰链 ============ -->
+  <path d="M 152 288 Q 180 296 208 288" stroke="url(#gold)" stroke-width="2.5" fill="none"/>
+  <path d="M 164 302 l 1 -2.5 2.5 -1 -2.5 -1 -1 -2.5 -1 2.5 -2.5 1 2.5 1 Z" fill="url(#gold)"/>
+  <path d="M 180 304 Q 186 308 186 314 Q 186 320 180 322 Q 183 317 183 313 Q 183 308 180 304 Z" fill="url(#gold)"/>
+  <path d="M 196 302 l 1 -2.5 2.5 -1 -2.5 -1 -1 -2.5 -1 2.5 -2.5 1 2.5 1 Z" fill="url(#gold)"/>
+
+  <!-- ============ 脖子 ============ -->
+  <path d="M 169 176 L 191 176 L 193 196 L 167 196 Z" fill="#FFF0E6" stroke="#2B2B33" stroke-width="1.5"/>
+
+  <!-- ============ 头部（精致少女脸） ============ -->
+  <path d="M 138 132
+    C 138 106 154 84 180 84
+    C 206 84 222 106 222 132
+    C 222 150 212 170 180 178
+    C 150 170 138 150 138 132 Z" fill="#FFF0E6" stroke="#2B2B33" stroke-width="2.5"/>
+
+  <!-- 眼睛（大而清澈，蓝紫渐变） -->
+  <ellipse cx="150" cy="140" rx="13" ry="16" fill="#FFFFFF" stroke="#2B2B33" stroke-width="2"/>
+  <ellipse cx="150" cy="142" rx="9.5" ry="13.5" fill="url(#eye)"/>
+  <ellipse cx="150" cy="144" rx="5" ry="7" fill="#2B2B33"/>
+  <circle cx="146" cy="135" r="3.5" fill="#FFFFFF"/>
+  <circle cx="153" cy="148" r="1.8" fill="#FFFFFF"/>
+  <path d="M 137 139 C 141 130 159 130 163 139" stroke="#2B2B33" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 163 139 L 166 136" stroke="#2B2B33" stroke-width="2" stroke-linecap="round"/>
+
+  <ellipse cx="210" cy="140" rx="13" ry="16" fill="#FFFFFF" stroke="#2B2B33" stroke-width="2"/>
+  <ellipse cx="210" cy="142" rx="9.5" ry="13.5" fill="url(#eye)"/>
+  <ellipse cx="210" cy="144" rx="5" ry="7" fill="#2B2B33"/>
+  <circle cx="206" cy="135" r="3.5" fill="#FFFFFF"/>
+  <circle cx="213" cy="148" r="1.8" fill="#FFFFFF"/>
+  <path d="M 197 139 C 201 130 219 130 223 139" stroke="#2B2B33" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 197 139 L 194 136" stroke="#2B2B33" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- 眉毛 -->
+  <path d="M 141 116 C 147 111 154 111 160 116" stroke="#2B2B33" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M 200 116 C 206 111 213 111 219 116" stroke="#2B2B33" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- 鼻子（小巧） -->
+  <path d="M 180 150 L 179 155 C 179 156.5 181 156.5 181 155" stroke="#E5C7B0" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+  <!-- 嘴巴（小巧，轻微微笑） -->
+  <path d="M 172 166 Q 180 172 188 166" stroke="#C97B8B" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 178 170 Q 180 171.5 182 170" stroke="#E59A9A" stroke-width="1.5" fill="none" opacity="0.7"/>
+
+  <!-- 腮红 -->
+  <ellipse cx="140" cy="158" rx="8" ry="4.5" fill="#FFB9C0" opacity="0.45"/>
+  <ellipse cx="220" cy="158" rx="8" ry="4.5" fill="#FFB9C0" opacity="0.45"/>
+
+  <!-- 下巴阴影 -->
+  <path d="M 156 164 C 166 172 194 172 204 164 C 200 174 192 177 180 178 C 168 177 160 174 156 164 Z" fill="#F0D8C0" opacity="0.55"/>
+
+  <!-- ============ 前层刘海（一缕一缕，锯齿） ============ -->
+  <path d="M 138 92
+    C 138 70 152 62 180 62
+    C 208 62 222 70 222 92
+    L 212 86 L 206 100 L 196 84 L 189 106
+    L 180 84 L 173 108 L 164 86 L 156 102 L 146 86 Z"
+    fill="url(#hair)" stroke="#2B2B33" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M 180 84 L 180 62 M 196 84 L 202 68 M 164 86 L 158 68" stroke="#1A1A21" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- 侧发（垂于脸颊两侧） -->
+  <path d="M 138 92 C 130 116 128 150 131 180 C 132 194 136 202 141 204 C 141 190 140 172 141 154 C 142 130 144 106 148 92 Z" fill="url(#hair)" stroke="#2B2B33" stroke-width="2.5"/>
+  <path d="M 222 92 C 230 116 232 150 229 180 C 228 194 224 202 219 204 C 219 190 220 172 219 154 C 218 130 216 106 212 92 Z" fill="url(#hair)" stroke="#2B2B33" stroke-width="2.5"/>
+
+  <!-- 发丝高光 -->
+  <path d="M 146 92 C 150 82 164 76 180 76 C 196 76 210 82 214 92 C 202 86 190 84 180 84 C 166 84 152 88 146 92 Z" fill="#4A4A58" opacity="0.5"/>
+
+  <!-- ============ 黑色宽檐魔女帽 ============ -->
+  <ellipse cx="180" cy="97" rx="84" ry="13" fill="#23232C" stroke="#2B2B33" stroke-width="2.5"/>
+  <path d="M 138 94 C 150 58 186 30 226 20 C 208 34 196 52 192 74 C 188 86 166 98 138 94 Z" fill="#2E2E38" stroke="#2B2B33" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M 138 92 C 156 88 180 88 196 94 C 180 100 156 100 138 92 Z" fill="url(#ribbon)" stroke="#2B2B33" stroke-width="1.5"/>
+
+  <!-- 黑蝴蝶结（帽侧） -->
+  <path d="M 140 96 L 124 88 L 128 102 Z" fill="#1E1E26" stroke="#2B2B33" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M 140 96 L 152 86 L 152 102 Z" fill="#2E2E38" stroke="#2B2B33" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="140" cy="96" r="6" fill="#1A1A21" stroke="#2B2B33" stroke-width="2"/>
+
+  <!-- 蓝紫玫瑰（帽侧） -->
+  <path d="M 226 100 C 218 90 232 84 238 92 C 242 98 236 106 228 104 C 222 103 218 98 220 94" fill="url(#rose)" stroke="#2B2B33" stroke-width="1.5"/>
+  <path d="M 224 94 C 226 92 230 94 228 98 C 226 101 224 98 226 95" fill="#8B7FE8" opacity="0.7"/>
+
+  <!-- ============ 手 ============ -->
+  <circle cx="102" cy="250" r="6.5" fill="#FFF0E6" stroke="#2B2B33" stroke-width="2"/>
+  <circle cx="255" cy="250" r="6.5" fill="#FFF0E6" stroke="#2B2B33" stroke-width="2"/>
+
+  <!-- ============ 星星魔法（金黄五角星 + 蓝紫光） ============ -->
+  <path d="M 78 229 L 81.82 239.74 L 93.2 240.06 L 84.18 247.01 L 87.4 257.94 L 78 251.5 L 68.6 257.94 L 71.82 247.01 L 62.8 240.06 L 74.18 239.74 Z" fill="#FFD54A" stroke="#E0A22E" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M 78 235 L 79.6 240 84.6 241 80.8 244.6 81.8 249.6 78 247.2 74.2 249.6 75.2 244.6 71.4 241 76.4 240 Z" fill="#FFF2B0"/>
+  <path d="M 60 218 l 2 -5 5 -2 -5 -2 -2 -5 -2 5 -5 2 5 2 Z" fill="#FFC93C"/>
+  <path d="M 92 212 l 1.6 -4 4 -1.6 -4 -1.6 -1.6 -4 -1.6 4 -4 1.6 4 1.6 Z" fill="#FFD54A"/>
+  <path d="M 68 268 l 1.4 -3.5 3.5 -1.4 -3.5 -1.4 -1.4 -3.5 -1.4 3.5 -3.5 1.4 3.5 1.4 Z" fill="#FFC93C"/>
+  <circle cx="54" cy="228" r="2.5" fill="#8B7FE8"/>
+  <circle cx="98" cy="236" r="2" fill="#8B7FE8"/>
+  <circle cx="62" cy="264" r="2" fill="#8B7FE8"/>
+  <circle cx="88" cy="222" r="1.6" fill="#6C5CE7"/>
+</svg>

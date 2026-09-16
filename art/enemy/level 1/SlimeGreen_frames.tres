@@ -1,0 +1,42 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00000.png" id="green_0"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00001.png" id="green_1"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00002.png" id="green_2"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00003.png" id="green_3"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00004.png" id="green_4"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00005.png" id="green_5"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00006.png" id="green_6"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00007.png" id="green_7"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00008.png" id="green_8"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00009.png" id="green_9"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00010.png" id="green_10"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00011.png" id="green_11"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00012.png" id="green_12"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00013.png" id="green_13"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00014.png" id="green_14"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00015.png" id="green_15"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00016.png" id="green_16"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00017.png" id="green_17"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00018.png" id="green_18"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00019.png" id="green_19"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00020.png" id="green_20"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00021.png" id="green_21"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00022.png" id="green_22"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00023.png" id="green_23"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00024.png" id="green_24"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00025.png" id="green_25"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00026.png" id="green_26"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00027.png" id="green_27"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00028.png" id="green_28"]
+[ext_resource type="Texture2D" path="res://art/enemy/level 1/SlimeGreen/SlimeBasic_00029.png" id="green_29"]
+
+[resource]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": ExtResource("green_0")}, {"duration": 1.0, "texture": ExtResource("green_1")}, {"duration": 1.0, "texture": ExtResource("green_2")}, {"duration": 1.0, "texture": ExtResource("green_3")}, {"duration": 1.0, "texture": ExtResource("green_4")}, {"duration": 1.0, "texture": ExtResource("green_5")}, {"duration": 1.0, "texture": ExtResource("green_6")}, {"duration": 1.0, "texture": ExtResource("green_7")}, {"duration": 1.0, "texture": ExtResource("green_8")}, {"duration": 1.0, "texture": ExtResource("green_9")}, {"duration": 1.0, "texture": ExtResource("green_10")}, {"duration": 1.0, "texture": ExtResource("green_11")}, {"duration": 1.0, "texture": ExtResource("green_12")}, {"duration": 1.0, "texture": ExtResource("green_13")}, {"duration": 1.0, "texture": ExtResource("green_14")}, {"duration": 1.0, "texture": ExtResource("green_15")}, {"duration": 1.0, "texture": ExtResource("green_16")}, {"duration": 1.0, "texture": ExtResource("green_17")}, {"duration": 1.0, "texture": ExtResource("green_18")}, {"duration": 1.0, "texture": ExtResource("green_19")}, {"duration": 1.0, "texture": ExtResource("green_20")}, {"duration": 1.0, "texture": ExtResource("green_21")}, {"duration": 1.0, "texture": ExtResource("green_22")}, {"duration": 1.0, "texture": ExtResource("green_23")}, {"duration": 1.0, "texture": ExtResource("green_24")}, {"duration": 1.0, "texture": ExtResource("green_25")}, {"duration": 1.0, "texture": ExtResource("green_26")}, {"duration": 1.0, "texture": ExtResource("green_27")}, {"duration": 1.0, "texture": ExtResource("green_28")}, {"duration": 1.0, "texture": ExtResource("green_29")}],
+"loop": true,
+"name": &"idle",
+"speed": 12.0
+}]
+

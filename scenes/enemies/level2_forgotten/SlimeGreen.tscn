@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy/level1/Slime.gd" id="1_slime"]
+[ext_resource type="SpriteFrames" path="res://art/enemy/level 1/SlimeGreen_frames.tres" id="2_frames"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(90, 58)
+
+[node name="SlimeGreen" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 17
+script = ExtResource("1_slime")
+"行为模式" = 0
+"生命值" = 3
+"接触伤害" = 1
+"接触伤害冷却" = 0.8
+"巡逻速度" = 40.0
+"巡逻距离" = 160.0
+"边界停留时间" = 0.3
+"初始巡逻方向" = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -29)
+scale = Vector2(0.3, 0.3)
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+autoplay = "idle"

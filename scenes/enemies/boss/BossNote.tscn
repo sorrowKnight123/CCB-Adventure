@@ -1,0 +1,85 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy/boss/BossNote.gd" id="1_note"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss/fx/note.png" id="2_note_fx"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss/fx/qte_ring.png" id="3_ring_fx"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss/fx/perfect.png" id="4_perfect_fx"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss/fx/miss.png" id="5_miss_fx"]
+[ext_resource type="AudioStream" path="res://audio/enemy/moss/perfect_trim.wav" id="6_perfect_sfx"]
+[ext_resource type="AudioStream" path="res://audio/enemy/moss/miss.wav" id="7_miss_sfx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_note"]
+radius = 34.0
+
+[sub_resource type="Gradient" id="Gradient_note"]
+colors = PackedColorArray(1, 0.9, 0.35, 1, 0.3, 0.9, 1, 1)
+
+[node name="BossNote" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_note")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_note")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="OuterRingLegacy" type="Line2D" parent="Visual"]
+visible = false
+points = PackedVector2Array(0, -44, 31, -31, 44, 0, 31, 31, 0, 44, -31, 31, -44, 0, -31, -31, 0, -44)
+width = 5.0
+default_color = Color(0.65, 0.95, 1, 0.9)
+joint_mode = 2
+
+[node name="ShrinkRingLegacy" type="Line2D" parent="Visual"]
+visible = false
+points = PackedVector2Array(0, -34, 24, -24, 34, 0, 24, 24, 0, 34, -24, 24, -34, 0, -24, -24, 0, -34)
+width = 6.0
+default_color = Color(1, 0.85, 0.25, 1)
+joint_mode = 2
+
+[node name="NoteLabel" type="Label" parent="Visual"]
+visible = false
+offset_left = -15.0
+offset_top = -24.0
+offset_right = 15.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 34
+text = "♪"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NoteSprite" type="Sprite2D" parent="Visual"]
+texture = ExtResource("2_note_fx")
+scale = Vector2(0.25, 0.25)
+
+[node name="OuterRing" type="Sprite2D" parent="Visual"]
+texture = ExtResource("3_ring_fx")
+scale = Vector2(0.29, 0.29)
+
+[node name="ShrinkRing" type="Node2D" parent="Visual"]
+
+[node name="Sprite" type="Sprite2D" parent="Visual/ShrinkRing"]
+texture = ExtResource("3_ring_fx")
+scale = Vector2(0.29, 0.29)
+
+[node name="PerfectSprite" type="Sprite2D" parent="Visual"]
+visible = false
+texture = ExtResource("4_perfect_fx")
+scale = Vector2(0.25, 0.25)
+
+[node name="MissSprite" type="Sprite2D" parent="Visual"]
+visible = false
+texture = ExtResource("5_miss_fx")
+scale = Vector2(0.25, 0.25)
+
+[node name="PerfectSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_perfect_sfx")
+bus = &"SFX"
+
+[node name="MissSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_miss_sfx")
+bus = &"SFX"

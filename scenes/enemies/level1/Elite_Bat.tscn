@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://5whpgmtofmgr"]
+
+[ext_resource type="Script" uid="uid://t1mbg4xpuy0e" path="res://scripts/enemy/level1/Bat.gd" id="1_gfi4c"]
+[ext_resource type="SpriteFrames" uid="uid://mmogw4isfkfi" path="res://art/enemy/level 1/Bat with VFX/bat_frames.tres" id="2_d571x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_um3yb"]
+size = Vector2(34.250008, 19.525002)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hit"]
+size = Vector2(33.018745, 30.0125)
+
+[node name="Bat_Red" type="CharacterBody2D" unique_id=700738922]
+scale = Vector2(0.8, 0.8)
+collision_layer = 4
+script = ExtResource("1_gfi4c")
+"生命值" = 16
+"移动速度" = 160.0
+"索敌范围" = 500.0
+"攻击冷却" = 2.0
+"攻击1命中帧" = 5
+"击退力度" = 20.0
+"垂直跟随系数" = 1.0
+"掉落普通音符数" = 0
+"掉落大音符数量" = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1167980775]
+position = Vector2(1.430511e-05, -21.374956)
+scale = Vector2(9.999994, 9.999994)
+shape = SubResource("RectangleShape2D_um3yb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=232382730]
+self_modulate = Color(1, 0.46666667, 0, 1)
+position = Vector2(-1, -16)
+scale = Vector2(10, 10)
+sprite_frames = ExtResource("2_d571x")
+animation = &"sleep"
+
+[node name="AttackHitbox" type="Area2D" parent="." unique_id=2072983298]
+position = Vector2(153, -37)
+scale = Vector2(5, 5)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=650687543]
+position = Vector2(0.6312523, -0.112501144)
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_hit")

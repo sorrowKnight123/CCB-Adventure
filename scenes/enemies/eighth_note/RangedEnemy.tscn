@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://cxrtqx43ajm45"]
+
+[ext_resource type="Script" uid="uid://cegespgbovod3" path="res://scripts/enemy/RangedEnemy.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cuovf7btag6lj" path="res://art/enemy/note/8.png" id="2_w87oa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(19, 32)
+
+[node name="RangedEnemy" type="CharacterBody2D" unique_id=1636060378]
+position = Vector2(1000, 0)
+collision_layer = 4
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1762844506]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Muzzle" type="Node2D" parent="." unique_id=1194762749]
+position = Vector2(-3, 12)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1410216687]
+scale = Vector2(0.023, 0.023)
+texture = ExtResource("2_w87oa")

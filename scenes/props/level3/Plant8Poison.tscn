@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="SpriteFrames" path="res://art/level/3/Plant Animations/Plant 8 Poison/Plant8_Poison_frames.tres" id="1_frames"]
+
+[node name="Plant8Poison" type="AnimatedSprite2D"]
+scale = Vector2(0.3, 0.3)
+sprite_frames = ExtResource("1_frames")
+animation = &"anim"
+autoplay = "anim"

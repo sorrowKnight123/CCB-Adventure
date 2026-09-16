@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://tests/test_drop_through.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="TileSet" uid="uid://75ITYLCWQXRMW" path="res://tile_set/level_1 tower/MirageTilesPlatform.tres" id="3_plat"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(800, 20)
+
+[node name="TestDropThrough" type="Node"]
+process_mode = 3
+script = ExtResource("1_test")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+
+[node name="PlatformA" type="TileMapLayer" parent="."]
+position = Vector2(0, 392)
+tile_set = ExtResource("3_plat")
+
+[node name="PlatformB" type="TileMapLayer" parent="."]
+position = Vector2(0, 600)
+tile_set = ExtResource("3_plat")
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(0, 808)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")

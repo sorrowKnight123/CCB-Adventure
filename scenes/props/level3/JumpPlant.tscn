@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cpgedkey33fs7"]
+
+[ext_resource type="Script" uid="uid://c3kd6uccd8u1j" path="res://scripts/props/JumpPlant.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://art/level/3/Plant Animations/PlantJump2/JumpPlant_frames.tres" id="2_frames"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
+size = Vector2(316.66666, 88.33333)
+
+[node name="JumpPlant" type="AnimatedSprite2D" unique_id=628716163]
+scale = Vector2(0.3, 0.3)
+sprite_frames = ExtResource("2_frames")
+animation = &"jump"
+frame = 19
+frame_progress = 1.0
+script = ExtResource("1_script")
+
+[node name="Trigger" type="Area2D" parent="." unique_id=1524201359]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trigger" unique_id=1428500817]
+position = Vector2(0, -23.333332)
+shape = SubResource("RectangleShape2D_trigger")
+
+[node name="PianoPlayer" type="AudioStreamPlayer" parent="." unique_id=1267703318]
+bus = &"SFX"
