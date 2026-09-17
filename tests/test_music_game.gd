@@ -5,6 +5,7 @@ extends Node2D
 ## 覆盖：
 ##   基线  —— 玩家的近战挥砍本身能打中 layer 3 的普通敌人（跟史莱姆无关的对照）
 ##   流程  —— 进区只锁相机 → 站谱台按 W 才出史莱姆并演示 → 演示期间软冻结 → PLAY
+##   提示  —— 谱台的 W 提示是统一的 InteractBubble：渐显渐隐、牌子在谱台上方、且没被关卡覆盖成隐藏
 ##   判定  —— 打错归零 + 自动重播；真实挥砍命中史莱姆 → 进度推进
 ##   结算  —— 全对 → DONE + 发货币 + 写触发 ID；0 点接触伤害不让玩家受伤
 ##   能力  —— 配了 `奖励能力` 时额外喷一枚能力音符（2 倍大 / 彩虹在变 / 有光晕 / 有扫光），
@@ -123,6 +124,27 @@ func _run() -> void:
 	_check(not slimes_root.visible, "进区只锁相机，史莱姆仍隐藏")
 	var cam := _player.get_node_or_null("Camera2D") as Camera2D
 	_check(cam != null and cam.top_level, "进区后相机脱离跟随（锁定）")
+
+	# 2b. 谱台的 W 提示：跟钢琴 / 留声机一样是「渐显渐隐」的 InteractBubble，
+	#     不是直接切 visible（那样会硬闪出来）。可见的那块牌子还必须在谱台视觉上方。
+	var prompt := _game.get_node("Pedestal/Prompt") as InteractBubble
+	_check(prompt != null, "谱台提示是统一的 InteractBubble")
+	_check(prompt.visible, "谱台提示没被关卡覆盖成隐藏（3_1 里曾挂过一条 visible=false）")
+	_check(is_zero_approx(prompt.modulate.a), "谱台提示初始是透明的")
+	var prompt_panel := prompt.get_node("Panel") as Control
+	var badge := Rect2(prompt_panel.global_position, prompt_panel.size)
+	var ped_size: Vector2 = pedestal_visual.texture.get_size() * pedestal_visual.global_scale
+	var ped_box := Rect2(pedestal_visual.global_position - ped_size * 0.5, ped_size)
+	_check(badge.end.y <= ped_box.position.y + 8.0,
+		"提示牌在谱台视觉上方（牌底 %.0f，谱台顶 %.0f；谱台自带 ±7px 浮动）"
+			% [badge.end.y, ped_box.position.y])
+	_game._on_pedestal_entered(_player)
+	await get_tree().create_timer(0.3).timeout
+	_check(is_equal_approx(prompt.modulate.a, 1.0), "站上谱台 → W 提示渐显")
+	_game._on_pedestal_exited(_player)
+	await get_tree().create_timer(0.35).timeout
+	_check(is_zero_approx(prompt.modulate.a), "离开谱台 → W 提示渐隐")
+
 	# 镜头是"只插值、不跳变"的（agent.md §20），所以断言前要等它滑到位
 	await get_tree().create_timer(1.3).timeout
 	_game.get_node("Trigger").monitoring = false   # 免得玩家移动误触发"走远取消"干扰判定

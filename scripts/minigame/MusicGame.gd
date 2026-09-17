@@ -162,6 +162,7 @@ func _process(delta: float) -> void:
 		queue_redraw()
 		return
 	_animate_pedestal(delta)
+	_update_prompt()
 	if _camera_locked:
 		_update_locked_camera(delta)
 	if _state == State.ARMED and _player_on_pedestal \
@@ -195,8 +196,6 @@ func _cancel_to_idle() -> void:
 	_set_player_frozen(false)
 	_reset_progress()
 	_set_slimes_visible(false)
-	if _prompt != null:
-		_prompt.隐藏()
 	_restore_camera()
 
 
@@ -210,8 +209,6 @@ func _start_demo() -> void:
 		push_warning("音乐小游戏：演奏序列是空的（只有停顿？还是 Slimes 下没有子节点？）")
 		return
 	_set_slimes_visible(true)   # 与谱台交互 → 史莱姆出现
-	if _prompt != null:
-		_prompt.隐藏()
 	_run_demo()
 
 
@@ -510,15 +507,24 @@ func _animate_pedestal(delta: float) -> void:
 func _on_pedestal_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player_on_pedestal = true
-		if _prompt != null and _state == State.ARMED:
-			_prompt.显示()
 
 
 func _on_pedestal_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player_on_pedestal = false
-		if _prompt != null:
-			_prompt.隐藏()
+
+
+func _update_prompt() -> void:
+	## 谱台的 W 提示：跟钢琴（`MossPiano.gd`）/ 留声机（`Phonograph.gd`）**一个写法** ——
+	## 每帧按"在不在范围内"无脑调，`InteractBubble` 内部记着状态，重复调用不会重开渐显 tween。
+	## 所以这里不用在 entered/exited 回调里手动显隐（那些调用是多余的，已删）。
+	## ⚠️ 只在 ARMED（进区了、还没开始演示）时提示：演示中 / 演奏中 / 通关后都不该再提示按 W。
+	if _prompt == null:
+		return
+	if _state == State.ARMED and _player_on_pedestal:
+		_prompt.显示()
+	else:
+		_prompt.隐藏()
 
 
 # ──────────────────────────── 玩家软冻结 ────────────────────────────
