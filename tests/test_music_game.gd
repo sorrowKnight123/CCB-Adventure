@@ -342,6 +342,15 @@ func _run() -> void:
 
 
 func _check_ability_note() -> void:
+	# 编辑器保存场景时会把没填过的导出写成 `= null`（本项目老毛病，实测 MusicGame.tscn 里就出现了）。
+	# 那会让 `奖励能力 == ""` 漏过去、拼 `"has_" + null` 当场报错 —— 场景里没配这个值的
+	# 实例（第一个 MusicGame）一通关就中招。这里钉住"null 必须被收口成空串"。
+	var probe := MUSIC_GAME_SCENE.instantiate()
+	probe.set("奖励能力", null)
+	_check(probe.奖励能力 == "", "奖励能力 被写成 null 时自动收口成空串（编辑器 `= null` 残留）")
+	_check(probe._make_ability_reward(Vector2.ZERO) == null, "没配能力时不生成能力音符")
+	probe.free()
+
 	var notes := _ability_notes()
 	_check(notes.size() == 1, "通关额外汇出一枚能力音符（实际 %d 枚）" % notes.size())
 	if notes.is_empty():
