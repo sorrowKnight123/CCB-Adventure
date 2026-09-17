@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/InteractBubble.gd" id="1"]
+
+[node name="InteractBubble" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 0
+anchors_preset = 0
+offset_left = -20.0
+offset_top = -120.0
+offset_right = 20.0
+offset_bottom = -80.0
+mouse_filter = 2
+
+[node name="Key" type="Label" parent="Panel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 28
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1

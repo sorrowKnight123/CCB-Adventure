@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/minigame/MusicGame.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/minigame/MusicSlime.tscn" id="2_slime"]
 [ext_resource type="Texture2D" path="res://art/minigame/pedestal_gold.png" id="3_pedestal"]
 [ext_resource type="Shader" path="res://shaders/sweep_shine.gdshader" id="4_shader"]
 [ext_resource type="Resource" path="res://data/music_game/example_melody.tres" id="5_config"]
+[ext_resource type="PackedScene" path="res://scenes/ui/InteractBubble.tscn" id="6_bubble"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sweep"]
 shader = ExtResource("4_shader")
@@ -64,17 +65,13 @@ position = Vector2(0, -70)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("3_pedestal")
 
-[node name="Prompt" type="Label" parent="Pedestal"]
-visible = false
-offset_left = -9.0
-offset_top = -205.0
-offset_right = 30.0
-offset_bottom = -175.0
-theme_override_colors/font_color = Color(1, 0.95, 0.62, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 20
-text = "W"
+[node name="Prompt" parent="Pedestal" instance=ExtResource("6_bubble")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = -110.0
+offset_right = 0.0
+offset_bottom = -110.0
+"按键文本" = "W"
 
 [node name="Sfx" type="Node" parent="."]
 

@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/props/MossPiano.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://art/item/moss_piano/moss_piano.png" id="2_texture"]
+[ext_resource type="PackedScene" path="res://scenes/ui/InteractBubble.tscn" id="3_bubble"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
+size = Vector2(440, 280)
+
+[node name="MossPiano" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_texture")
+
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0, -130)
+shape = SubResource("RectangleShape2D_interact")
+
+[node name="Bubble" parent="." instance=ExtResource("3_bubble")]
+layout_mode = 0
+offset_left = 0.0
+offset_top = -330.0
+offset_right = 0.0
+offset_bottom = -330.0
+"按键文本" = "W"

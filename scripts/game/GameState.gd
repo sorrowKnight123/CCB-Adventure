@@ -51,6 +51,11 @@ const COLLECTIBLES: Dictionary = {
 	"diary_village": "88的日记·一",
 	"diary_forest": "88的日记·二",
 	"letter_musichall": "88的信",
+	# 隐藏房间的钢琴里找到的羊皮纸残页（第一章本轮已接入，其余待散落到各关）
+	"ecstasy_1": "狂喜之诗 其一",
+	"ecstasy_2": "狂喜之诗 其二",
+	"ecstasy_3": "狂喜之诗 其三",
+	"ecstasy_4": "狂喜之诗 其四",
 }
 var COLLECT_TOTAL: int = COLLECTIBLES.size()
 var SHEET_TOTAL: int = MusicSheetData.total()

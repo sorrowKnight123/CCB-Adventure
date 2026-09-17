@@ -8,9 +8,10 @@ extends AnimatedSprite2D
 @export var 音符大小: float = 0.25       # 音符图标缩放（note.png 104x130，可调）
 @export var 音符飘动速度: float = 70.0   # 音符飘起速度（px/s）
 @export var 触发冷却: float = 0.4        # 防连续触发
-## 非空时 → 这个植物是「通关奖励」：对应的触发 ID 没通关之前**隐藏且踩不到**，
-## 通关后自动弹出出现。留空 = 一直就是普通弹跳植物。
-## ⚠️ 填的是对应 MusicGame 节点的 `触发ID`（默认 "music_game_1"）；那边改名了这里也要跟着改。
+## 非空时 → 这个植物是「门禁」：该 ID 没达标之前**隐藏且踩不到**，达标后自动弹出出现。
+## 留空 = 一直就是普通弹跳植物。
+## 填什么：对应 `MusicGame` 节点的 `触发ID`（默认 "music_game_1"），**或者 Boss 的 id**
+## （例如 `"moss_resonance_boss"`）—— 两者都认，见 `_门禁已开()`。那边改名了这里要跟着改。
 @export var 需要通关ID: String = ""
 
 const PIANO_NOTES: Array[AudioStream] = [
@@ -42,7 +43,7 @@ func _ready() -> void:
 	_base_scale = scale
 	play("idle")
 	$Trigger.body_entered.connect(_on_trigger_body_entered)
-	if 需要通关ID != "" and not GameState.has_trigger(需要通关ID):
+	if 需要通关ID != "" and not _门禁已开():
 		_set_locked(true)
 
 
@@ -51,8 +52,15 @@ func _process(delta: float) -> void:
 	# 通关奖励：等对应的 MusicGame 打过卡就出现。
 	# 用轮询而不是在关卡里把 MusicGame 的 `通关` 信号连过来 —— 免得植物和某个具体小游戏节点耦合，
 	# 也省掉 3_1.tscn 里的手工连线。只在被锁住时轮询，普通植物零开销。
-	if _locked and GameState.has_trigger(需要通关ID):
+	if _locked and _门禁已开():
 		解锁()
+
+
+func _门禁已开() -> bool:
+	## 通关标记命中 `triggered_ids` **或** `defeated_boss_ids` 任一即可 ——
+	## Boss 通关写的是后者（`mark_boss_defeated`），跟 `mark_trigger` 是两个独立字段，
+	## 只查 has_trigger 的话填 boss id 永远不生效。
+	return GameState.has_trigger(需要通关ID) or GameState.is_boss_defeated(需要通关ID)
 
 
 func _set_locked(locked: bool) -> void:

@@ -43,6 +43,9 @@ func _input(event: InputEvent) -> void:
 		# 能力获取过场中 Esc 不响应（过场自己处理输入）。
 		if get_tree().get_first_node_in_group("ability_cutscene") != null:
 			return
+		# 对话进行中 Esc 不响应：否则会一边开暂停菜单、一边被 balloon 当成"跳过打字"。
+		if DialogueBridge.is_active:
+			return
 		_toggle_pause()
 	elif event.is_action_pressed("inventory") and not get_tree().paused:
 		_toggle_inventory()

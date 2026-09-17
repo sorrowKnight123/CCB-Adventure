@@ -113,7 +113,7 @@ var _demo_framing: bool = false      # 演示取景中（框所有史莱姆，�
 @onready var _trigger: Area2D = $Trigger
 @onready var _pedestal: Area2D = $Pedestal
 @onready var _pedestal_visual: Sprite2D = $Pedestal/Visual
-@onready var _prompt: Label = $Pedestal/Prompt
+@onready var _prompt: InteractBubble = $Pedestal/Prompt
 @onready var _sfx: Array = [$Sfx/Sfx0, $Sfx/Sfx1, $Sfx/Sfx2]
 
 
@@ -180,7 +180,7 @@ func _cancel_to_idle() -> void:
 	_reset_progress()
 	_set_slimes_visible(false)
 	if _prompt != null:
-		_prompt.visible = false
+		_prompt.隐藏()
 	_restore_camera()
 
 
@@ -195,7 +195,7 @@ func _start_demo() -> void:
 		return
 	_set_slimes_visible(true)   # 与谱台交互 → 史莱姆出现
 	if _prompt != null:
-		_prompt.visible = false
+		_prompt.隐藏()
 	_run_demo()
 
 
@@ -458,15 +458,15 @@ func _animate_pedestal(delta: float) -> void:
 func _on_pedestal_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player_on_pedestal = true
-		if _prompt != null:
-			_prompt.visible = _state == State.ARMED
+		if _prompt != null and _state == State.ARMED:
+			_prompt.显示()
 
 
 func _on_pedestal_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		_player_on_pedestal = false
 		if _prompt != null:
-			_prompt.visible = false
+			_prompt.隐藏()
 
 
 # ──────────────────────────── 玩家软冻结 ────────────────────────────

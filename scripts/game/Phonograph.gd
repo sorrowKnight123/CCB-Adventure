@@ -20,7 +20,7 @@ enum AnimState { IDLE, PLAYING, LOOP, REVERSING }
 
 @onready var anim: AnimatedSprite2D = $Anim
 @onready var save_audio: AudioStreamPlayer = $SaveAudio
-@onready var bubble: Control = $Bubble
+@onready var bubble: InteractBubble = $Bubble
 @onready var record_switch_ui: CanvasLayer = $RecordSwitchUI
 @onready var record_name_label: Label = $RecordSwitchUI/Panel/Container/Selector/RecordName
 @onready var record_status_label: Label = $RecordSwitchUI/Panel/Container/RecordStatus
@@ -42,7 +42,6 @@ func _ready() -> void:
 	anim.animation = "default"
 	anim.stop()
 	anim.frame = 0
-	bubble.hide()
 	record_switch_ui.hide()
 	previous_record_button.pressed.connect(_select_previous_record)
 	next_record_button.pressed.connect(_select_next_record)
@@ -67,7 +66,10 @@ func _update_range() -> void:
 func _process(delta: float) -> void:
 	_update_range()
 	_step_anim(delta)
-	bubble.visible = _player_in_range
+	if _player_in_range:
+		bubble.显示()
+	else:
+		bubble.隐藏()
 
 
 func _physics_process(_delta: float) -> void:

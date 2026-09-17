@@ -6,6 +6,7 @@ extends CanvasLayer
 signal finished
 
 @onready var _anim: AnimationPlayer = $AnimationPlayer
+@onready var _title_label: Label = $CenterContainer/VBoxContainer/TitleLabel
 @onready var _icon: TextureRect = $CenterContainer/VBoxContainer/Icon
 @onready var _name_label: Label = $CenterContainer/VBoxContainer/NameLabel
 @onready var _desc_label: Label = $CenterContainer/VBoxContainer/DescLabel
@@ -22,11 +23,14 @@ func _ready() -> void:
 
 ## 外部入口：播放能力过场。icon_texture 为 null 时图标区域留空（占位，后续放图即可）。
 ## 继续提示在 show_ability 动画末尾（约 3 秒后）才淡入，期间按 Space 无效，保证至少 3 秒阅读时间。
-func show_ability(icon_texture: Texture2D, ability_name: String, ability_desc: String = "") -> void:
+## `title` 是顶部那行小标题，默认「获得能力」；拿物品时传「获得物品」之类。
+func show_ability(icon_texture: Texture2D, ability_name: String, ability_desc: String = "",
+		title: String = "获得能力") -> void:
 	if _active:
 		return
 	_active = true
 	_can_continue = false
+	_title_label.text = title
 	_icon.texture = icon_texture
 	_name_label.text = ability_name
 	_desc_label.text = ability_desc
