@@ -28,6 +28,13 @@ enum State { IDLE, ARMED, DEMO, PLAY, DONE }
 const NOTE_TEXTURE: Texture2D = preload("res://art/icons/note.png")
 const SFX_MISS: AudioStream = preload("res://audio/enemy/moss/miss.wav")
 const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.tscn")
+const ABILITY_NOTE_SCENE: PackedScene = preload("res://scenes/items/AbilityNote.tscn")
+
+## 能力奖励音符的横向初速度。**故意远小于货币**（480）：整关只有这一枚，
+## 飞出去掉进够不到的坑里就麻烦了，所以基本是原地往上抛。
+const 能力奖励横向初速度: float = 120.0
+## 补发（漏抢）时音符悬停在史莱姆中心上方多少像素。
+const 能力奖励悬停高度: float = 60.0
 
 @export_category("曲子")
 ## 留空则用下面的默认值（演奏顺序 = 从左到右）。
@@ -36,6 +43,13 @@ const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.ts
 @export var 触发ID: String = "music_game_1"
 ## 没有配 `配置` 时用的奖励数量。
 @export var 默认通关奖励: int = 30
+## 这一关额外送的能力：填能力 id（`double_jump` / `magic_dash` / `magic_climb` / `magic_flight`），
+## 通关时会跟货币一起喷出一枚特殊音符，捡到就发这个能力（过场由 `Player.grant_*()` 播）。
+## 留空 = 只给货币，不给能力。
+##
+## ⚠️ 放这里而**不放 `MusicGameConfig`**：配置资源装的是「曲子」，
+## 同一首曲搬到别的关卡不该再发一次二段跳。
+@export var 奖励能力: String = ""
 
 @export_category("场地")
 ## 打开后按 `平铺起点 + 间距` 在运行时重排史莱姆 —— ⚠️ 会覆盖你手摆的位置。
@@ -139,6 +153,8 @@ func _ready() -> void:
 		_dim_all_slimes()
 	else:
 		_set_slimes_visible(false)
+	# 通关过但能力还没拿到（上次漏捡）-> 补一枚悬停的，别让能力永久丢失
+	_spawn_ability_reward_if_missed()
 
 
 func _process(delta: float) -> void:
@@ -366,13 +382,19 @@ func _spawn_reward_pickups() -> void:
 	## - **不弹「+N」提示**：玩家看左上角的音符计数就知道拿了多少，别用文字破坏沉浸感。
 	## - 每个拾取物价值 1，数量 = `通关奖励`；想少捡几次就把 通关奖励 调小。
 	## ⚠️ 拾取物只存在于当前场景：通关后若没捡完就离开房间（场景重载），剩下的就没了。
-	var total := _config_reward()
-	if total <= 0:
-		return
+	##    （能力奖励是例外 —— 漏了会在下次进场补发，见 `_spawn_ability_reward_if_missed()`）
 	var parent := get_parent()
 	if parent == null:
 		return
 	var origin := _slimes_center() + Vector2(0.0, -奖励抛出点抬高)
+	# 能力奖励先摆：整关只有这一枚，别被「通关奖励 = 0」一起吞掉
+	var ability := _make_ability_reward(origin)
+	if ability != null:
+		ability.setup_launch(1, Vector2(
+			randf_range(-能力奖励横向初速度, 能力奖励横向初速度), -奖励上抛初速度))
+	var total := _config_reward()
+	if total <= 0:
+		return
 	for i in total:
 		var pickup := NOTE_PICKUP_SCENE.instantiate()
 		pickup.显示提示 = false
@@ -382,6 +404,36 @@ func _spawn_reward_pickups() -> void:
 		var vx := randf_range(-奖励横向初速度, 奖励横向初速度)
 		var vy := -奖励上抛初速度 * randf_range(0.75, 1.25)
 		pickup.setup_launch(1, Vector2(vx, vy))
+
+
+func _spawn_ability_reward_if_missed() -> void:
+	## 通关了、但能力还没拿到 —— 上次没捡，或者捡之前就离开房间了。
+	## ⚠️ 货币没捡完就离开可以接受（见 `_spawn_reward_pickups` 的注释），但**能力不能永久漏掉**，
+	##    所以在史莱姆中间补一枚原地悬停的（不走重力，不会再飞丢）。
+	if _state != State.DONE:
+		return
+	_make_ability_reward(_slimes_center() + Vector2(0.0, -能力奖励悬停高度))
+
+
+func _make_ability_reward(origin: Vector2) -> AbilityNote:
+	## 造一枚能力奖励音符，挂在关卡层（跟货币拾取物同一个父级）。
+	## 没配 `奖励能力`、或者玩家已经拿到了 -> 返回 null，什么都不生成。
+	if 奖励能力 == "" or _ability_reward_owned():
+		return null
+	var parent := get_parent()
+	if parent == null:
+		return null
+	var note := ABILITY_NOTE_SCENE.instantiate() as AbilityNote
+	note.显示提示 = false
+	note.能力 = 奖励能力
+	parent.add_child(note)
+	note.global_position = origin        # ⚠️ 必须在 add_child 之后设 global_position
+	return note
+
+
+func _ability_reward_owned() -> bool:
+	## 能力 id 跟 GameState 的标志一一对应：double_jump -> has_double_jump。
+	return GameState.get("has_" + 奖励能力) == true
 
 
 # ──────────────────────────── 配置读取 ────────────────────────────

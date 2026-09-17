@@ -73,7 +73,7 @@ const ATTACK_HIT_TIME_RATIO: float = 0.45
 const ABILITY_CUTSCENE: PackedScene = preload("res://ui/AbilityCutscene.tscn")
 # 能力图标映射：把图标 PNG 放进 res://ui/icons/ 并在此填路径即可显示；空字符串 = null 占位（图标区域留空）。
 const ABILITY_ICONS: Dictionary = {
-	"double_jump": "",
+	"double_jump": "res://art/icons/note.png",
 	"magic_dash": "",
 	"magic_climb": "",
 	"magic_flight": "res://art/character/abilities/cadenza.png",

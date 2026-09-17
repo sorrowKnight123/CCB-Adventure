@@ -7,6 +7,8 @@ extends Node2D
 ##   流程  —— 进区只锁相机 → 站谱台按 W 才出史莱姆并演示 → 演示期间软冻结 → PLAY
 ##   判定  —— 打错归零 + 自动重播；真实挥砍命中史莱姆 → 进度推进
 ##   结算  —— 全对 → DONE + 发货币 + 写触发 ID；0 点接触伤害不让玩家受伤
+##   能力  —— 配了 `奖励能力` 时额外喷一枚能力音符（2 倍大 / 彩虹在变 / 有光晕 / 有扫光），
+##            捡到发能力 + 播过场；漏抢的话下次进场会补发一枚悬停的
 ##
 ## 会写真实存档，所以开头备份、结尾还原（跟 test_music_sheet.gd 一样）。
 
@@ -63,6 +65,7 @@ func _run() -> void:
 	config.演示间隔 = 0.25   # 拉长一点，好观察演示取景
 	_game.配置 = config
 	_game.触发ID = TRIGGER_ID
+	_game.奖励能力 = "double_jump"      # 通关额外喷一枚能力音符（3_1 的 MusicGame2 就是这么配的）
 	_game.演示前停顿 = 0.02
 	_game.演示后停顿 = 0.02
 	_game.打错后重播延迟 = 0.05
@@ -223,6 +226,11 @@ func _run() -> void:
 	_hit(1)
 	await _settle()
 	_check(_state() == 4, "全对 → DONE")
+	# ⚠️ 立刻把玩家挪开：能力音符就撒在史莱姆中间，而玩家此刻正站在最后一只旁边，
+	#    留着的话它落地时可能自己碰到玩家 —— 那就成了"测试中途自动拿到二段跳"，
+	#    后面的断言全变成碰运气。捡它放到最后单独测（Trigger 在上面已关掉 monitoring，挪动不会误触）。
+	_player.global_position = Vector2(-1500, 0)
+	await _settle()
 	var spawned: int = _count_reward_pickups() - pickups_before
 	_check(spawned == REWARD, "通关撒出 %d 个音符拾取物（实际 %d）" % [REWARD, spawned])
 	_check(GameState.notes == notes_before, "奖励不直接入账，要玩家自己捡")
@@ -262,9 +270,25 @@ func _run() -> void:
 
 	# 通关后再存一张截图，方便肉眼确认"飞溅一地"的效果
 	if DisplayServer.get_name() != "headless":
+		# 取景：玩家刚被挪走躲能力音符，这里把他放回奖励区中间。
+		# ⚠️ 先把拾取检测全关掉 —— 否则"为了截图"就把能力音符顺手捡了，8c 的断言全废。
+		_pause_pickups(true)
+		var focus = _ability_notes()[0] if not _ability_notes().is_empty() else _game
+		_player.global_position = focus.global_position + Vector2(-120.0, -40.0)
+		await get_tree().create_timer(0.5).timeout
+		# 把相位摆到"最能说明问题"的一帧：紫罗兰色 + 光带正压在音符上。
+		# 音符会一路循环变色的，任意一帧都是随机的；而扫光带扫到贴图透明角落时根本看不见，
+		# 所以固定一个代表性相位，这张截图才真的能用来核对"彩虹 + 光晕 + 扫光"。
+		if not _ability_notes().is_empty():
+			var ability = _ability_notes()[0]
+			ability.set("_hue_phase", 0.75)
+			ability.set("_sweep", 0.53)
 		await RenderingServer.frame_post_draw
 		get_viewport().get_texture().get_image().save_png("user://music_game_reward.png")
 		print("[截图] 已保存 user://music_game_reward.png")
+		_pause_pickups(false)
+		_player.global_position = Vector2(-1500, 0)
+		await _settle()
 
 	# 物理碰撞验证：朝一堵墙扔音符，必须被挡住、不穿墙（用户最担心的就是撞墙）
 	await _check_wall_blocks_pickup()
@@ -287,6 +311,91 @@ func _run() -> void:
 	_check(gated_plant.scale.is_equal_approx(Vector2(0.3, 0.3)),
 		"弹出动画结束后回到原大小（实际 %s）" % gated_plant.scale)
 	_check(not _player.输入软冻结, "通关后玩家未被冻住")
+
+	# 8. 能力奖励音符（配了 `奖励能力` 才有的那一枚）
+	await _check_ability_note()
+
+
+# ──────────────────────────── 能力奖励音符 ────────────────────────────
+
+
+func _check_ability_note() -> void:
+	var notes := _ability_notes()
+	_check(notes.size() == 1, "通关额外汇出一枚能力音符（实际 %d 枚）" % notes.size())
+	if notes.is_empty():
+		return
+	var note = notes[0]
+	var visual := note.get_node("Visual") as Sprite2D
+	_check(visual.scale.is_equal_approx(Vector2(0.6, 0.6)),
+		"能力音符是普通音符的 2 倍大（scale=%s）" % visual.scale)
+	var body_shape := note.get_node("CollisionShape2D").shape as CircleShape2D
+	_check(is_equal_approx(body_shape.radius, 36.0),
+		"它的碰撞圆跟着放大（半径 %.0f —— 不放大就会插进地面）" % body_shape.radius)
+	var halo := note.get_node_or_null("Halo") as Sprite2D
+	_check(halo != null and halo.texture != null, "有白色光晕，且光晕贴图加载成功")
+	var material := visual.material as ShaderMaterial
+	_check(material != null and material.shader != null, "音符挂着彩虹 shader")
+
+	# 彩虹 / 扫光 / 呼吸必须真的在动。headless 断言不到画面，只能断言参数在逐帧变。
+	var hue_before := float(material.get_shader_parameter("target_hue"))
+	var sweep_before := float(material.get_shader_parameter("sweep"))
+	var halo_before: float = halo.modulate.a if halo != null else 0.0
+	await get_tree().create_timer(0.12).timeout
+	var hue_after := float(material.get_shader_parameter("target_hue"))
+	var sweep_after := float(material.get_shader_parameter("sweep"))
+	_check(not is_equal_approx(hue_before, hue_after),
+		"色相一直在变（彩虹 %.3f → %.3f）" % [hue_before, hue_after])
+	_check(not is_equal_approx(sweep_before, sweep_after),
+		"扫光一直在走（像谱台 %.3f → %.3f）" % [sweep_before, sweep_after])
+	_check(halo == null or not is_equal_approx(halo_before, halo.modulate.a),
+		"白色光晕在呼吸（modulate.a 在变）")
+
+	# 8b. 漏抢补发：再立一个"已通关"的实例，它应当补一枚**悬停**的（不再抛出去）
+	var respawn := MUSIC_GAME_SCENE.instantiate()
+	respawn.触发ID = TRIGGER_ID          # 同一个 ID = 已通关
+	respawn.奖励能力 = "double_jump"
+	respawn.position = Vector2(0, 180)
+	add_child(respawn)
+	await _settle()
+	var after := _ability_notes()
+	_check(after.size() == 2, "已通关的实例会补发一枚（能力不会永久漏掉），现在共 %d 枚" % after.size())
+	if after.size() > 1:
+		var hovered = after[after.size() - 1]
+		_check(not bool(hovered.get("_launched")), "补发的那枚是原地悬停的（不会被抛走）")
+		var hover_y: float = hovered.global_position.y
+		await get_tree().create_timer(0.6).timeout
+		_check(absf(hovered.global_position.y - hover_y) < 2.0, "悬停的那枚不会往下掉")
+		hovered.queue_free()
+	respawn.queue_free()
+	await _settle()
+
+	# 8c. 捡起来 -> 二段跳「踏音而行」+ 能力获取过场
+	_check(not GameState.has_double_jump, "捡之前没有二段跳")
+	note._on_body_entered(_player)
+	await _settle()
+	_check(GameState.has_double_jump, "捡到能力音符 → 获得二段跳（存档标志已置位）")
+	_check(_player.has_double_jump and _player.air_jumps == 1,
+		"玩家身上立刻生效（air_jumps=%d）" % _player.air_jumps)
+	var cutscene := get_tree().get_first_node_in_group("ability_cutscene")
+	_check(cutscene != null, "播了能力获取过场动画")
+	_check(get_tree().paused, "过场期间游戏暂停")
+	if cutscene != null:
+		cutscene.queue_free()
+	await get_tree().process_frame
+	get_tree().paused = false
+	await _settle()
+	_check(not is_instance_valid(note), "捡走后音符消失")
+
+	# 已经拿到了 -> 再进关卡也不该生成（跟 DoubleJumpPickup 一个意思）
+	var respawn2 := MUSIC_GAME_SCENE.instantiate()
+	respawn2.触发ID = TRIGGER_ID
+	respawn2.奖励能力 = "double_jump"
+	respawn2.position = Vector2(0, 180)
+	add_child(respawn2)
+	await _settle()
+	_check(_ability_notes().is_empty(), "已经拿到能力后就不再生成能力音符")
+	respawn2.queue_free()
+	await _settle()
 
 
 # ──────────────────────────── 对照与工具 ────────────────────────────
@@ -453,15 +562,35 @@ func _check_wall_blocks_pickup() -> void:
 
 func _reward_pickups() -> Array:
 	## 通关奖励的拾取物被挂在小游戏节点的父级（关卡层），跟 EnemyDrop 的做法一致。
+	## ⚠️ 能力音符是 NotePickup 的子类（同样有 setup_launch / _on_body_entered），
+	##    不排掉的话它会被算进"撒了 REWARD 个"里，这条断言就废了。
 	var out := []
 	for child in get_children():
-		if child.has_method("setup_launch") and child.has_method("_on_body_entered"):
+		if child.has_method("setup_launch") and child.has_method("_on_body_entered") \
+				and not child.has_method("是能力奖励"):
+			out.append(child)
+	return out
+
+
+func _ability_notes() -> Array:
+	## 能力奖励音符（同样是本级的子节点）。
+	var out := []
+	for child in get_children():
+		if child.has_method("是能力奖励"):
 			out.append(child)
 	return out
 
 
 func _count_reward_pickups() -> int:
 	return _reward_pickups().size()
+
+
+func _pause_pickups(paused: bool) -> void:
+	## 只给截图取景用：临时关掉所有拾取物的检测，免得挪玩家过去拍照时顺手捡了东西。
+	for node in _reward_pickups() + _ability_notes():
+		var area := node.get_node_or_null("PickupArea") as Area2D
+		if area != null:
+			area.set_deferred("monitoring", not paused)
 
 
 func _add_floor() -> void:
