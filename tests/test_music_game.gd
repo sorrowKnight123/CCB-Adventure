@@ -186,13 +186,37 @@ func _run() -> void:
 	_check(_game._progress == progress_before + 1,
 		"同时命中目标与相邻一只时判对（进度 %d→%d）" % [progress_before, _game._progress])
 
-	# 7. 打完最后一个 → DONE + 奖励 + 永久完成
+	# 7. 打完最后一个 → DONE；奖励**散落一地让玩家自己捡**（不直接入账、不弹文字提示）
 	var notes_before: int = GameState.notes
+	var pickups_before: int = _count_reward_pickups()
 	_hit(1)
 	await _settle()
 	_check(_state() == 4, "全对 → DONE")
-	_check(GameState.notes == notes_before + REWARD,
-		"通关奖励 +%d（实际 +%d）" % [REWARD, GameState.notes - notes_before])
+	var spawned: int = _count_reward_pickups() - pickups_before
+	_check(spawned == REWARD, "通关撒出 %d 个音符拾取物（实际 %d）" % [REWARD, spawned])
+	_check(GameState.notes == notes_before, "奖励不直接入账，要玩家自己捡")
+	var no_toast := true
+	for node in _reward_pickups():
+		if bool(node.get("显示提示")):
+			no_toast = false
+	_check(no_toast, "奖励拾取物不弹「+N」文字提示（看左上角计数）")
+	# 真捡一个：应该 +1
+	var target = _reward_pickups()[0] if _count_reward_pickups() > 0 else null
+	if target != null:
+		target._on_body_entered(_player)
+		await _settle()
+		_check(GameState.notes == notes_before + 1, "捡起一个音符 +1")
+	# 等散落物飞完，确认落点都在场地范围内（不会飞出场外或悬在天上）
+	await get_tree().create_timer(0.6).timeout
+	var mid: Vector2 = _game._slimes_center()
+	var out_of_bounds := 0
+	for node in _reward_pickups():
+		var p: Vector2 = node.global_position
+		if absf(p.x - mid.x) > float(_game.奖励散落横向范围) + 60.0 \
+				or p.y < mid.y - float(_game.奖励散落纵向范围) - 80.0 \
+				or p.y > mid.y + 40.0:
+			out_of_bounds += 1
+	_check(out_of_bounds == 0, "奖励散落物全部落在场地范围内")
 	_check(GameState.has_trigger(TRIGGER_ID), "通关写入触发 ID（永久完成）")
 	# 通关后整排变暗，但保留在场景里（不隐藏、不删除）
 	_check(slimes_root.visible, "通关后史莱姆仍显示（不移除）")
@@ -280,8 +304,6 @@ func _real_attack_on(slot: int) -> Dictionary:
 	Input.action_press("attack")
 	var elapsed := 0.0
 	var monitoring_seen := false
-	var trace := ""
-	var frames := 0
 	while elapsed < 3.0:
 		# ⚠️ get_overlapping_bodies() 要在物理处理期间读才准（process 帧读会拿到空结果）
 		await get_tree().physics_frame
@@ -319,6 +341,19 @@ func _player_in_camera_view() -> bool:
 	var half := get_viewport().get_visible_rect().size * 0.5 / cam.zoom
 	var rel := _player.global_position - cam.global_position
 	return absf(rel.x) <= half.x and absf(rel.y) <= half.y
+
+
+func _reward_pickups() -> Array:
+	## 通关奖励的拾取物被挂在小游戏节点的父级（关卡层），跟 EnemyDrop 的做法一致。
+	var out := []
+	for child in get_children():
+		if child.has_method("setup_drop") and child.has_method("_on_body_entered"):
+			out.append(child)
+	return out
+
+
+func _count_reward_pickups() -> int:
+	return _reward_pickups().size()
 
 
 func _add_floor() -> void:

@@ -2,6 +2,9 @@ extends Area2D
 ## 音符货币拾取物。玩家接触 -> 增加 notes -> 保存 -> 消失。
 ## 普通地图收集物与敌人掉落复用此场景；掉落的散射轨迹由 setup_drop 配置。
 @export var amount: int = 1
+## 拾取时是否弹「+N」提示。一次刷一大堆（例如小游戏通关奖励散落一地）时关掉，
+## 免得文字刷屏破坏沉浸感 —— 玩家看左上角的音符计数就知道拿了多少。
+@export var 显示提示: bool = true
 
 var _taken: bool = false
 var _is_drop: bool = false
@@ -54,7 +57,8 @@ func _on_body_entered(body: Node2D) -> void:
 	_taken = true
 	GameState.add_notes(amount)
 	GameState.save_game()
-	var hud := get_tree().get_first_node_in_group("hud")
-	if hud and hud.has_method("show_note_toast"):
-		hud.show_note_toast(amount)
+	if 显示提示:
+		var hud := get_tree().get_first_node_in_group("hud")
+		if hud and hud.has_method("show_note_toast"):
+			hud.show_note_toast(amount)
 	queue_free()

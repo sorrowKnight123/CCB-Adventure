@@ -27,6 +27,7 @@ enum State { IDLE, ARMED, DEMO, PLAY, DONE }
 
 const NOTE_TEXTURE: Texture2D = preload("res://art/icons/note.png")
 const SFX_MISS: AudioStream = preload("res://audio/enemy/moss/miss.wav")
+const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.tscn")
 
 @export_category("曲子")
 ## 留空则用下面的默认值（演奏顺序 = 从左到右）。
@@ -46,6 +47,10 @@ const SFX_MISS: AudioStream = preload("res://audio/enemy/moss/miss.wav")
 @export var 间距: float = 220.0
 
 @export_category("手感")
+## 通关奖励不从天上直接进账，而是把 `通关奖励` 个音符**撒在场地里**让玩家自己捡。
+## 这两个值控制喷溅范围（相对史莱姆群中心，往左右铺开、往上抛一点）。
+@export var 奖励散落横向范围: float = 420.0
+@export var 奖励散落纵向范围: float = 140.0
 @export var 音符特效大小: float = 0.34
 @export var 音符飘动距离: float = 70.0
 @export var 音符飘动时长: float = 0.65
@@ -329,18 +334,37 @@ func _complete() -> void:
 	_state = State.DONE
 	_serial += 1
 	_set_player_frozen(false)
-	var reward := _config_reward()
 	GameState.mark_trigger(触发ID)
-	if reward > 0:
-		GameState.add_notes(reward)
 	GameState.save_game()
-	if reward > 0:
-		var hud := get_tree().get_first_node_in_group("hud")
-		if hud and hud.has_method("show_note_toast"):
-			hud.show_note_toast(reward)
+	_spawn_reward_pickups()
 	通关.emit()
 	_dim_all_slimes()
 	_restore_camera()
+
+
+func _spawn_reward_pickups() -> void:
+	## 通关奖励散落一地，玩家自己捡。
+	## - **不直接入账**：金额只在真的捡到时才 +1（NotePickup 自己处理）。
+	## - **不弹「+N」提示**：玩家看左上角的音符计数就知道拿了多少，别用文字破坏沉浸感。
+	## - 每个拾取物价值 1，数量 = `通关奖励`；想少捡几次就把 通关奖励 调小。
+	## ⚠️ 拾取物只存在于当前场景：通关后若没捡完就离开房间（场景重载），剩下的就没了。
+	var total := _config_reward()
+	if total <= 0:
+		return
+	var parent := get_parent()
+	if parent == null:
+		return
+	var origin := _slimes_center()
+	for i in total:
+		var pickup := NOTE_PICKUP_SCENE.instantiate()
+		pickup.显示提示 = false
+		parent.add_child(pickup)
+		pickup.global_position = origin
+		# 往左右大面积铺开、往上抛一点（落点接近地面，跳一下就够得着）
+		var offset := Vector2(
+			randf_range(-奖励散落横向范围, 奖励散落横向范围),
+			-randf_range(20.0, maxf(奖励散落纵向范围, 20.0)))
+		pickup.setup_drop(1, false, offset)
 
 
 # ──────────────────────────── 配置读取 ────────────────────────────
@@ -561,5 +585,6 @@ func _draw() -> void:
 		draw_line(center + Vector2(0.0, -14.0), center + Vector2(0.0, 14.0), Color(1, 1, 0, 0.85), 1.0)
 		draw_string(font, center + Vector2(18.0, -18.0), "%d  %s" % [i, note],
 			HORIZONTAL_ALIGNMENT_LEFT, -1, 14, MusicNotes.get_color(note))
-	draw_string(font, Vector2(0.0, -8.0), "演奏顺序 = 上面的编号", HORIZONTAL_ALIGNMENT_LEFT, -1, 12,
-		Color(1, 1, 1, 0.65))
+	draw_string(font, Vector2(0.0, -8.0),
+		"演奏顺序填上面的编号（从 0 开始）；留空 = 从左到右。史莱姆数量 = Slimes 下的子节点数",
+		HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color(1, 1, 1, 0.7))
