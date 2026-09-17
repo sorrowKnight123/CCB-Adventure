@@ -75,7 +75,7 @@ const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.ts
 @export var 演示自动缩放: bool = true
 @export var 演示框选留白: Vector2 = Vector2(120.0, 150.0)
 @export var 演示最小缩放: float = 0.55
-@export var 相机框选速度: float = 7.0
+@export var 相机跟随速度: float = 10.0   # 镜头滑动/跟随的快慢（越大越紧跟）
 @export var 流光周期: float = 2.4
 @export var 谱台浮动幅度: float = 7.0
 @export var 谱台浮动速度: float = 1.8
@@ -102,8 +102,6 @@ var _sfx_index: int = 0
 # 相机保存（BlueWizard 那套）
 var _camera: Camera2D = null
 var _saved_top_level: bool = false
-var _saved_smoothing: bool = true
-var _saved_offset: Vector2 = Vector2.ZERO
 var _saved_position: Vector2 = Vector2.ZERO
 var _saved_zoom: Vector2 = Vector2.ONE
 var _camera_tween: Tween = null
@@ -223,7 +221,6 @@ func _run_demo() -> void:
 		return
 	_state = State.PLAY
 	_demo_framing = false     # 回到"跟着玩家"的取景
-	_restore_locked_zoom()
 	_set_player_frozen(false)
 
 
@@ -540,17 +537,32 @@ func _camera_target_position() -> Vector2:
 func _update_locked_camera(delta: float) -> void:
 	if not is_instance_valid(_camera):
 		return
+	var target_position := _camera_target_position()
+	var target_zoom := _saved_zoom
 	if _demo_framing:
-		# 演示取景：框住所有史莱姆，顺便把镜头拉远到能装下
+		# 演示取景：框住所有史莱姆，必要时拉远
 		var bounds := _slimes_bounds()
-		var target_position := bounds.get_center()
-		var target_zoom := _demo_zoom(bounds) if 演示自动缩放 else Vector2.ONE
-		# 平滑过去（直接赋值会是很突兀的一跳）
-		var t := clampf(delta * 相机框选速度, 0.0, 1.0)
-		_camera.global_position = _camera.global_position.lerp(target_position, t)
-		_camera.zoom = _camera.zoom.lerp(target_zoom, t)
-		return
-	_camera.global_position = _camera_target_position()
+		target_position = bounds.get_center()
+		if 演示自动缩放:
+			target_zoom = _demo_zoom(bounds)
+	_approach_camera(target_position, target_zoom, delta)
+
+
+func _approach_camera(target_position: Vector2, target_zoom: Vector2, delta: float) -> void:
+	## ⚠️ 镜头**一律只插值，绝不直接赋值** —— 直接赋值就是"跳变"（见 agent.md §20 镜头规范）。
+	var t := clampf(delta * 相机跟随速度, 0.0, 1.0)
+	_camera.global_position = _camera.global_position.lerp(target_position, t)
+	_camera.zoom = _camera.zoom.lerp(target_zoom, t)
+	# 亚像素吸附：免得永远逼近却不到（<1px 的吸附肉眼不可见，但能让"锁定"真的锁住）
+	if _camera.global_position.distance_to(target_position) < 0.5:
+		_camera.global_position = target_position
+	if absf(_camera.zoom.x - target_zoom.x) < 0.002:
+		_camera.zoom = target_zoom
+
+
+func _kill_camera_tween() -> void:
+	if _camera_tween and _camera_tween.is_valid():
+		_camera_tween.kill()
 
 
 func _slimes_bounds() -> Rect2:
@@ -586,19 +598,18 @@ func _demo_zoom(bounds: Rect2) -> Vector2:
 func _slide_camera_and_lock() -> void:
 	if not _acquire_camera():
 		return
+	# 抓下世界坐标 + 待还原的量。
+	# ⚠️ 这里**不碰** position_smoothing_enabled / offset / reset_smoothing()：
+	#    关掉平滑会让画面从"延迟位置"瞬间弹到节点位置（玩家在移动时肉眼可见的跳变，
+	#    而且只有移动时看得出来，所以表现为"偶尔跳一下"）；把 offset 归零会打断正在进行的镜头震动。
 	var start_position := _camera.global_position
 	_saved_top_level = _camera.top_level
-	_saved_smoothing = _camera.position_smoothing_enabled
-	_saved_offset = _camera.offset
 	_saved_position = _camera.position
 	_saved_zoom = _camera.zoom
-	# 切 top_level 会改变继承来的变换，必须先存下世界坐标再赋回，否则会先跳一下。
+	# 切 top_level 会改变继承来的变换：先存世界坐标，翻转后立刻赋回**同一个值**（值没变，所以不跳）
 	_camera.top_level = true
-	_camera.position_smoothing_enabled = false
-	_camera.offset = Vector2.ZERO
 	_camera.global_position = start_position
-	if _camera_tween and _camera_tween.is_valid():
-		_camera_tween.kill()
+	_kill_camera_tween()
 	_camera_tween = create_tween()
 	_camera_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	_camera_tween.tween_property(_camera, "global_position", _camera_target_position(), 相机滑入时长)
@@ -606,19 +617,8 @@ func _slide_camera_and_lock() -> void:
 
 
 func _finish_camera_lock() -> void:
-	if not is_instance_valid(_camera):
-		return
+	## 滑入结束后交给每帧插值跟随（它也从当前位置插值，不会跳）。
 	_camera_locked = true
-	_camera.global_position = _camera_target_position()
-	_camera.reset_smoothing()
-
-
-func _restore_locked_zoom() -> void:
-	## 退出演示取景后把缩放还原成玩家自己的值（演示期间我们改过 zoom）。
-	if not is_instance_valid(_camera):
-		return
-	var tw := create_tween()
-	tw.tween_property(_camera, "zoom", _saved_zoom, 0.4)
 
 
 func _restore_camera() -> void:
@@ -626,27 +626,26 @@ func _restore_camera() -> void:
 	_demo_framing = false
 	if not is_instance_valid(_camera):
 		return
-	if _camera_tween and _camera_tween.is_valid():
-		_camera_tween.kill()
+	_kill_camera_tween()
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	var target := player.global_position if player != null else _camera.global_position
 	_camera_tween = create_tween()
 	_camera_tween.set_parallel(true)
 	_camera_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	_camera_tween.tween_property(_camera, "zoom", _saved_zoom, 相机滑入时长)
-	_camera_tween.chain().tween_property(_camera, "global_position", target, 相机滑入时长)
+	_camera_tween.tween_property(_camera, "global_position", target, 相机滑入时长)
 	_camera_tween.chain().tween_callback(_finish_camera_restore)
 
 
 func _finish_camera_restore() -> void:
 	if not is_instance_valid(_camera):
 		return
+	# 回到"跟着玩家"：先翻回 top_level，再在**同一次调用里**恢复本地 position
+	# （中间状态不会被渲染，所以看不到跳变）。不平滑、不 reset_smoothing。
 	_camera.top_level = _saved_top_level
-	_camera.position_smoothing_enabled = _saved_smoothing
-	_camera.offset = _saved_offset
 	if not _saved_top_level:
 		_camera.position = _saved_position
-	_camera.reset_smoothing()
+	_camera.zoom = _saved_zoom
 
 
 # ──────────────────────────── 编辑器可视化 ────────────────────────────

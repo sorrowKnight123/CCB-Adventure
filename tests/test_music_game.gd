@@ -120,14 +120,15 @@ func _run() -> void:
 	_check(not slimes_root.visible, "进区只锁相机，史莱姆仍隐藏")
 	var cam := _player.get_node_or_null("Camera2D") as Camera2D
 	_check(cam != null and cam.top_level, "进区后相机脱离跟随（锁定）")
-	await get_tree().create_timer(0.25).timeout
+	# 镜头是"只插值、不跳变"的（agent.md §20），所以断言前要等它滑到位
+	await get_tree().create_timer(1.3).timeout
 	_game.get_node("Trigger").monitoring = false   # 免得玩家移动误触发"走远取消"干扰判定
 
 	# 镜头：玩家在滑动范围内时镜头完全固定，停在他上方 150px（垂直偏移生效）
 	# ⚠️ 期望值按"玩家 y - 偏移"算，不是"史莱姆中心 y - 偏移"：
 	# 玩家站地上天然比史莱姆根节点高十几像素，相对中心算会差一点点。
 	_player.global_position = _game._slimes_center()
-	await _settle()
+	await get_tree().create_timer(0.8).timeout
 	_check(absf(cam.global_position.y - (_player.global_position.y - 150.0)) < 8.0,
 		"玩家在范围内时镜头停在他上方 150px（相机y=%.0f 玩家y=%.0f）"
 			% [cam.global_position.y, _player.global_position.y])
@@ -137,7 +138,7 @@ func _run() -> void:
 	for spot in [_game.get_node("Pedestal").global_position,
 			_slime(2).global_position + Vector2(420.0, 0.0)]:
 		_player.global_position = spot
-		await _settle()
+		await get_tree().create_timer(0.8).timeout
 		_check(_player_in_camera_view(),
 			"镜头让位后玩家仍在画面内（玩家x=%d 镜头x=%d）"
 				% [int(_player.global_position.x), int(cam.global_position.x)])
