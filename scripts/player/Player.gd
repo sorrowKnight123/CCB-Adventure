@@ -72,8 +72,11 @@ const ATTACK_HIT_TIME_RATIO: float = 0.45
 # 能力获取过场：拾取能力时播放统一的过场动画（AbilityCutscene）。
 const ABILITY_CUTSCENE: PackedScene = preload("res://ui/AbilityCutscene.tscn")
 ## 能力图标映射：把图标 PNG 放进 `art/icons/` 并在此填路径即可显示；空字符串 = null 占位（图标区域留空）。
-## ⚠️ 画布统一 **104×130**（与 `art/icons/note.png` 一致）。过场里的 `Icon` 是 TextureRect，
-##    按贴图自身尺寸撑开 —— 画布不统一，图标在过场里就会一个大一个小。
+## ⚠️ **不要**为了"塞进过场"而重采样（缩小像素）图标 —— 那样画质会变差。
+##    过场里的 `Icon` 是固定 **104×130** 的框，按 KEEP_ASPECT_CENTERED 等比缩放进框，
+##    多大分辨率的图都能显示成同样大。
+## ⚠️ 但贴图自带的**透明边**会让"看得见的画"比框小一圈，所以大图先**只裁掉透明边**（不缩放）再放进来；
+##    且务必在 `.import` 里开 `mipmaps/generate=true` —— 项目全局是 Nearest 过滤，大图缩小没 mipmap 会闪。
 const ABILITY_ICONS: Dictionary = {
 	"double_jump": "res://art/icons/note.png",
 	"magic_dash": "",

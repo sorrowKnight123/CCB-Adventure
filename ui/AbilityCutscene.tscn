@@ -212,11 +212,12 @@ alignment = 1
 
 [node name="Icon" type="TextureRect" parent="CenterContainer/VBoxContainer" unique_id=413351430]
 modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(104, 130)
 layout_mode = 2
 scale = Vector2(0.85, 0.85)
 size_flags_horizontal = 4
 size_flags_vertical = 4
+expand_mode = 1
 stretch_mode = 5
 
 [node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1323320820]
