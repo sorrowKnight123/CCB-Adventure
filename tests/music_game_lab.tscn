@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://c582jekgctk6u"]
 
-[ext_resource type="Script" path="res://tests/music_game_lab.gd" id="1_lab"]
-[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_player"]
-[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="3_hud"]
+[ext_resource type="Script" uid="uid://celcqsr2doxr1" path="res://tests/music_game_lab.gd" id="1_lab"]
+[ext_resource type="PackedScene" uid="uid://b8dv7bgghb2ci" path="res://scenes/player/Player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://b2l6kyc2g4ue0" path="res://scenes/ui/HUD.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/minigame/MusicGame.tscn" id="4_music_game"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
@@ -23,50 +23,54 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="MusicGameLab" type="Node2D"]
+[node name="MusicGameLab" type="Node2D" unique_id=1253447576]
 script = ExtResource("1_lab")
 
-[node name="Ground" type="StaticBody2D" parent="."]
+[node name="Ground" type="StaticBody2D" parent="." unique_id=1334283991]
 position = Vector2(700, 620)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=794797541]
 shape = SubResource("RectangleShape2D_ground")
 
-[node name="Visual" type="Polygon2D" parent="Ground"]
+[node name="Visual" type="Polygon2D" parent="Ground" unique_id=1963825800]
 color = Color(0.25, 0.25, 0.3, 1)
 polygon = PackedVector2Array(-700, -20, 700, -20, 700, 20, -700, 20)
 
-[node name="WallLeft" type="StaticBody2D" parent="."]
+[node name="WallLeft" type="StaticBody2D" parent="." unique_id=805104012]
 position = Vector2(16, 300)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft" unique_id=383671319]
 shape = SubResource("RectangleShape2D_wall")
 
-[node name="Visual" type="Polygon2D" parent="WallLeft"]
+[node name="Visual" type="Polygon2D" parent="WallLeft" unique_id=1992632062]
 color = Color(0.3, 0.3, 0.38, 1)
 polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
 
-[node name="WallRight" type="StaticBody2D" parent="."]
+[node name="WallRight" type="StaticBody2D" parent="." unique_id=1059807417]
 position = Vector2(1384, 300)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight" unique_id=1441796117]
 shape = SubResource("RectangleShape2D_wall")
 
-[node name="Visual" type="Polygon2D" parent="WallRight"]
+[node name="Visual" type="Polygon2D" parent="WallRight" unique_id=1329260870]
 color = Color(0.3, 0.3, 0.38, 1)
 polygon = PackedVector2Array(-16, -300, 16, -300, 16, 300, -16, 300)
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="Player" parent="." unique_id=696094388 instance=ExtResource("2_player")]
 position = Vector2(60, 560)
 
-[node name="MusicGame" parent="." instance=ExtResource("4_music_game")]
+[node name="MusicGame" parent="." unique_id=2054975609 instance=ExtResource("4_music_game")]
 position = Vector2(800, 600)
+"间距" = 170.0
+"奖励横向初速度" = 520.0
+"奖励抛出点抬高" = null
+"打错后重播延迟" = 1.0
 
-[node name="HUD" parent="." instance=ExtResource("3_hud")]
+[node name="HUD" parent="." unique_id=886282690 instance=ExtResource("3_hud")]
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=328731140]
 
-[node name="Panel" type="PanelContainer" parent="UI"]
+[node name="Panel" type="PanelContainer" parent="UI" unique_id=430415864]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -80,28 +84,29 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
-[node name="VBox" type="VBoxContainer" parent="UI/Panel"]
+[node name="VBox" type="VBoxContainer" parent="UI/Panel" unique_id=1927535234]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="UI/Panel/VBox"]
+[node name="Title" type="Label" parent="UI/Panel/VBox" unique_id=552344087]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 20
 text = "音乐小游戏实验室"
 horizontal_alignment = 1
 
-[node name="Hint" type="Label" parent="UI/Panel/VBox"]
+[node name="Hint" type="Label" parent="UI/Panel/VBox" unique_id=708932622]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
 theme_override_font_sizes/font_size = 13
-text = "向右走进入区域 → 站到金色谱台上按 W 听一遍 → 按同样顺序攻击史莱姆。\n打错会自动重播。通关后进区不再触发，用下面的按钮重置。"
+text = "向右走进入区域 → 站到金色谱台上按 W 听一遍 → 按同样顺序攻击史莱姆。
+打错会自动重播。通关后进区不再触发，用下面的按钮重置。"
 autowrap_mode = 2
 
-[node name="ResetTrigger" type="Button" parent="UI/Panel/VBox"]
+[node name="ResetTrigger" type="Button" parent="UI/Panel/VBox" unique_id=569581136]
 layout_mode = 2
 text = "重置通关状态（并重载场景）"
 
-[node name="Reload" type="Button" parent="UI/Panel/VBox"]
+[node name="Reload" type="Button" parent="UI/Panel/VBox" unique_id=22534085]
 layout_mode = 2
 text = "重新载入场景"
