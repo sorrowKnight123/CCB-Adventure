@@ -157,6 +157,13 @@ func _check_piano() -> void:
 	piano.global_position = Vector2(-600, 100)
 	await _settle()
 
+	# 几何检查：按真实摆法（钢琴坐在地面上）时，站在地板上的玩家必须进得了交互范围。
+	# ⚠️ 交互区一旦放得太高，玩家在地上就完全够不到 —— 有人在编辑器里会漏掉这点。
+	piano.global_position = Vector2(-600, 6)      # 让钢琴底边落在测试地面(顶面 180)上
+	_player.global_position = Vector2(-600, 180)
+	await _settle()
+	_check(bool(piano.get("_player_in_range")), "钢琴：站在地板上的玩家能进交互范围")
+
 	# 前 4 次：只播普通旁白，不给东西
 	for i in 4:
 		piano._查看钢琴()

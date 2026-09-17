@@ -1,31 +1,32 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://b0khwjn72m8aq"]
 
-[ext_resource type="Script" path="res://scripts/props/MossPiano.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://art/item/moss_piano/moss_piano.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://y41sueex10mq" path="res://scripts/props/MossPiano.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dhnu31xumcais" path="res://art/item/moss_piano/moss_piano.png" id="2_texture"]
 [ext_resource type="PackedScene" path="res://scenes/ui/InteractBubble.tscn" id="3_bubble"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
-size = Vector2(440, 280)
+size = Vector2(347.50006, 317.5001)
 
-[node name="MossPiano" type="Node2D"]
+[node name="MossPiano" type="Node2D" unique_id=1246006647]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_script")
 
-[node name="Sprite" type="Sprite2D" parent="."]
-scale = Vector2(0.8, 0.8)
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1704454918]
+scale = Vector2(0.35, 0.35)
 texture = ExtResource("2_texture")
 
-[node name="InteractArea" type="Area2D" parent="."]
+[node name="InteractArea" type="Area2D" parent="." unique_id=923138818]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
-position = Vector2(0, -130)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=234919124]
+position = Vector2(1.2499912, 4.999983)
+scale = Vector2(0.99999946, 0.99999946)
 shape = SubResource("RectangleShape2D_interact")
 
-[node name="Bubble" parent="." instance=ExtResource("3_bubble")]
-layout_mode = 0
-offset_left = 0.0
-offset_top = -330.0
-offset_right = 0.0
-offset_bottom = -330.0
+[node name="Bubble" parent="." unique_id=273030502 instance=ExtResource("3_bubble")]
+offset_left = 1.2499999
+offset_top = -165.00002
+offset_right = 1.2499999
+offset_bottom = -165.00002
 "按键文本" = "W"
