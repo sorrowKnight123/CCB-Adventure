@@ -28,7 +28,6 @@ enum State { IDLE, ARMED, DEMO, PLAY, DONE }
 const NOTE_TEXTURE: Texture2D = preload("res://art/icons/note.png")
 const SFX_MISS: AudioStream = preload("res://audio/enemy/moss/miss.wav")
 const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.tscn")
-const ABILITY_NOTE_SCENE: PackedScene = preload("res://scenes/items/AbilityNote.tscn")
 
 ## 能力奖励音符的横向初速度。**故意远小于货币**（480）：整关只有这一枚，
 ## 飞出去掉进够不到的坑里就麻烦了，所以基本是原地往上抛。
@@ -392,10 +391,8 @@ func _spawn_reward_pickups() -> void:
 		return
 	var origin := _slimes_center() + Vector2(0.0, -奖励抛出点抬高)
 	# 能力奖励先摆：整关只有这一枚，别被「通关奖励 = 0」一起吞掉
-	var ability := _make_ability_reward(origin)
-	if ability != null:
-		ability.setup_launch(1, Vector2(
-			randf_range(-能力奖励横向初速度, 能力奖励横向初速度), -奖励上抛初速度))
+	_make_ability_reward(origin, Vector2(
+		randf_range(-能力奖励横向初速度, 能力奖励横向初速度), -奖励上抛初速度))
 	var total := _config_reward()
 	if total <= 0:
 		return
@@ -419,25 +416,11 @@ func _spawn_ability_reward_if_missed() -> void:
 	_make_ability_reward(_slimes_center() + Vector2(0.0, -能力奖励悬停高度))
 
 
-func _make_ability_reward(origin: Vector2) -> AbilityNote:
+func _make_ability_reward(origin: Vector2, 初速度: Vector2 = Vector2.ZERO) -> AbilityNote:
 	## 造一枚能力奖励音符，挂在关卡层（跟货币拾取物同一个父级）。
+	## 实际是走 `AbilityNote.掉落()` —— 发能力的统一模板，Boss 那边用的是同一个入口。
 	## 没配 `奖励能力`、或者玩家已经拿到了 -> 返回 null，什么都不生成。
-	if 奖励能力 == "" or _ability_reward_owned():
-		return null
-	var parent := get_parent()
-	if parent == null:
-		return null
-	var note := ABILITY_NOTE_SCENE.instantiate() as AbilityNote
-	note.显示提示 = false
-	note.能力 = 奖励能力
-	parent.add_child(note)
-	note.global_position = origin        # ⚠️ 必须在 add_child 之后设 global_position
-	return note
-
-
-func _ability_reward_owned() -> bool:
-	## 能力 id 跟 GameState 的标志一一对应：double_jump -> has_double_jump。
-	return GameState.get("has_" + 奖励能力) == true
+	return AbilityNote.掉落(get_parent(), origin, 奖励能力, 初速度)
 
 
 # ──────────────────────────── 配置读取 ────────────────────────────

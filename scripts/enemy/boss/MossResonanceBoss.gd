@@ -13,6 +13,15 @@ const SFX_PHASE_CHANGE: AudioStream = preload("res://audio/enemy/moss/phase_chan
 
 const BOSS_ID := "moss_resonance_boss"
 
+## 战胜奖励：不直接把能力塞给玩家，而是爆一枚彩虹音符，捡到才拿到「华彩终章」。
+## 发能力的模板是 `AbilityNote.掉落()`（跟小游戏通关用的是同一个入口）。
+const 战胜能力ID: String = "magic_flight"
+## 音符从 Boss 身上往上爆的高度与初速度（落回竞技场地面，交给物理）。
+const 能力奖励抛出点抬高: float = 80.0
+const 能力奖励上抛初速度: float = 420.0
+## 漏捡补发时悬停在 Boss 上方多少像素处（跟小游戏一样取小值：高了玩家够不到）。
+const 能力奖励悬停高度: float = 60.0
+
 enum State { INTRO, IDLE, ATTACK, PHASE_CHANGE, FINISHER, VULNERABLE, VICTORY, DEAD }
 
 signal health_changed(current: int, maximum: int)
@@ -123,6 +132,8 @@ func _ready() -> void:
 	add_to_group("enemies")
 	if GameState.is_boss_defeated(BOSS_ID):
 		_show_defeated_background()
+		# 上次战胜了但没捡能力就走了 -> 补一枚悬停的（能力不能永久丢，跟小游戏一个道理）
+		_掉落能力奖励()
 		return
 	hp = max_hp
 	_configured_contact_damage = contact_damage
@@ -601,11 +612,21 @@ func _finish_success() -> void:
 	await finisher_pull_sprite.animation_finished
 	_hold_finisher_pull_last_frame()
 	await AudioManager.wait_until_music_finished("moss_finisher")
-	if is_instance_valid(player) and player.has_method("grant_magic_flight"):
-		player.grant_magic_flight()
+	# 能力奖励是爆出来的彩虹音符，玩家自己捡（捡到才 grant_magic_flight，见 AbilityNote）
+	_掉落能力奖励(true)
 	GameState.mark_boss_defeated(BOSS_ID)
 	GameState.save_game()
 	complete_victory()
+
+
+func _掉落能力奖励(抛出: bool = false) -> void:
+	## 战胜/补发都走这里。`抛出` = 从 Boss 身上往上爆出来；否则原地悬停（补发用，
+	## 不会再飞丢）。玩家已经拿到「华彩终章」时 `掉落()` 返回 null，什么都不生成。
+	var height := 能力奖励抛出点抬高 if 抛出 else 能力奖励悬停高度
+	var velocity := Vector2.ZERO
+	if 抛出:
+		velocity = Vector2(randf_range(-60.0, 60.0), -能力奖励上抛初速度)
+	AbilityNote.掉落(get_parent(), global_position + Vector2(0.0, -height), 战胜能力ID, velocity)
 
 
 func _hold_finisher_pull_last_frame() -> void:

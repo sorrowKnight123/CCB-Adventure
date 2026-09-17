@@ -18,6 +18,8 @@ extends "res://scripts/game/NotePickup.gd"
 ## 不是光晕），而且关卡的 MossGlow 在共用它，改它会连带改环境光。
 
 const RAINBOW_SHADER: Shader = preload("res://shaders/rainbow_note.gdshader")
+## 自己的场景路径。静态入口里用 load 而不是 preload —— 脚本 preload 自己所在的场景是循环引用。
+const 场景路径: String = "res://scenes/items/AbilityNote.tscn"
 
 ## 能力 id：对应 `Player` 上的 `grant_<id>()`（double_jump / magic_dash / magic_climb / magic_flight）。
 @export var 能力: String = "double_jump"
@@ -36,6 +38,25 @@ var _sweep: float = 0.0
 var _halo_time: float = 0.0
 var _halo: Sprite2D
 var _halo_base_position: Vector2 = Vector2.ZERO
+
+
+## ── 发能力的统一入口（模板）──
+## 「掉落彩虹音符 → 拾取 → 获得能力」整条链子只有这一份实现：小游戏通关、Boss 战胜都调它。
+## 以后再加能力发放点也调它，别再各写一份实例化代码（`能力` 由这里设，调用方不用管）。
+## `初速度` 传 0 是原地悬停（漏捡补发用）；给了就按抛落物扔出去，撞墙落地交给物理。
+## 已经拿过该能力、没给 id、或没父节点 -> 返回 null，什么都不生成。
+static func 掉落(parent: Node, origin: Vector2, 能力id: String,
+		初速度: Vector2 = Vector2.ZERO) -> AbilityNote:
+	if parent == null or 能力id == "" or GameState.get("has_" + 能力id) == true:
+		return null
+	var note := (load(场景路径) as PackedScene).instantiate() as AbilityNote
+	note.显示提示 = false
+	note.能力 = 能力id
+	parent.add_child(note)
+	note.global_position = origin        # ⚠️ 必须在 add_child 之后设，否则会被父级变换吃掉
+	if not 初速度.is_zero_approx():
+		note.setup_launch(1, 初速度)
+	return note
 
 
 func _ready() -> void:
