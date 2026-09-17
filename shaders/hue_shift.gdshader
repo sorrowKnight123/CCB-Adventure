@@ -12,8 +12,13 @@ shader_type canvas_item;
 uniform float target_hue : hint_range(0.0, 1.0) = 0.0;
 uniform float target_saturation : hint_range(0.0, 1.0) = 0.72;
 // 往目标饱和度的混合比例：1 = 完全用目标饱和度（色最纯、最易分辨），0 = 保留原贴图饱和度
-uniform float saturation_blend : hint_range(0.0, 1.0) = 0.85;
-uniform float value_scale : hint_range(0.0, 4.0) = 1.0;
+uniform float saturation_blend : hint_range(0.0, 1.0) = 1.0;
+// ⚠️ 明暗不能直接用原图的 V —— 史莱姆贴图一半像素 V>0.74、四分之一接近纯白，
+//    保留它们会把颜色冲成近白（"看不出红橙黄绿青蓝紫"就是这么来的）。
+//    改成：把原图明暗压进一条较窄的亮带，形体细节还在，但整只都落在目标色上。
+uniform float value_floor : hint_range(0.0, 1.0) = 0.80;     // 中调像素的亮度基准
+uniform float value_contrast : hint_range(0.0, 1.0) = 0.45;  // 保留多少原图明暗起伏
+uniform float value_scale : hint_range(0.0, 2.0) = 1.0;      // 整体提亮/压暗（银白的高八度 C 用）
 
 vec3 _rgb2hsv(vec3 c) {
 	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
@@ -34,7 +39,7 @@ void fragment() {
 	vec3 hsv = _rgb2hsv(tex.rgb);
 	hsv.x = target_hue;
 	hsv.y = clamp(mix(hsv.y, target_saturation, saturation_blend), 0.0, 1.0);
-	hsv.z = clamp(hsv.z * value_scale, 0.0, 4.0);
+	hsv.z = clamp((value_floor + (hsv.z - 0.5) * value_contrast) * value_scale, 0.0, 1.0);
 	// ⚠️ COLOR 进入 fragment 时**已经包含 modulate / self_modulate**（默认 fragment 就是
 	// `COLOR = texture(TEXTURE, UV) * COLOR;`）。直接覆盖会把这些全部吞掉 ——
 	// 史莱姆的受击闪白（self_modulate = 2.6）和"已打对变暗"（modulate）都会失效。

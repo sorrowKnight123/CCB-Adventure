@@ -77,9 +77,11 @@ func play_hurt() -> void:
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
-func 设为已完成(done: bool) -> void:
-	## 进度反馈：已按对的变暗（用户明确要求不做"下一只"提示）。
-	_sprite.modulate = Color(0.42, 0.44, 0.5, 1.0) if done else Color.WHITE
+func 设为已完成() -> void:
+	## 通关后整排史莱姆变暗（**不清除、不隐藏**）—— 表示这一局已经拿下。
+	## ⚠️ 只在通关时调用：同一只史莱姆可能在序列里被弹响多次，
+	##    "打一次就变暗"会让玩家以为它不能再用（用户明确要求删掉那个机制）。
+	_sprite.modulate = Color(0.42, 0.44, 0.5, 1.0)
 
 
 func _apply_note_color() -> void:

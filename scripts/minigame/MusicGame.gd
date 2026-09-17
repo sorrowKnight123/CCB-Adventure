@@ -39,9 +39,11 @@ const SFX_MISS: AudioStream = preload("res://audio/enemy/moss/miss.wav")
 @export_category("场地")
 ## 打开后按 `平铺起点 + 间距` 在运行时重排史莱姆 —— ⚠️ 会覆盖你手摆的位置。
 ## 只在快速搭一排新的时打开，调好位置后关掉。
+## 间距默认 220：玩家近战判定盒 1 段 80px、3 段 105px 宽，
+## 间距太小会一次挥砍同时罩到相邻两只（虽然判定会优先认目标那只，但少蹭到更干净）。
 @export var 自动平铺: bool = false
 @export var 平铺起点: Vector2 = Vector2.ZERO
-@export var 间距: float = 170.0
+@export var 间距: float = 220.0
 
 @export_category("手感")
 @export var 音符特效大小: float = 0.34
@@ -51,6 +53,8 @@ const SFX_MISS: AudioStream = preload("res://audio/enemy/moss/miss.wav")
 @export var 演示后停顿: float = 0.5
 @export var 打错后重播延迟: float = 0.9
 @export var 相机滑入时长: float = 0.6
+## 锁定时镜头往上偏多少像素：史莱姆落在画面偏下位置，上方留出空间。
+@export var 相机垂直偏移: float = 150.0
 @export var 流光周期: float = 2.4
 @export var 谱台浮动幅度: float = 7.0
 @export var 谱台浮动速度: float = 1.8
@@ -105,9 +109,13 @@ func _ready() -> void:
 	_pedestal.body_exited.connect(_on_pedestal_exited)
 	_pedestal_base_position = _pedestal_visual.position
 	# 谱台一直可见、一直可交互；史莱姆等到跟谱台交互之后才出现。
-	_set_slimes_visible(false)
 	if GameState.has_trigger(触发ID):
+		# 已通关：整排史莱姆留在场景里，保持变暗状态（不隐藏、不删除）
 		_state = State.DONE
+		_set_slimes_visible(true)
+		_dim_all_slimes()
+	else:
+		_set_slimes_visible(false)
 
 
 func _process(delta: float) -> void:
@@ -239,7 +247,15 @@ func _resolve_pending_hits() -> void:
 	_pending_hits = []
 	if hits.is_empty() or _state != State.PLAY:
 		return
-	# 只取离玩家最近的一只，其余忽略。
+	# 一次挥砍的判定盒（1 段 80px、3 段 105px 宽）可能同时罩到相邻两只史莱姆。
+	# 规则：**只要其中包含"该打的那只"就算对**，忽略被蹭到的其他只。
+	# （否则玩家站位稍偏就会莫名判错。）
+	var expected := int(_sequence[_progress])
+	for hit in hits:
+		if int(hit["slot"]) == expected:
+			_resolve_hit(expected)
+			return
+	# 没碰到目标 → 取离玩家最近的一只当作"打错的那只"
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	var best_slot: int = hits[0]["slot"]
 	var best_distance := INF
@@ -259,8 +275,8 @@ func _resolve_hit(slot: int) -> void:
 		return
 	if slot == int(_sequence[_progress]):
 		_progress += 1
-		(_slimes[slot] as Node2D).设为已完成(true)
 		# 玩家自己弹奏时也要出声 + 飘音符（受击表现已由 take_damage 触发了）。
+		# ⚠️ 这里**不做**"打对就变暗"：同一只史莱姆可能在序列里被弹响多次。
 		var slime := _slimes[slot] as Node2D
 		_play_note(slime.get_note())
 		_spawn_note_fx(slime.global_position + Vector2(0.0, -72.0), MusicNotes.get_color(slime.get_note()))
@@ -292,9 +308,14 @@ func _play_miss() -> void:
 
 
 func _reset_progress() -> void:
+	## 只归零进度。史莱姆的"变暗"只发生在通关那一刻，所以这里不用恢复外观。
 	_progress = 0
+
+
+func _dim_all_slimes() -> void:
+	## 通关：整排史莱姆变暗，但**保留在场景里**（不隐藏、不删除）。
 	for slime in _slimes:
-		(slime as Node2D).设为已完成(false)
+		(slime as Node2D).设为已完成()
 
 
 func _complete() -> void:
@@ -311,7 +332,7 @@ func _complete() -> void:
 		if hud and hud.has_method("show_note_toast"):
 			hud.show_note_toast(reward)
 	通关.emit()
-	_set_slimes_visible(false)
+	_dim_all_slimes()
 	_restore_camera()
 
 
@@ -432,6 +453,12 @@ func _slimes_center() -> Vector2:
 	return Vector2((min_x + max_x) * 0.5, (min_y + max_y) * 0.5)
 
 
+func _camera_focus_point() -> Vector2:
+	## 镜头锁定点：史莱姆群中心再往上偏 `相机垂直偏移`。
+	## 史莱姆因此落在画面偏下位置，上方留出空间（平台跳跃的常见构图）。
+	return _slimes_center() + Vector2(0.0, -相机垂直偏移)
+
+
 func _slide_camera_and_lock() -> void:
 	if not _acquire_camera():
 		return
@@ -449,14 +476,14 @@ func _slide_camera_and_lock() -> void:
 		_camera_tween.kill()
 	_camera_tween = create_tween()
 	_camera_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	_camera_tween.tween_property(_camera, "global_position", _slimes_center(), 相机滑入时长)
+	_camera_tween.tween_property(_camera, "global_position", _camera_focus_point(), 相机滑入时长)
 	_camera_tween.tween_callback(_finish_camera_lock)
 
 
 func _finish_camera_lock() -> void:
 	if not is_instance_valid(_camera):
 		return
-	_camera.global_position = _slimes_center()
+	_camera.global_position = _camera_focus_point()
 	_camera.reset_smoothing()
 
 

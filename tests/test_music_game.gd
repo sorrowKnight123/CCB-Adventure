@@ -13,6 +13,7 @@ extends Node2D
 const MUSIC_GAME_SCENE: PackedScene = preload("res://scenes/minigame/MusicGame.tscn")
 const PLAYER_SCENE: PackedScene = preload("res://scenes/player/Player.tscn")
 const CONFIG_SCRIPT := preload("res://scripts/minigame/MusicGameConfig.gd")
+const MusicNotesScript := preload("res://scripts/game/MusicNotes.gd")
 
 const TRIGGER_ID := "test_music_game"
 const REWARD := 7
@@ -62,6 +63,8 @@ func _run() -> void:
 	_game.演示前停顿 = 0.02
 	_game.演示后停顿 = 0.02
 	_game.打错后重播延迟 = 0.05
+	_game.相机滑入时长 = 0.05
+	_game.相机垂直偏移 = 150.0
 	_game.position = Vector2(0, 180)   # 让史莱姆站在测试地面(顶面 180)上，跟真实关卡一致
 	add_child(_game)
 	await _settle()
@@ -77,6 +80,26 @@ func _run() -> void:
 	await get_tree().create_timer(0.5).timeout
 	_check(not is_equal_approx(pedestal_visual.position.y, bob_before), "谱台有上下浮动动画")
 
+	# 染色：每只史莱姆必须用**独立材质**、且色相/饱和度等于自己那个音的颜色。
+	# 共享材质会让一排史莱姆全体串色；参数不对则会出现"不是红橙黄绿青蓝紫"。
+	var mats := {}
+	var report := ""
+	for i in _game.get_node("Slimes").get_child_count():
+		var sprite := _slime(i).get_node("Sprite") as AnimatedSprite2D
+		var mat := sprite.material as ShaderMaterial
+		var note: String = _slime(i).get_note()
+		var want := MusicNotesScript.get_color(note)
+		var got_h: float = float(mat.get_shader_parameter("target_hue"))
+		var got_s: float = float(mat.get_shader_parameter("target_saturation"))
+		var got_v: float = float(mat.get_shader_parameter("value_scale"))
+		mats[mat.get_instance_id()] = true
+		report += "%s(h%.3f/s%.2f/v%.2f) " % [note, got_h, got_s, got_v]
+		_check(absf(got_h - want.h) < 0.001 and absf(got_s - want.s) < 0.001,
+			"%s 的材质色相/饱和度 = 该音的颜色" % note)
+	print("[染色] 各史莱姆材质参数：%s" % report)
+	_check(mats.size() == _game.get_node("Slimes").get_child_count(),
+		"每只史莱姆用独立材质（没有串色）")
+
 	# 2. 进区：只锁相机，史莱姆仍然不出现
 	_game._on_trigger_entered(_player)
 	await _settle()
@@ -84,6 +107,11 @@ func _run() -> void:
 	_check(not slimes_root.visible, "进区只锁相机，史莱姆仍隐藏")
 	var cam := _player.get_node_or_null("Camera2D") as Camera2D
 	_check(cam != null and cam.top_level, "进区后相机脱离跟随（锁定）")
+	await get_tree().create_timer(0.25).timeout
+	var slimes_mid_y := (_slime(0).global_position.y + _slime(2).global_position.y) * 0.5
+	_check(absf(cam.global_position.y - (slimes_mid_y - 150.0)) < 6.0,
+		"镜头锁定点比史莱姆中心高 150px（相机y=%.0f 史莱姆y=%.0f）"
+			% [cam.global_position.y, slimes_mid_y])
 	_game.get_node("Trigger").monitoring = false   # 免得玩家移动误触发"走远取消"干扰判定
 
 	# 3. 无碰撞伤害：contact_damage = 0 不该让玩家掉血 / 进无敌 / 被击退
@@ -115,9 +143,6 @@ func _run() -> void:
 	await get_tree().create_timer(0.4).timeout
 	_check(sprite.scale.is_equal_approx(scale_before), "形变会回弹到原大小")
 	_check(sprite.self_modulate.is_equal_approx(Color.WHITE), "闪白会恢复")
-	_slime(0).设为已完成(true)
-	_check(sprite.modulate.r < 0.9, "已打对的史莱姆会变暗（modulate 生效）")
-	_slime(0).设为已完成(false)
 
 	# 5. 打错顺序（该打 2 号，先打 0 号）→ 归零 + 重播
 	_hit(0)
@@ -130,16 +155,30 @@ func _run() -> void:
 	var diag := await _real_attack_on(2)
 	_check(bool(diag["推进"]), "真实挥砍能打中史莱姆并推进进度（诊断：%s）" % str(diag))
 
-	# 7. 剩下两个按顺序打对 → DONE + 奖励 + 永久完成
+	# 6b. 同一次挥砍同时罩到"目标 + 相邻一只" → 应当算对（不能因为蹭到旁边就判错）
+	#     序列是 [2,0,1]，此时该打 0 号；同时报 2 号和 0 号。
+	var progress_before: int = _game._progress
+	_game._on_slime_hit(Vector2.ZERO, 2)
+	_game._on_slime_hit(Vector2.ZERO, 0)
+	await _settle()
+	_check(_game._progress == progress_before + 1,
+		"同时命中目标与相邻一只时判对（进度 %d→%d）" % [progress_before, _game._progress])
+
+	# 7. 打完最后一个 → DONE + 奖励 + 永久完成
 	var notes_before: int = GameState.notes
-	for slot in [0, 1]:
-		_hit(slot)
-		await _settle()
+	_hit(1)
+	await _settle()
 	_check(_state() == 4, "全对 → DONE")
 	_check(GameState.notes == notes_before + REWARD,
 		"通关奖励 +%d（实际 +%d）" % [REWARD, GameState.notes - notes_before])
 	_check(GameState.has_trigger(TRIGGER_ID), "通关写入触发 ID（永久完成）")
-	_check(not slimes_root.visible, "通关后史莱姆收起")
+	# 通关后整排变暗，但保留在场景里（不隐藏、不删除）
+	_check(slimes_root.visible, "通关后史莱姆仍显示（不移除）")
+	var all_dimmed := true
+	for i in slimes_root.get_child_count():
+		if (_slime(i).get_node("Sprite") as AnimatedSprite2D).modulate.r >= 0.9:
+			all_dimmed = false
+	_check(all_dimmed, "通关后整排史莱姆变暗")
 	_check(not _player.输入软冻结, "通关后玩家未被冻住")
 
 
