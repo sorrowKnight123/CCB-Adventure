@@ -8,6 +8,10 @@ extends AnimatedSprite2D
 @export var 音符大小: float = 0.25       # 音符图标缩放（note.png 104x130，可调）
 @export var 音符飘动速度: float = 70.0   # 音符飘起速度（px/s）
 @export var 触发冷却: float = 0.4        # 防连续触发
+## 非空时 → 这个植物是「通关奖励」：对应的触发 ID 没通关之前**隐藏且踩不到**，
+## 通关后自动弹出出现。留空 = 一直就是普通弹跳植物。
+## ⚠️ 填的是对应 MusicGame 节点的 `触发ID`（默认 "music_game_1"）；那边改名了这里也要跟着改。
+@export var 需要通关ID: String = ""
 
 const PIANO_NOTES: Array[AudioStream] = [
 	preload("res://audio/enemy/effect/piano_notes_C4-C5/C4.wav"),
@@ -28,21 +32,50 @@ const NOTE_COLORS: Array[Color] = [
 
 var _cooldown: float = 0.0
 var _bouncing := false
+var _locked: bool = false          # 被"通关奖励"锁住（隐藏 + 踩不到）
+var _base_scale: Vector2 = Vector2.ONE
 
 @onready var audio_player: AudioStreamPlayer = $PianoPlayer
 
 
 func _ready() -> void:
+	_base_scale = scale
 	play("idle")
 	$Trigger.body_entered.connect(_on_trigger_body_entered)
+	if 需要通关ID != "" and not GameState.has_trigger(需要通关ID):
+		_set_locked(true)
 
 
 func _process(delta: float) -> void:
 	_cooldown = maxf(_cooldown - delta, 0.0)
+	# 通关奖励：等对应的 MusicGame 打过卡就出现。
+	# 用轮询而不是在关卡里把 MusicGame 的 `通关` 信号连过来 —— 免得植物和某个具体小游戏节点耦合，
+	# 也省掉 3_1.tscn 里的手工连线。只在被锁住时轮询，普通植物零开销。
+	if _locked and GameState.has_trigger(需要通关ID):
+		解锁()
+
+
+func _set_locked(locked: bool) -> void:
+	_locked = locked
+	visible = not locked
+	# ⚠️ 只隐藏不够：Trigger 是 Area2D，不关 monitoring 的话，踩在"看不见的植物"上照样会被弹飞
+	$Trigger.set_deferred("monitoring", not locked)
+	$Trigger.set_deferred("monitorable", not locked)
+
+
+func 解锁() -> void:
+	## 通关后出现：从 0 弹回原大小。
+	## （已经通关过的存档再次进关卡时不会走这里 —— `_ready` 直接就是显示状态，不重复播动画）
+	if not _locked:
+		return
+	_set_locked(false)
+	scale = Vector2.ZERO
+	var tween := create_tween()
+	tween.tween_property(self, "scale", _base_scale, 0.45) 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
 func _on_trigger_body_entered(body: Node2D) -> void:
-	if _cooldown > 0.0 or _bouncing:
+	if _locked or _cooldown > 0.0 or _bouncing:
 		return
 	if not body.is_in_group("player"):
 		return

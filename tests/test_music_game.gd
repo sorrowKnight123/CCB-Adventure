@@ -15,6 +15,7 @@ const PLAYER_SCENE: PackedScene = preload("res://scenes/player/Player.tscn")
 const CONFIG_SCRIPT := preload("res://scripts/minigame/MusicGameConfig.gd")
 const MusicNotesScript := preload("res://scripts/game/MusicNotes.gd")
 const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.tscn")
+const JUMP_PLANT_SCENE: PackedScene = preload("res://scenes/props/level3/JumpPlant.tscn")
 
 const TRIGGER_ID := "test_music_game"
 const REWARD := 7
@@ -70,6 +71,16 @@ func _run() -> void:
 	_game.position = Vector2(0, 180)   # 让史莱姆站在测试地面(顶面 180)上，跟真实关卡一致
 	add_child(_game)
 	await _settle()
+
+	# 0. 通关奖励门禁：绑定 需要通关ID 的弹跳植物，通关前必须隐藏 + 踩不到
+	var gated_plant := JUMP_PLANT_SCENE.instantiate()
+	gated_plant.需要通关ID = TRIGGER_ID
+	add_child(gated_plant)
+	gated_plant.global_position = Vector2(-700.0, 100.0)
+	await _settle()
+	_check(not gated_plant.visible, "通关前：绑定通关ID的弹跳植物隐藏")
+	_check(not (gated_plant.get_node("Trigger") as Area2D).monitoring,
+		"通关前：它的触发区关闭（踩不到，不会隐形弹飞玩家）")
 
 	# 1. 初始：史莱姆隐藏，谱台常驻可见
 	_check(_state() == 0, "初始状态 IDLE")
@@ -250,6 +261,15 @@ func _run() -> void:
 		if (_slime(i).get_node("Sprite") as AnimatedSprite2D).modulate.r >= 0.9:
 			all_dimmed = false
 	_check(all_dimmed, "通关后整排史莱姆变暗")
+
+	# 通关奖励门禁：对应的 ID 一旦打卡，植物应当自己出现（轮询解锁）
+	await _settle()
+	_check(gated_plant.visible, "通关后：弹跳植物自动出现")
+	_check((gated_plant.get_node("Trigger") as Area2D).monitoring,
+		"通关后：它的触发区恢复（可以踩了）")
+	await get_tree().create_timer(0.7).timeout
+	_check(gated_plant.scale.is_equal_approx(Vector2(0.3, 0.3)),
+		"弹出动画结束后回到原大小（实际 %s）" % gated_plant.scale)
 	_check(not _player.输入软冻结, "通关后玩家未被冻住")
 
 
