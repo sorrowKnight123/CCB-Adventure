@@ -14,6 +14,7 @@ const MUSIC_GAME_SCENE: PackedScene = preload("res://scenes/minigame/MusicGame.t
 const PLAYER_SCENE: PackedScene = preload("res://scenes/player/Player.tscn")
 const CONFIG_SCRIPT := preload("res://scripts/minigame/MusicGameConfig.gd")
 const MusicNotesScript := preload("res://scripts/game/MusicNotes.gd")
+const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.tscn")
 
 const TRIGGER_ID := "test_music_game"
 const REWARD := 7
@@ -55,7 +56,8 @@ func _run() -> void:
 	slimes_root.get_node("Slime3").free()
 	slimes_root.get_node("Slime4").free()
 	var config = CONFIG_SCRIPT.new()
-	config.演奏顺序 = PackedInt32Array([2, 0, 1])
+	# 1-based：第3只、停顿、第1只、第2只 → 演示 [2,-1,0,1]，演奏 [2,0,1]
+	config.演奏顺序 = PackedInt32Array([3, 0, 1, 2])
 	config.通关奖励 = REWARD
 	config.演示间隔 = 0.05
 	_game.配置 = config
@@ -139,6 +141,8 @@ func _run() -> void:
 	# 4. 与谱台交互（按 W）→ 史莱姆出现 + 软冻结 + 演示 → PLAY
 	_game._start_demo()
 	_check(_state() == 2, "与谱台交互 → DEMO")
+	_check(_game._demo_sequence.size() == 4, "演示序列含停顿（4 拍）")
+	_check(_game._answer_sequence.size() == 3, "演奏序列去掉了停顿（3 个音要复现）")
 	_check(slimes_root.visible, "交互后史莱姆出现")
 	_check(_player.输入软冻结, "演示期间玩家被软冻结")
 	_check(await _wait_for_state(3, 6.0), "演示结束 → PLAY")
@@ -206,17 +210,26 @@ func _run() -> void:
 		target._on_body_entered(_player)
 		await _settle()
 		_check(GameState.notes == notes_before + 1, "捡起一个音符 +1")
-	# 等散落物飞完，确认落点都在场地范围内（不会飞出场外或悬在天上）
-	await get_tree().create_timer(0.6).timeout
-	var mid: Vector2 = _game._slimes_center()
-	var out_of_bounds := 0
+	# 等它们落地（物理抛落），断言"真的都落在地面上"
+	var settle_t := 0.0
+	while settle_t < 5.0:
+		var airborne := 0
+		for node in _reward_pickups():
+			if not node.is_on_floor():
+				airborne += 1
+		if airborne == 0:
+			break
+		await get_tree().physics_frame
+		settle_t += 1.0 / 60.0
+	var not_landed := 0
 	for node in _reward_pickups():
-		var p: Vector2 = node.global_position
-		if absf(p.x - mid.x) > float(_game.奖励散落横向范围) + 60.0 \
-				or p.y < mid.y - float(_game.奖励散落纵向范围) - 80.0 \
-				or p.y > mid.y + 40.0:
-			out_of_bounds += 1
-	_check(out_of_bounds == 0, "奖励散落物全部落在场地范围内")
+		if not node.is_on_floor():
+			not_landed += 1
+	_check(not_landed == 0, "奖励散落物全部落在地面上（没落地 %d 个）" % not_landed)
+
+	# 物理碰撞验证：朝一堵墙扔音符，必须被挡住、不穿墙（用户最担心的就是撞墙）
+	await _check_wall_blocks_pickup()
+
 	_check(GameState.has_trigger(TRIGGER_ID), "通关写入触发 ID（永久完成）")
 	# 通关后整排变暗，但保留在场景里（不隐藏、不删除）
 	_check(slimes_root.visible, "通关后史莱姆仍显示（不移除）")
@@ -343,11 +356,43 @@ func _player_in_camera_view() -> bool:
 	return absf(rel.x) <= half.x and absf(rel.y) <= half.y
 
 
+func _check_wall_blocks_pickup() -> void:
+	## 在测试场地里立一堵墙，朝它扔一个音符：必须被挡住（证明真的走了物理碰撞）。
+	var wall := StaticBody2D.new()
+	wall.collision_layer = 1
+	wall.collision_mask = 0
+	var wall_shape := CollisionShape2D.new()
+	var wall_rect := RectangleShape2D.new()
+	wall_rect.size = Vector2(40.0, 600.0)
+	wall_shape.shape = wall_rect
+	wall.add_child(wall_shape)
+	add_child(wall)
+	wall.global_position = Vector2(1400.0, -100.0)   # 立在地面上（地面顶面 y=180）
+
+	var probe := NOTE_PICKUP_SCENE.instantiate()
+	probe.显示提示 = false
+	add_child(probe)
+	probe.global_position = Vector2(1150.0, 100.0)
+	probe.setup_launch(1, Vector2(900.0, -260.0))    # 朝右上方扔，正对那堵墙
+
+	var t := 0.0
+	while t < 5.0 and not probe.is_on_floor():
+		await get_tree().physics_frame
+		t += 1.0 / 60.0
+	_check(probe.global_position.x < 1372.0,
+		"音符被墙挡住、没有穿墙（x=%.0f，墙左面 1380）" % probe.global_position.x)
+	_check(probe.is_on_floor(), "撞墙后仍会沿墙滑下来落到地面")
+
+	probe.queue_free()
+	wall.queue_free()
+	await get_tree().physics_frame
+
+
 func _reward_pickups() -> Array:
 	## 通关奖励的拾取物被挂在小游戏节点的父级（关卡层），跟 EnemyDrop 的做法一致。
 	var out := []
 	for child in get_children():
-		if child.has_method("setup_drop") and child.has_method("_on_body_entered"):
+		if child.has_method("setup_launch") and child.has_method("_on_body_entered"):
 			out.append(child)
 	return out
 

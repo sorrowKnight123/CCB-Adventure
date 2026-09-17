@@ -73,29 +73,36 @@ func _init() -> void:
 	_check(enum_missing == "", "MusicSlime 的下拉框含全部音名（缺：%s）"
 		% ("无" if enum_missing == "" else enum_missing))
 
-	# 6. MusicGameConfig 的演奏顺序回退
+	# 6. MusicGameConfig 的顺序表：0 = 停顿（空音），1..N = 第 N 只史莱姆
 	var config = ConfigScript.new()
-	_check(config.get_sequence(5) == PackedInt32Array([0, 1, 2, 3, 4]),
-		"演奏顺序留空 = 从左到右")
-	_check(config.get_sequence(0).is_empty(), "没有槽位时返回空数组")
-	config.演奏顺序 = PackedInt32Array([2, 0, 9, -1, 1])
-	_check(config.get_sequence(3) == PackedInt32Array([2, 0, 1]),
-		"越界的演奏顺序编号被丢掉")
-	_check(config.get_sequence(0).is_empty(), "槽位数 0 时越界编号全部丢弃")
+	_check(config.演示序列(5) == PackedInt32Array([0, 1, 2, 3, 4]), "演奏顺序留空 = 从左到右")
+	_check(config.演示序列(0).is_empty(), "没有槽位时演示序列为空")
+	config.演奏顺序 = PackedInt32Array([1, 0, 3])
+	_check(config.演示序列(3) == PackedInt32Array([0, -1, 2]),
+		"[1,0,3] → 演示序列 = 第1只、停顿、第3只")
+	_check(config.演奏序列(3) == PackedInt32Array([0, 2]),
+		"演奏序列去掉停顿 = [第1只, 第3只]")
+	config.演奏顺序 = PackedInt32Array([0, 0])
+	_check(config.演奏序列(3).is_empty(), "整首只有停顿 → 演奏序列为空")
+	_check(config.演示序列(3) == PackedInt32Array([-1, -1]), "整首只有停顿 → 演示序列全是停顿")
+	config.演奏顺序 = PackedInt32Array([1, 9, -1, 2])
+	_check(config.演示序列(3) == PackedInt32Array([0, 1]), "越界/负数编号被丢掉")
 	_check(config.通关奖励 > 0, "默认通关奖励为正数")
 	_check(config.演示间隔 > 0.0, "默认演示间隔为正数")
 
-	# 7. 附带在场的示例配置能加载、且顺序对它那 5 个槽位都合法
+	# 7. 在场的示例配置能加载，且演奏序列的编号都合法
 	var example = load("res://data/music_game/example_melody.tres")
 	_check(example != null, "example_melody.tres 能加载")
 	if example != null:
-		var seq: PackedInt32Array = example.get_sequence(5)
-		_check(seq.size() > 0, "示例配置在该槽位数下能出序列")
+		var answer: PackedInt32Array = example.演奏序列(5)
+		_check(answer.size() > 0, "示例配置能出演奏序列")
 		var all_valid := true
-		for index in seq:
+		for index in answer:
 			if index < 0 or index >= 5:
 				all_valid = false
-		_check(all_valid, "示例配置的编号都在 0..4 内")
+		_check(all_valid, "示例配置的演奏序列编号都在 0..4 内")
+		_check(example.演示序列(5).size() >= answer.size(),
+			"演示序列长度 ≥ 演奏序列长度（多出来的是停顿）")
 
 	# MusicGameConfig 是 Resource(RefCounted)，引用计数自动回收，不能手动 free()。
 

@@ -47,10 +47,11 @@ const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.ts
 @export var 间距: float = 220.0
 
 @export_category("手感")
-## 通关奖励不从天上直接进账，而是把 `通关奖励` 个音符**撒在场地里**让玩家自己捡。
-## 这两个值控制喷溅范围（相对史莱姆群中心，往左右铺开、往上抛一点）。
-@export var 奖励散落横向范围: float = 420.0
-@export var 奖励散落纵向范围: float = 140.0
+## 通关奖励不从天上直接进账，而是把 `通关奖励` 个音符**抛到场地里**让玩家自己捡。
+## 这里只给初速度 —— 之后加重力、撞墙、落平台、落斜坡全交给物理引擎（NotePickup 是 CharacterBody2D）。
+## 横向随机 ±`奖励横向初速度`；纵向向上 `奖励上抛初速度` 的 0.75~1.25 倍。
+@export var 奖励横向初速度: float = 520.0
+@export var 奖励上抛初速度: float = 520.0
 @export var 音符特效大小: float = 0.34
 @export var 音符飘动距离: float = 70.0
 @export var 音符飘动时长: float = 0.65
@@ -75,7 +76,8 @@ const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.ts
 
 var _state: int = State.IDLE
 var _slimes: Array = []
-var _sequence: PackedInt32Array = PackedInt32Array()
+var _demo_sequence: PackedInt32Array = PackedInt32Array()   # 演示用（含停顿标记）
+var _answer_sequence: PackedInt32Array = PackedInt32Array() # 玩家要复现的（去掉停顿）
 var _progress: int = 0
 ## 演示协程代号：状态一变就作废上一段协程，避免重复触发时两段演示叠着跑。
 var _serial: int = 0
@@ -175,9 +177,10 @@ func _cancel_to_idle() -> void:
 
 
 func _start_demo() -> void:
-	_sequence = _config_sequence()
-	if _sequence.is_empty():
-		push_warning("音乐小游戏：没有可演示的槽位（Slimes 容器是空的？）")
+	_demo_sequence = _config_demo_sequence()
+	_answer_sequence = _config_answer_sequence()
+	if _answer_sequence.is_empty():
+		push_warning("音乐小游戏：演奏序列是空的（只有停顿？还是 Slimes 下没有子节点？）")
 		return
 	_set_slimes_visible(true)   # 与谱台交互 → 史莱姆出现
 	if _prompt != null:
@@ -194,8 +197,10 @@ func _run_demo() -> void:
 	await get_tree().create_timer(演示前停顿).timeout
 	if serial != _serial:
 		return
-	for slot in _sequence:
-		_play_slot(slot)
+	for entry in _demo_sequence:
+		# 停顿（0）照样占一个节拍，但不出声、不闪白、不飘音符
+		if entry != MusicGameConfig.停顿:
+			_play_slot(entry)
 		await get_tree().create_timer(_demo_interval()).timeout
 		if serial != _serial:
 			return
@@ -262,7 +267,7 @@ func _resolve_pending_hits() -> void:
 	# 一次挥砍的判定盒（1 段 80px、3 段 105px 宽）可能同时罩到相邻两只史莱姆。
 	# 规则：**只要其中包含"该打的那只"就算对**，忽略被蹭到的其他只。
 	# （否则玩家站位稍偏就会莫名判错。）
-	var expected := int(_sequence[_progress])
+	var expected := int(_answer_sequence[_progress])
 	for hit in hits:
 		if int(hit["slot"]) == expected:
 			_resolve_hit(expected)
@@ -283,16 +288,16 @@ func _resolve_pending_hits() -> void:
 
 
 func _resolve_hit(slot: int) -> void:
-	if _progress >= _sequence.size():
+	if _progress >= _answer_sequence.size():
 		return
-	if slot == int(_sequence[_progress]):
+	if slot == int(_answer_sequence[_progress]):
 		_progress += 1
 		# 玩家自己弹奏时也要出声 + 飘音符（受击表现已由 take_damage 触发了）。
 		# ⚠️ 这里**不做**"打对就变暗"：同一只史莱姆可能在序列里被弹响多次。
 		var slime := _slimes[slot] as Node2D
 		_play_note(slime.get_note())
 		_spawn_note_fx(slime.global_position + Vector2(0.0, -72.0), MusicNotes.get_color(slime.get_note()))
-		if _progress >= _sequence.size():
+		if _progress >= _answer_sequence.size():
 			_complete()
 	else:
 		_fail()
@@ -360,23 +365,30 @@ func _spawn_reward_pickups() -> void:
 		pickup.显示提示 = false
 		parent.add_child(pickup)
 		pickup.global_position = origin
-		# 往左右大面积铺开、往上抛一点（落点接近地面，跳一下就够得着）
-		var offset := Vector2(
-			randf_range(-奖励散落横向范围, 奖励散落横向范围),
-			-randf_range(20.0, maxf(奖励散落纵向范围, 20.0)))
-		pickup.setup_drop(1, false, offset)
+		# 只给初速度：往上抛 + 左右散开。撞墙、落平台、落斜坡全交给物理引擎。
+		var vx := randf_range(-奖励横向初速度, 奖励横向初速度)
+		var vy := -奖励上抛初速度 * randf_range(0.75, 1.25)
+		pickup.setup_launch(1, Vector2(vx, vy))
 
 
 # ──────────────────────────── 配置读取 ────────────────────────────
 
 
-func _config_sequence() -> PackedInt32Array:
+func _config_demo_sequence() -> PackedInt32Array:
+	## 演示序列（含停顿标记）。
 	if 配置 != null:
-		return 配置.get_sequence(_slimes.size())
+		return 配置.演示序列(_slimes.size())
 	var out := PackedInt32Array()
 	for i in _slimes.size():
 		out.append(i)
 	return out
+
+
+func _config_answer_sequence() -> PackedInt32Array:
+	## 玩家要复现的序列：去掉所有停顿。没有配 `配置` 时跟演示序列一样（从左到右）。
+	if 配置 != null:
+		return 配置.演奏序列(_slimes.size())
+	return _config_demo_sequence()
 
 
 func _config_reward() -> int:
@@ -583,8 +595,8 @@ func _draw() -> void:
 		var center := to_local(slime.global_position)
 		draw_line(center + Vector2(-14.0, 0.0), center + Vector2(14.0, 0.0), Color(1, 1, 0, 0.85), 1.0)
 		draw_line(center + Vector2(0.0, -14.0), center + Vector2(0.0, 14.0), Color(1, 1, 0, 0.85), 1.0)
-		draw_string(font, center + Vector2(18.0, -18.0), "%d  %s" % [i, note],
+		draw_string(font, center + Vector2(18.0, -18.0), "%d  %s" % [i + 1, note],
 			HORIZONTAL_ALIGNMENT_LEFT, -1, 14, MusicNotes.get_color(note))
 	draw_string(font, Vector2(0.0, -8.0),
-		"演奏顺序填上面的编号（从 0 开始）；留空 = 从左到右。史莱姆数量 = Slimes 下的子节点数",
+		"演奏顺序：0 = 停顿，1..N = 第 N 只（上面的编号从 1 开始）；留空 = 从左到右",
 		HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color(1, 1, 1, 0.7))
