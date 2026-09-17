@@ -50,8 +50,12 @@ const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.ts
 ## 通关奖励不从天上直接进账，而是把 `通关奖励` 个音符**抛到场地里**让玩家自己捡。
 ## 这里只给初速度 —— 之后加重力、撞墙、落平台、落斜坡全交给物理引擎（NotePickup 是 CharacterBody2D）。
 ## 横向随机 ±`奖励横向初速度`；纵向向上 `奖励上抛初速度` 的 0.75~1.25 倍。
-@export var 奖励横向初速度: float = 520.0
+@export var 奖励横向初速度: float = 480.0
 @export var 奖励上抛初速度: float = 520.0
+## 抛出点比史莱姆中心抬高多少像素。
+## ⚠️ 必须 > 0：拾取物的碰撞圆圆心如果正好压在地面高度上（史莱姆中心就在地面上），
+## 第一帧 move_and_slide() 就会判定 is_on_floor() → 速度清零 → 原地落下、完全飞不出去。
+@export var 奖励抛出点抬高: float = 80.0
 @export var 音符特效大小: float = 0.34
 @export var 音符飘动距离: float = 70.0
 @export var 音符飘动时长: float = 0.65
@@ -359,7 +363,7 @@ func _spawn_reward_pickups() -> void:
 	var parent := get_parent()
 	if parent == null:
 		return
-	var origin := _slimes_center()
+	var origin := _slimes_center() + Vector2(0.0, -奖励抛出点抬高)
 	for i in total:
 		var pickup := NOTE_PICKUP_SCENE.instantiate()
 		pickup.显示提示 = false

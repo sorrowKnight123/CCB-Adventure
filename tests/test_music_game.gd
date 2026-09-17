@@ -222,10 +222,22 @@ func _run() -> void:
 		await get_tree().physics_frame
 		settle_t += 1.0 / 60.0
 	var not_landed := 0
+	var max_spread := 0.0
+	var spawn: Vector2 = _game._slimes_center()
 	for node in _reward_pickups():
 		if not node.is_on_floor():
 			not_landed += 1
+		max_spread = maxf(max_spread, absf(node.global_position.x - spawn.x))
 	_check(not_landed == 0, "奖励散落物全部落在地面上（没落地 %d 个）" % not_landed)
+	# ⚠️ 这条是"飞溅"的关键断言：只断言"落地"会被"原地落下"骗过
+	#    （拾取物圆心压在地面里 → 第一帧就 is_on_floor → 速度清零 → 根本飞不出去）
+	_check(max_spread > 180.0, "奖励散落物真的飞溅开了（最远 %.0f px）" % max_spread)
+
+	# 通关后再存一张截图，方便肉眼确认"飞溅一地"的效果
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png("user://music_game_reward.png")
+		print("[截图] 已保存 user://music_game_reward.png")
 
 	# 物理碰撞验证：朝一堵墙扔音符，必须被挡住、不穿墙（用户最担心的就是撞墙）
 	await _check_wall_blocks_pickup()
