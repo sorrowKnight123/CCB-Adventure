@@ -71,12 +71,14 @@ const ATTACK_DATA: Array[AttackData] = [
 const ATTACK_HIT_TIME_RATIO: float = 0.45
 # 能力获取过场：拾取能力时播放统一的过场动画（AbilityCutscene）。
 const ABILITY_CUTSCENE: PackedScene = preload("res://ui/AbilityCutscene.tscn")
-# 能力图标映射：把图标 PNG 放进 res://ui/icons/ 并在此填路径即可显示；空字符串 = null 占位（图标区域留空）。
+## 能力图标映射：把图标 PNG 放进 `art/icons/` 并在此填路径即可显示；空字符串 = null 占位（图标区域留空）。
+## ⚠️ 画布统一 **104×130**（与 `art/icons/note.png` 一致）。过场里的 `Icon` 是 TextureRect，
+##    按贴图自身尺寸撑开 —— 画布不统一，图标在过场里就会一个大一个小。
 const ABILITY_ICONS: Dictionary = {
 	"double_jump": "res://art/icons/note.png",
 	"magic_dash": "",
 	"magic_climb": "",
-	"magic_flight": "res://art/character/abilities/cadenza.png",
+	"magic_flight": "res://art/icons/cadenza_icon.png",
 	"heal_melody": "",
 }
 # 能力介绍（过场动画中能力名下方的小字）。
