@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://y41sueex10mq" path="res://scripts/props/MossPiano.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dhnu31xumcais" path="res://art/item/moss_piano/moss_piano.png" id="2_texture"]
 [ext_resource type="PackedScene" path="res://scenes/ui/InteractBubble.tscn" id="3_bubble"]
+[ext_resource type="Texture2D" uid="uid://cwqnu0yob24h4" path="res://art/item/ecstasy_page/ecstasy_1.png" id="4_page"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
 size = Vector2(347.50006, 317.5001)
@@ -10,6 +11,7 @@ size = Vector2(347.50006, 317.5001)
 [node name="MossPiano" type="Node2D" unique_id=1246006647]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_script")
+"羊皮纸图标" = ExtResource("4_page")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=1704454918]
 scale = Vector2(0.35, 0.35)
