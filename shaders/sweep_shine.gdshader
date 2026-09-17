@@ -18,5 +18,6 @@ void fragment() {
 	float band = clamp(1.0 - abs(axis - center) / band_width, 0.0, 1.0);
 	band = band * band;
 	vec3 rgb = tex.rgb + shine_color * band * strength * tex.a;
-	COLOR = vec4(rgb, tex.a);
+	// COLOR 进入 fragment 时已含 modulate（默认 fragment 会乘它），这里要显式乘回去。
+	COLOR = vec4(rgb * COLOR.rgb, tex.a * COLOR.a);
 }

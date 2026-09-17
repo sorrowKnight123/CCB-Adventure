@@ -52,6 +52,8 @@ const SFX_MISS: AudioStream = preload("res://audio/enemy/moss/miss.wav")
 @export var 打错后重播延迟: float = 0.9
 @export var 相机滑入时长: float = 0.6
 @export var 流光周期: float = 2.4
+@export var 谱台浮动幅度: float = 7.0
+@export var 谱台浮动速度: float = 1.8
 
 @export_category("调试")
 ## 在编辑器里画出每只槽位的编号 + 音名（颜色 = 该音的颜色）。
@@ -67,6 +69,8 @@ var _serial: int = 0
 var _pending_hits: Array = []
 var _player_on_pedestal: bool = false
 var _sweep_time: float = 0.0
+var _bob_time: float = 0.0
+var _pedestal_base_position: Vector2 = Vector2.ZERO
 var _sfx_index: int = 0
 
 # 相机保存（BlueWizard 那套）
@@ -99,9 +103,9 @@ func _ready() -> void:
 	_trigger.body_exited.connect(_on_trigger_exited)
 	_pedestal.body_entered.connect(_on_pedestal_entered)
 	_pedestal.body_exited.connect(_on_pedestal_exited)
-	_set_slimes_active(false)
-	_pedestal.visible = false
-	_pedestal.set_deferred("monitoring", false)
+	_pedestal_base_position = _pedestal_visual.position
+	# 谱台一直可见、一直可交互；史莱姆等到跟谱台交互之后才出现。
+	_set_slimes_visible(false)
 	if GameState.has_trigger(触发ID):
 		_state = State.DONE
 
@@ -123,9 +127,7 @@ func _on_trigger_entered(body: Node2D) -> void:
 	if _state != State.IDLE or not body.is_in_group("player"):
 		return
 	_state = State.ARMED
-	_set_slimes_active(true)
-	_pedestal.visible = true
-	_pedestal.set_deferred("monitoring", true)
+	# 只锁相机；史莱姆要等玩家跟谱台交互才出现。
 	_slide_camera_and_lock()
 
 
@@ -143,9 +145,9 @@ func _cancel_to_idle() -> void:
 	_serial += 1
 	_set_player_frozen(false)
 	_reset_progress()
-	_set_slimes_active(false)
-	_pedestal.visible = false
-	_pedestal.set_deferred("monitoring", false)
+	_set_slimes_visible(false)
+	if _prompt != null:
+		_prompt.visible = false
 	_restore_camera()
 
 
@@ -157,6 +159,9 @@ func _start_demo() -> void:
 	if _sequence.is_empty():
 		push_warning("音乐小游戏：没有可演示的槽位（Slimes 容器是空的？）")
 		return
+	_set_slimes_visible(true)   # 与谱台交互 → 史莱姆出现
+	if _prompt != null:
+		_prompt.visible = false
 	_run_demo()
 
 
@@ -306,9 +311,7 @@ func _complete() -> void:
 		if hud and hud.has_method("show_note_toast"):
 			hud.show_note_toast(reward)
 	通关.emit()
-	_set_slimes_active(false)
-	_pedestal.visible = false
-	_pedestal.set_deferred("monitoring", false)
+	_set_slimes_visible(false)
 	_restore_camera()
 
 
@@ -347,11 +350,12 @@ func _collect_slimes() -> Array:
 	return out
 
 
-func _set_slimes_active(active: bool) -> void:
-	## 隐藏的史莱姆必须同时关掉碰撞层，否则玩家近战仍然能打到看不见的目标。
-	## 在 body_entered 回调里改碰撞属性会被物理引擎拒绝，所以用 set_deferred。
-	for slime in _slimes:
-		(slime as Node2D).set_deferred("collision_layer", 4 if active else 0)
+func _set_slimes_visible(active: bool) -> void:
+	## ⚠️ 只切可见性，**绝不改 collision_layer**。
+	## 曾经用 `collision_layer = 0/4` 来表示"史莱姆未出现/已出现"，结果玩家挥砍完全打不到它们：
+	## 运行时改动一个 StaticBody2D 的碰撞层之后，**已经存在并处于 monitoring 的 Area2D
+	## 不会重新评估这个重叠**（新创建的 Area2D 反而能发现它）。可见性完全够用 ——
+	## 非 PLAY 阶段的命中本来就被 `_on_slime_hit` 忽略掉了。
 	_slimes_root.visible = active
 
 
@@ -363,6 +367,10 @@ func _apply_tiling() -> void:
 func _animate_pedestal(delta: float) -> void:
 	if _pedestal_visual == null:
 		return
+	# 小幅上下浮动，让谱台在场景里更醒目
+	_bob_time += delta
+	_pedestal_visual.position.y = _pedestal_base_position.y \
+		+ sin(_bob_time * 谱台浮动速度) * 谱台浮动幅度
 	var material := _pedestal_visual.material as ShaderMaterial
 	if material == null:
 		return

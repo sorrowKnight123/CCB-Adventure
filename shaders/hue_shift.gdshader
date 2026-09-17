@@ -35,5 +35,8 @@ void fragment() {
 	hsv.x = target_hue;
 	hsv.y = clamp(mix(hsv.y, target_saturation, saturation_blend), 0.0, 1.0);
 	hsv.z = clamp(hsv.z * value_scale, 0.0, 4.0);
-	COLOR = vec4(_hsv2rgb(hsv), tex.a);
+	// ⚠️ COLOR 进入 fragment 时**已经包含 modulate / self_modulate**（默认 fragment 就是
+	// `COLOR = texture(TEXTURE, UV) * COLOR;`）。直接覆盖会把这些全部吞掉 ——
+	// 史莱姆的受击闪白（self_modulate = 2.6）和"已打对变暗"（modulate）都会失效。
+	COLOR = vec4(_hsv2rgb(hsv) * COLOR.rgb, tex.a * COLOR.a);
 }

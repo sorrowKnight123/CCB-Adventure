@@ -1,10 +1,12 @@
 extends Node2D
 ## 音乐小游戏流程自检（headless，场景模式 —— `--script` 不会加载 autoload）。
-## 运行：godot --headless --path . res://tests/test_music_game.tscn --quit-after 4000
+## 运行：godot --headless --path . res://tests/test_music_game.tscn --quit-after 8000
 ##
-## 覆盖：进区 → ARMED、开始演示 → 演示期间软冻结 → PLAY、
-##       打错 → 进度归零 + 自动重播、按顺序打对 → DONE + 发货币 + 写触发 ID，
-##       以及"史莱姆 0 点接触伤害不让玩家受伤"。
+## 覆盖：
+##   基线  —— 玩家的近战挥砍本身能打中 layer 3 的普通敌人（跟史莱姆无关的对照）
+##   流程  —— 进区只锁相机 → 站谱台按 W 才出史莱姆并演示 → 演示期间软冻结 → PLAY
+##   判定  —— 打错归零 + 自动重播；真实挥砍命中史莱姆 → 进度推进
+##   结算  —— 全对 → DONE + 发货币 + 写触发 ID；0 点接触伤害不让玩家受伤
 ##
 ## 会写真实存档，所以开头备份、结尾还原（跟 test_music_sheet.gd 一样）。
 
@@ -38,6 +40,10 @@ func _ready() -> void:
 func _run() -> void:
 	GameState.reset()
 	_add_floor()
+
+	# 基线：先确认玩家的近战挥砍本身是好的。它不过就说明问题在近战，不在这小游戏。
+	await _baseline_melee_check()
+
 	_player = PLAYER_SCENE.instantiate()
 	_player.position = Vector2(-900, 0)   # 故意站在触发区外，进区由测试手动触发
 	add_child(_player)
@@ -56,20 +62,29 @@ func _run() -> void:
 	_game.演示前停顿 = 0.02
 	_game.演示后停顿 = 0.02
 	_game.打错后重播延迟 = 0.05
+	_game.position = Vector2(0, 180)   # 让史莱姆站在测试地面(顶面 180)上，跟真实关卡一致
 	add_child(_game)
 	await _settle()
 
-	# 1. 初始：隐藏且打不到
+	# 1. 初始：史莱姆隐藏，谱台常驻可见
 	_check(_state() == 0, "初始状态 IDLE")
-	_check(_slime(0).collision_layer == 0, "初始史莱姆碰撞层 = 0（打不到）")
-	_check(not _game.get_node("Pedestal").visible, "初始谱台隐藏")
+	_check(not slimes_root.visible, "初始史莱姆隐藏（还没跟谱台交互）")
+	_check(_game.get_node("Pedestal").visible, "谱台一开始就可见（不依赖进区）")
 
-	# 2. 进区
+	# 谱台的上下浮动动画
+	var pedestal_visual := _game.get_node("Pedestal/Visual") as Sprite2D
+	var bob_before := pedestal_visual.position.y
+	await get_tree().create_timer(0.5).timeout
+	_check(not is_equal_approx(pedestal_visual.position.y, bob_before), "谱台有上下浮动动画")
+
+	# 2. 进区：只锁相机，史莱姆仍然不出现
 	_game._on_trigger_entered(_player)
 	await _settle()
 	_check(_state() == 1, "进区后 ARMED")
-	_check(_slime(0).collision_layer == 4, "进区后史莱姆可被近战命中（enemy 层）")
-	_check(_game.get_node("Pedestal").visible, "进区后谱台可见")
+	_check(not slimes_root.visible, "进区只锁相机，史莱姆仍隐藏")
+	var cam := _player.get_node_or_null("Camera2D") as Camera2D
+	_check(cam != null and cam.top_level, "进区后相机脱离跟随（锁定）")
+	_game.get_node("Trigger").monitoring = false   # 免得玩家移动误触发"走远取消"干扰判定
 
 	# 3. 无碰撞伤害：contact_damage = 0 不该让玩家掉血 / 进无敌 / 被击退
 	var hp_before: int = _player.hp
@@ -78,12 +93,31 @@ func _run() -> void:
 	_check(_player.invincible_timer <= 0.0, "0 点伤害不进无敌帧")
 	_check(_slime(0).contact_damage == 0, "史莱姆 contact_damage 恒为 0")
 
-	# 4. 演示：软冻结 → PLAY
+	# 4. 与谱台交互（按 W）→ 史莱姆出现 + 软冻结 + 演示 → PLAY
 	_game._start_demo()
-	_check(_state() == 2, "开始演示 → DEMO")
+	_check(_state() == 2, "与谱台交互 → DEMO")
+	_check(slimes_root.visible, "交互后史莱姆出现")
 	_check(_player.输入软冻结, "演示期间玩家被软冻结")
 	_check(await _wait_for_state(3, 6.0), "演示结束 → PLAY")
 	_check(not _player.输入软冻结, "PLAY 阶段玩家解锁")
+
+	# 4b. 受击表现真的会发生（用户报过"打史莱姆没反应"）：
+	#     闪白靠 self_modulate、变暗靠 modulate —— 如果染色 shader 覆盖 COLOR 把它们吞掉，
+	#     史莱姆就会毫无反应。这条守住"机制至少被触发"。
+	# 先等演示残留的受击动画播完，否则抓到的"基准大小"是形变中间值。
+	await get_tree().create_timer(0.35).timeout
+	var sprite := _slime(0).get_node("Sprite") as AnimatedSprite2D
+	var scale_before := sprite.scale
+	_slime(0).play_hurt()
+	_check(sprite.self_modulate.r > 1.0, "受击立刻闪白（self_modulate 提亮）")
+	await get_tree().create_timer(0.03).timeout
+	_check(sprite.scale != scale_before, "受击有缩放形变（压扁→回弹）")
+	await get_tree().create_timer(0.4).timeout
+	_check(sprite.scale.is_equal_approx(scale_before), "形变会回弹到原大小")
+	_check(sprite.self_modulate.is_equal_approx(Color.WHITE), "闪白会恢复")
+	_slime(0).设为已完成(true)
+	_check(sprite.modulate.r < 0.9, "已打对的史莱姆会变暗（modulate 生效）")
+	_slime(0).设为已完成(false)
 
 	# 5. 打错顺序（该打 2 号，先打 0 号）→ 归零 + 重播
 	_hit(0)
@@ -92,20 +126,128 @@ func _run() -> void:
 	_check(_state() == 2, "打错后回到 DEMO 重播")
 	_check(await _wait_for_state(3, 6.0), "重播结束 → 再次 PLAY")
 
-	# 6. 按顺序打对 → DONE + 奖励 + 永久完成
+	# 6. 真实挥砍命中史莱姆（走物理命中判定，不直接调 take_damage）→ 进度推进
+	var diag := await _real_attack_on(2)
+	_check(bool(diag["推进"]), "真实挥砍能打中史莱姆并推进进度（诊断：%s）" % str(diag))
+
+	# 7. 剩下两个按顺序打对 → DONE + 奖励 + 永久完成
 	var notes_before: int = GameState.notes
-	for slot in [2, 0, 1]:
+	for slot in [0, 1]:
 		_hit(slot)
 		await _settle()
 	_check(_state() == 4, "全对 → DONE")
 	_check(GameState.notes == notes_before + REWARD,
 		"通关奖励 +%d（实际 +%d）" % [REWARD, GameState.notes - notes_before])
 	_check(GameState.has_trigger(TRIGGER_ID), "通关写入触发 ID（永久完成）")
-	_check(_slime(0).collision_layer == 0, "通关后史莱姆收起")
+	_check(not slimes_root.visible, "通关后史莱姆收起")
 	_check(not _player.输入软冻结, "通关后玩家未被冻住")
 
 
-# ──────────────────────────── 工具 ────────────────────────────
+# ──────────────────────────── 对照与工具 ────────────────────────────
+
+
+func _baseline_melee_check() -> void:
+	## 用一个最小的假敌人（CharacterBody2D + 只记次数的 take_damage）验证
+	## "玩家的近战挥砍能打中 layer 3 的敌人"。它跟史莱姆无关；这条不过就说明近战本身坏了。
+	var dummy_script := GDScript.new()
+	dummy_script.source_code = "extends CharacterBody2D\nvar hits: int = 0\nvar contact_damage: int = 0\n\nfunc take_damage(_amount: int, _from_pos: Vector2, _from_magic := false) -> void:\n\thits += 1\n"
+	dummy_script.reload()
+
+	var dummy := CharacterBody2D.new()
+	dummy.set_script(dummy_script)
+	dummy.collision_layer = 4
+	dummy.collision_mask = 0
+	dummy.add_to_group("enemies")
+	var dummy_shape := CollisionShape2D.new()
+	var dummy_rect := RectangleShape2D.new()
+	dummy_rect.size = Vector2(90.0, 100.0)
+	dummy_shape.shape = dummy_rect
+	dummy.add_child(dummy_shape)
+	add_child(dummy)
+	dummy.global_position = Vector2(-70.0, 165.0)
+
+	var probe_player := PLAYER_SCENE.instantiate()
+	probe_player.position = Vector2(-70.0, 165.0)
+	add_child(probe_player)
+	probe_player.facing = 1.0
+	probe_player.melee_hitbox.position.x = 24.0
+
+	var elapsed := 0.0
+	var overlaps := 0
+	await _wait_on_floor(probe_player)
+	Input.action_press("attack")
+	while elapsed < 3.0:
+		await get_tree().physics_frame
+		elapsed += 1.0 / 60.0
+		if probe_player.melee_hitbox.monitoring:
+			overlaps = maxi(overlaps, probe_player.melee_hitbox.get_overlapping_bodies().size())
+		if int(dummy.get("hits")) > 0:
+			break
+	Input.action_release("attack")
+
+	var hits: int = int(dummy.get("hits"))
+	print("[基线] 假敌人被真实挥砍命中=%d 次，命中盒最大重叠=%d" % [hits, overlaps])
+	_check(hits > 0, "基线：玩家的近战挥砍能打中 layer 3 的普通敌人")
+
+	dummy.queue_free()
+	probe_player.queue_free()
+	await get_tree().physics_frame
+
+
+func _real_attack_on(slot: int) -> Dictionary:
+	## 把玩家挪到该史莱姆左侧、面向它，模拟一次真实攻击（按住 attack 键不放），轮询等进度推进。
+	## ⚠️ 不能"按下后等固定帧数再松开"：无头模式 process 帧 ≠ 物理帧，玩家在 _physics_process
+	## 消费输入，按 2 帧就松会正好错开（agent.md §5 第 8 条）。
+	var slime := _slime(slot)
+	_player.global_position = slime.global_position + Vector2(-70.0, 0.0)
+	_player.velocity = Vector2.ZERO
+	_player.facing = 1.0
+	_player.melee_hitbox.position.x = 24.0
+	var before: int = _game._progress
+	var max_overlaps := 0
+	var hits_seen := [0]
+	var counter := func(_from: Vector2) -> void: hits_seen[0] += 1
+	slime.被击中.connect(counter)
+
+	await _wait_on_floor(_player)
+	# 传送（直接改 global_position）之后补一次"真实移动"：玩家在真实游戏里是走过去而不是瞬移的，
+	# 而瞬移不一定会把子节点 Area2D 的物理变换同步给服务器 —— 实测传送后命中盒的重叠表是空的。
+	Input.action_press("move_right")
+	for i in 3:
+		await get_tree().physics_frame
+	Input.action_release("move_right")
+	Input.action_press("attack")
+	var elapsed := 0.0
+	var monitoring_seen := false
+	var trace := ""
+	var frames := 0
+	while elapsed < 3.0:
+		# ⚠️ get_overlapping_bodies() 要在物理处理期间读才准（process 帧读会拿到空结果）
+		await get_tree().physics_frame
+		elapsed += 1.0 / 60.0
+		if _player.melee_hitbox.monitoring:
+			monitoring_seen = true
+			max_overlaps = maxi(max_overlaps, _player.melee_hitbox.get_overlapping_bodies().size())
+		if _game._progress != before:
+			break
+	Input.action_release("attack")
+	slime.被击中.disconnect(counter)
+
+	return {
+		"推进": _game._progress > before,
+		"状态": _state(),
+		"进度": "%d→%d" % [before, _game._progress],
+		"命中盒最大重叠": max_overlaps,
+		"史莱姆收到被击中": hits_seen[0],
+		"监控见过true": monitoring_seen,
+	}
+
+
+func _wait_on_floor(body: CharacterBody2D) -> void:
+	var settle := 0.0
+	while not body.is_on_floor() and settle < 2.0:
+		await get_tree().physics_frame
+		settle += 1.0 / 60.0
 
 
 func _add_floor() -> void:

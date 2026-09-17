@@ -1,5 +1,5 @@
 @tool
-extends StaticBody2D
+extends CharacterBody2D
 ## 音乐小游戏的「琴键」史莱姆。
 ##
 ## 它不移动、不受重力、没有碰撞伤害、不会死亡，只做三件事：
@@ -7,10 +7,13 @@ extends StaticBody2D
 ##   2. 被玩家近战命中时发 `被击中` 信号（顺序判定由 MusicGame.gd 负责）；
 ##   3. 播放受击表现（闪白 + 撑开压扁 → 回弹）。
 ##
-## ── 为什么是 StaticBody2D ──
-## 玩家近战走 `melee_hitbox.get_overlapping_bodies()`，只认 PhysicsBody2D。
-## StaticBody2D + `collision_layer = 4`（enemy 层）能被找到，但完全不需要物理处理
-## → 零重力、零 AI、绝对静止。玩家 collision_mask 不含 layer 3，所以能穿过去、不挡路。
+## ── 为什么是 CharacterBody2D（而不是 StaticBody2D）──
+## 曾经用 StaticBody2D（想着"零物理开销、绝对静止"），结果**玩家挥砍完全打不到它**：
+## 实测玩家近战命中盒那个 Area2D 能检测到 layer 3 上的 CharacterBody2D，却检测不到
+## 同样在 layer 3、同一位置的 StaticBody2D（而临时新建的 Area2D 反而能检测到它，
+## 用 direct_space_state 查询也能查到 —— 所以这是个很难察觉的引擎坑）。
+## 换成 CharacterBody2D 后：本脚本**不写 `_physics_process`、也不调 `move_and_slide()`**，
+## 所以它依然零重力、绝对静止，与 StaticBody2D 的实际效果一致，代价可忽略。
 ##
 ## ── contact_damage 恒为 0 ──
 ## 玩家 Hurtbox（mask = layer 3）会检测到它并调 `take_damage(0)`。
