@@ -1,0 +1,90 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/minigame/MusicGame.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/minigame/MusicSlime.tscn" id="2_slime"]
+[ext_resource type="Texture2D" path="res://art/minigame/pedestal_gold.png" id="3_pedestal"]
+[ext_resource type="Shader" path="res://shaders/sweep_shine.gdshader" id="4_shader"]
+[ext_resource type="Resource" path="res://data/music_game/example_melody.tres" id="5_config"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sweep"]
+shader = ExtResource("4_shader")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
+size = Vector2(1400, 500)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pedestal"]
+size = Vector2(170, 120)
+
+[node name="MusicGame" type="Node2D"]
+script = ExtResource("1_script")
+"配置" = ExtResource("5_config")
+
+[node name="Trigger" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape2D" parent="Trigger"]
+position = Vector2(0, -200)
+shape = SubResource("RectangleShape2D_zone")
+
+[node name="Slimes" type="Node2D" parent="."]
+
+[node name="Slime0" parent="Slimes" instance=ExtResource("2_slime")]
+position = Vector2(-340, 0)
+"音符" = "C4"
+
+[node name="Slime1" parent="Slimes" instance=ExtResource("2_slime")]
+position = Vector2(-170, 0)
+"音符" = "D4"
+
+[node name="Slime2" parent="Slimes" instance=ExtResource("2_slime")]
+position = Vector2(0, 0)
+"音符" = "E4"
+
+[node name="Slime3" parent="Slimes" instance=ExtResource("2_slime")]
+position = Vector2(170, 0)
+"音符" = "F4"
+
+[node name="Slime4" parent="Slimes" instance=ExtResource("2_slime")]
+position = Vector2(340, 0)
+"音符" = "G4"
+
+[node name="Pedestal" type="Area2D" parent="."]
+position = Vector2(-540, 0)
+collision_layer = 0
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape2D" parent="Pedestal"]
+position = Vector2(0, -60)
+shape = SubResource("RectangleShape2D_pedestal")
+
+[node name="Visual" type="Sprite2D" parent="Pedestal"]
+material = SubResource("ShaderMaterial_sweep")
+position = Vector2(0, -70)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("3_pedestal")
+
+[node name="Prompt" type="Label" parent="Pedestal"]
+visible = false
+offset_left = -9.0
+offset_top = -205.0
+offset_right = 30.0
+offset_bottom = -175.0
+theme_override_colors/font_color = Color(1, 0.95, 0.62, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 20
+text = "W"
+
+[node name="Sfx" type="Node" parent="."]
+
+[node name="Sfx0" type="AudioStreamPlayer" parent="Sfx"]
+bus = &"SFX"
+
+[node name="Sfx1" type="AudioStreamPlayer" parent="Sfx"]
+bus = &"SFX"
+
+[node name="Sfx2" type="AudioStreamPlayer" parent="Sfx"]
+bus = &"SFX"
+
+[node name="FxLayer" type="Node2D" parent="."]

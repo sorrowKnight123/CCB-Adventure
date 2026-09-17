@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MusicGameConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/minigame/MusicGameConfig.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+"演奏顺序" = PackedInt32Array(0, 2, 4, 2, 0)
+"通关奖励" = 30
+"演示间隔" = 0.5

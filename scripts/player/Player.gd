@@ -51,6 +51,9 @@ var max_hp: int = GameState.max_hp
 @export var magic_damage: int = 2
 @export var invincible_time: float = 0.5
 @export var 敌人碰撞伤害: int = 1  # 碰到敌人受到的伤害（受击无敌帧/冲刺无敌可挡）
+## 外部系统（音乐小游戏的演示阶段）用的软冻结：禁移动/禁攻击，但世界照常跑。
+## 不要用 get_tree().paused —— 那会冻结 Tween，相机滑入之类的过程会停摆。
+var 输入软冻结: bool = false
 @export var has_double_jump: bool = false
 @export var has_magic_dash: bool = false
 @export var has_magic_climb: bool = false
@@ -441,8 +444,9 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# Day 3：对话期间暂停操作（只施加重力与落地判定）
+	# 音乐小游戏的演示阶段复用同一段分支（见 输入软冻结）。
 	var dlg := get_tree().get_first_node_in_group("dialogue")
-	if dlg != null and dlg.is_active:
+	if 输入软冻结 or (dlg != null and dlg.is_active):
 		if state == State.ATTACK:
 			melee_hitbox.visible = false
 			melee_hitbox.monitoring = false
@@ -1012,6 +1016,11 @@ func _on_hurtbox_body_entered(body: Node2D) -> void:
 
 
 func take_damage(amount: int, from_pos: Vector2) -> void:
+	# 无伤害来源（例如音乐小游戏里 contact_damage = 0 的史莱姆）不该触发受击白闪 /
+	# 0.5s 无敌 / 被打飞。玩家 Hurtbox 与敌人自身的接触判定是两条独立通道，
+	# 只在一侧拦会漏，所以在源头挡。
+	if amount <= 0:
+		return
 	if cheat_invincible:
 		hp = 999
 		GameState.hp = hp

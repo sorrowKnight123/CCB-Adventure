@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/minigame/MusicSlime.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://art/enemy/level 1/SlimeGreen_frames.tres" id="2_frames"]
+[ext_resource type="Shader" path="res://shaders/hue_shift.gdshader" id="3_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_color"]
+shader = ExtResource("3_shader")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(90, 58)
+
+[node name="MusicSlime" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_color")
+position = Vector2(0, -29)
+scale = Vector2(0.3, 0.3)
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+autoplay = "idle"
