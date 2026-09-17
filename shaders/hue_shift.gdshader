@@ -1,5 +1,5 @@
 shader_type canvas_item;
-// 音符史莱姆染色：把贴图的色相与饱和度换成目标值，保留贴图自身的明暗（V）结构。
+// 音符史莱姆染色：把贴图的色相与饱和度换成目标值，明暗压进一条窄亮带。
 //
 // 为什么不用 modulate：modulate 是逐通道乘法，换不了色相。绿史莱姆 (79,157,56) × 红 = 暗栗色，
 // × 蓝 ≈ 近黑。所以必须走 HSV。
@@ -8,6 +8,16 @@ shader_type canvas_item;
 //
 // 用法：在节点脚本里 duplicate() 一份材质，再逐只设置 uniform
 //       （不要用共享材质，否则多只史莱姆会串色）。
+//
+// ⚠️⚠️ 关于 modulate（踩过两次的坑）⚠️⚠️
+// 本版本 Godot 的 canvas_item 里，**fragment() 入口的 COLOR 已经包含贴图颜色**
+// （实测：输出成了"目标色 × 原贴图色"，红史莱姆变暗褐、黄史莱姆变绿）。
+// 所以在 fragment 里 `* COLOR.rgb` 会把贴图乘两遍；而完全不用它，
+// 又会把 self_modulate / modulate 一起丢掉（受击闪白、通关变暗全都没反应）。
+// 正解：在 **vertex()** 里把 COLOR 存进 varying —— 顶点阶段访问不到贴图，
+// 那里的 COLOR 就是干净的 modulate × 顶点色。
+
+varying vec4 v_modulate;
 
 uniform float target_hue : hint_range(0.0, 1.0) = 0.0;
 uniform float target_saturation : hint_range(0.0, 1.0) = 0.72;
@@ -34,14 +44,18 @@ vec3 _hsv2rgb(vec3 c) {
 	return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
+void vertex() {
+	// 顶点阶段访问不到贴图，所以这里的 COLOR 就是干净的 modulate × 顶点色。
+	v_modulate = COLOR;
+}
+
 void fragment() {
 	vec4 tex = texture(TEXTURE, UV);
 	vec3 hsv = _rgb2hsv(tex.rgb);
 	hsv.x = target_hue;
 	hsv.y = clamp(mix(hsv.y, target_saturation, saturation_blend), 0.0, 1.0);
 	hsv.z = clamp((value_floor + (hsv.z - 0.5) * value_contrast) * value_scale, 0.0, 1.0);
-	// ⚠️ COLOR 进入 fragment 时**已经包含 modulate / self_modulate**（默认 fragment 就是
-	// `COLOR = texture(TEXTURE, UV) * COLOR;`）。直接覆盖会把这些全部吞掉 ——
-	// 史莱姆的受击闪白（self_modulate = 2.6）和"已打对变暗"（modulate）都会失效。
-	COLOR = vec4(_hsv2rgb(hsv) * COLOR.rgb, tex.a * COLOR.a);
+	// 只用 v_modulate（不要用 fragment 入口的 COLOR，它含贴图）：
+	// 这样受击闪白（self_modulate）和通关变暗（modulate）才生效。
+	COLOR = vec4(_hsv2rgb(hsv) * v_modulate.rgb, tex.a * v_modulate.a);
 }

@@ -108,11 +108,26 @@ func _run() -> void:
 	var cam := _player.get_node_or_null("Camera2D") as Camera2D
 	_check(cam != null and cam.top_level, "进区后相机脱离跟随（锁定）")
 	await get_tree().create_timer(0.25).timeout
-	var slimes_mid_y := (_slime(0).global_position.y + _slime(2).global_position.y) * 0.5
-	_check(absf(cam.global_position.y - (slimes_mid_y - 150.0)) < 6.0,
-		"镜头锁定点比史莱姆中心高 150px（相机y=%.0f 史莱姆y=%.0f）"
-			% [cam.global_position.y, slimes_mid_y])
 	_game.get_node("Trigger").monitoring = false   # 免得玩家移动误触发"走远取消"干扰判定
+
+	# 镜头：玩家在滑动范围内时镜头完全固定，停在他上方 150px（垂直偏移生效）
+	# ⚠️ 期望值按"玩家 y - 偏移"算，不是"史莱姆中心 y - 偏移"：
+	# 玩家站地上天然比史莱姆根节点高十几像素，相对中心算会差一点点。
+	_player.global_position = _game._slimes_center()
+	await _settle()
+	_check(absf(cam.global_position.y - (_player.global_position.y - 150.0)) < 8.0,
+		"玩家在范围内时镜头停在他上方 150px（相机y=%.0f 玩家y=%.0f）"
+			% [cam.global_position.y, _player.global_position.y])
+
+	# 玩家跑到场地两端时，镜头只会让一点点，**玩家必须仍在画面内**
+	# （用户报过"镜头跳转了、玩家却不在画面里"）
+	for spot in [_game.get_node("Pedestal").global_position,
+			_slime(2).global_position + Vector2(420.0, 0.0)]:
+		_player.global_position = spot
+		await _settle()
+		_check(_player_in_camera_view(),
+			"镜头让位后玩家仍在画面内（玩家x=%d 镜头x=%d）"
+				% [int(_player.global_position.x), int(cam.global_position.x)])
 
 	# 3. 无碰撞伤害：contact_damage = 0 不该让玩家掉血 / 进无敌 / 被击退
 	var hp_before: int = _player.hp
@@ -128,6 +143,13 @@ func _run() -> void:
 	_check(_player.输入软冻结, "演示期间玩家被软冻结")
 	_check(await _wait_for_state(3, 6.0), "演示结束 → PLAY")
 	_check(not _player.输入软冻结, "PLAY 阶段玩家解锁")
+
+	# 非 headless 跑时存一张截图，方便肉眼核对染色（headless 没有渲染器，跳过）。
+	# 用途：颜色/布局这类事 headless 断言只能验"参数对不对"，看不出实际画面。
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png("user://music_game_shot.png")
+		print("[截图] 已保存 user://music_game_shot.png")
 
 	# 4b. 受击表现真的会发生（用户报过"打史莱姆没反应"）：
 	#     闪白靠 self_modulate、变暗靠 modulate —— 如果染色 shader 覆盖 COLOR 把它们吞掉，
@@ -287,6 +309,16 @@ func _wait_on_floor(body: CharacterBody2D) -> void:
 	while not body.is_on_floor() and settle < 2.0:
 		await get_tree().physics_frame
 		settle += 1.0 / 60.0
+
+
+func _player_in_camera_view() -> bool:
+	## 玩家是否落在镜头视野内。视口尺寸按实际值算（headless 下视口尺寸不稳定，别硬编码）。
+	var cam := _player.get_node_or_null("Camera2D") as Camera2D
+	if cam == null:
+		return false
+	var half := get_viewport().get_visible_rect().size * 0.5 / cam.zoom
+	var rel := _player.global_position - cam.global_position
+	return absf(rel.x) <= half.x and absf(rel.y) <= half.y
 
 
 func _add_floor() -> void:

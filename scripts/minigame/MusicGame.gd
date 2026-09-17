@@ -55,6 +55,10 @@ const SFX_MISS: AudioStream = preload("res://audio/enemy/moss/miss.wav")
 @export var 相机滑入时长: float = 0.6
 ## 锁定时镜头往上偏多少像素：史莱姆落在画面偏下位置，上方留出空间。
 @export var 相机垂直偏移: float = 150.0
+## 锁定期间镜头允许在基准点周围"滑动"的范围（像素）。
+## 玩家在范围内 → 镜头完全固定；超出范围 → 镜头跟着走这么多，好把玩家留在画面里。
+## ⚠️ 两个分量都要明显小于半屏（1280×720 的一半 = 640×360），否则玩家会被甩出画面。
+@export var 相机滑动范围: Vector2 = Vector2(260.0, 170.0)
 @export var 流光周期: float = 2.4
 @export var 谱台浮动幅度: float = 7.0
 @export var 谱台浮动速度: float = 1.8
@@ -84,6 +88,7 @@ var _saved_smoothing: bool = true
 var _saved_offset: Vector2 = Vector2.ZERO
 var _saved_position: Vector2 = Vector2.ZERO
 var _camera_tween: Tween = null
+var _camera_locked: bool = false
 
 @onready var _slimes_root: Node2D = $Slimes
 @onready var _fx: Node2D = $FxLayer
@@ -123,6 +128,8 @@ func _process(delta: float) -> void:
 		queue_redraw()
 		return
 	_animate_pedestal(delta)
+	if _camera_locked:
+		_update_locked_camera()
 	if _state == State.ARMED and _player_on_pedestal \
 			and Input.is_action_just_pressed("interact"):
 		_start_demo()
@@ -454,9 +461,34 @@ func _slimes_center() -> Vector2:
 
 
 func _camera_focus_point() -> Vector2:
-	## 镜头锁定点：史莱姆群中心再往上偏 `相机垂直偏移`。
+	## 镜头基准点：史莱姆群中心再往上偏 `相机垂直偏移`。
 	## 史莱姆因此落在画面偏下位置，上方留出空间（平台跳跃的常见构图）。
 	return _slimes_center() + Vector2(0.0, -相机垂直偏移)
+
+
+func _camera_target_position() -> Vector2:
+	## 锁定期间的镜头目标 = 基准点 + 被 `相机滑动范围` 夹住的玩家偏移。
+	## 效果：玩家在范围内时镜头纹丝不动（"锁定"）；他走远了镜头才跟一点，
+	## 保证他不会被甩出画面。用户明确要求"优先保证玩家在镜头内"。
+	##
+	## ⚠️ 玩家偏移要相对**史莱姆中心**算，不能相对基准点算：
+	## 玩家站在地面上，天然就在基准点下方约 `相机垂直偏移` 的距离，
+	## 相对基准点算的话这个偏移会把自己抵消掉，垂直构图完全失效。
+	var base := _slimes_center()
+	var focus := _camera_focus_point()
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	if player == null:
+		return focus
+	var offset := player.global_position - base
+	return focus + Vector2(
+		clampf(offset.x, -相机滑动范围.x, 相机滑动范围.x),
+		clampf(offset.y, -相机滑动范围.y, 相机滑动范围.y))
+
+
+func _update_locked_camera() -> void:
+	if not is_instance_valid(_camera):
+		return
+	_camera.global_position = _camera_target_position()
 
 
 func _slide_camera_and_lock() -> void:
@@ -476,18 +508,20 @@ func _slide_camera_and_lock() -> void:
 		_camera_tween.kill()
 	_camera_tween = create_tween()
 	_camera_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	_camera_tween.tween_property(_camera, "global_position", _camera_focus_point(), 相机滑入时长)
+	_camera_tween.tween_property(_camera, "global_position", _camera_target_position(), 相机滑入时长)
 	_camera_tween.tween_callback(_finish_camera_lock)
 
 
 func _finish_camera_lock() -> void:
 	if not is_instance_valid(_camera):
 		return
-	_camera.global_position = _camera_focus_point()
+	_camera_locked = true
+	_camera.global_position = _camera_target_position()
 	_camera.reset_smoothing()
 
 
 func _restore_camera() -> void:
+	_camera_locked = false
 	if not is_instance_valid(_camera):
 		return
 	if _camera_tween and _camera_tween.is_valid():
