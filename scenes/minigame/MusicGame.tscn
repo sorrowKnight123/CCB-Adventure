@@ -23,7 +23,6 @@ shader_parameter/shine_color = Color(1, 0.97, 0.78, 1)
 [node name="MusicGame" type="Node2D" unique_id=1699550259]
 script = ExtResource("1_script")
 "配置" = ExtResource("5_config")
-"奖励能力" = null
 
 [node name="Trigger" type="Area2D" parent="." unique_id=852601601]
 collision_layer = 0

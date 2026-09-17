@@ -126,7 +126,7 @@ func _run() -> void:
 	_check(cam != null and cam.top_level, "进区后相机脱离跟随（锁定）")
 
 	# 2b. 谱台的 W 提示：跟钢琴 / 留声机一样是「渐显渐隐」的 InteractBubble，
-	#     不是直接切 visible（那样会硬闪出来）。可见的那块牌子还必须在谱台视觉上方。
+	#     不是直接切 visible（那样会硬闪出来）。可见的那块牌子得在谱台上半部分。
 	var prompt := _game.get_node("Pedestal/Prompt") as InteractBubble
 	_check(prompt != null, "谱台提示是统一的 InteractBubble")
 	_check(prompt.visible, "谱台提示没被关卡覆盖成隐藏（3_1 里曾挂过一条 visible=false）")
@@ -135,9 +135,13 @@ func _run() -> void:
 	var badge := Rect2(prompt_panel.global_position, prompt_panel.size)
 	var ped_size: Vector2 = pedestal_visual.texture.get_size() * pedestal_visual.global_scale
 	var ped_box := Rect2(pedestal_visual.global_position - ped_size * 0.5, ped_size)
-	_check(badge.end.y <= ped_box.position.y + 8.0,
-		"提示牌在谱台视觉上方（牌底 %.0f，谱台顶 %.0f；谱台自带 ±7px 浮动）"
-			% [badge.end.y, ped_box.position.y])
+	# ⚠️ 这里判的是"在上半部分"，不是"完全在谱台上方" —— 谱台提示的 offset_top 是
+	#    作者在编辑器里定的（-56，牌子会压住谱台上沿一点），**别按"更合理"去改那个值**，
+	#    只守住"别被拖到谱台下半截/埋进地里"（agent.md §12.2）。
+	_check(badge.end.y <= ped_box.get_center().y,
+		"提示牌在谱台上半部分（牌底 %.0f，谱台中心 %.0f，谱台顶 %.0f）"
+			% [badge.end.y, ped_box.get_center().y, ped_box.position.y])
+
 	_game._on_pedestal_entered(_player)
 	await get_tree().create_timer(0.3).timeout
 	_check(is_equal_approx(prompt.modulate.a, 1.0), "站上谱台 → W 提示渐显")
