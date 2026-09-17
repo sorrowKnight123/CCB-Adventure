@@ -44,7 +44,7 @@
 [ext_resource type="PackedScene" uid="uid://b0khwjn72m8aq" path="res://scenes/props/level3/MossPiano.tscn" id="28_moss_piano"]
 [ext_resource type="PackedScene" path="res://scenes/minigame/MusicSlime.tscn" id="29_m6j5f"]
 [ext_resource type="Script" uid="uid://cy17u8tv4ttv1" path="res://scripts/game/RoomCameraLock.gd" id="29_room_camera"]
-[ext_resource type="Resource" uid="uid://ndl3cues6ikd" path="res://music_game/moss2.tres" id="32_d00ig"]
+[ext_resource type="Resource" uid="uid://ndl3cues6ikd" path="res://data/music_game/moss2.tres" id="32_d00ig"]
 
 [sub_resource type="Gradient" id="Gradient_glow"]
 offsets = PackedFloat32Array(0, 0.35, 1)
