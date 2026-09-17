@@ -60,7 +60,7 @@ func _run() -> void:
 	# 1-based：第3只、停顿、第1只、第2只 → 演示 [2,-1,0,1]，演奏 [2,0,1]
 	config.演奏顺序 = PackedInt32Array([3, 0, 1, 2])
 	config.通关奖励 = REWARD
-	config.演示间隔 = 0.05
+	config.演示间隔 = 0.25   # 拉长一点，好观察演示取景
 	_game.配置 = config
 	_game.触发ID = TRIGGER_ID
 	_game.演示前停顿 = 0.02
@@ -142,6 +142,15 @@ func _run() -> void:
 			"镜头让位后玩家仍在画面内（玩家x=%d 镜头x=%d）"
 				% [int(_player.global_position.x), int(cam.global_position.x)])
 
+	# 2b. 史莱姆铺得比画面宽时，演示取景必须把镜头拉远（zoom < 1）
+	var wide := Rect2(Vector2(-1000.0, -200.0), Vector2(2000.0, 400.0))
+	var wide_zoom: Vector2 = _game._demo_zoom(wide)
+	var view: Vector2 = get_viewport().get_visible_rect().size
+	_check(wide_zoom.x < 1.0, "史莱姆群比画面宽时演示取景会拉远（zoom=%.2f）" % wide_zoom.x)
+	_check(wide.size.x * wide_zoom.x <= view.x + 1.0
+			and wide.size.y * wide_zoom.x <= view.y + 1.0,
+		"拉远后整群史莱姆确实装得进画面")
+
 	# 3. 无碰撞伤害：contact_damage = 0 不该让玩家掉血 / 进无敌 / 被击退
 	var hp_before: int = _player.hp
 	_player.take_damage(_slime(0).contact_damage, _slime(0).global_position)
@@ -156,15 +165,21 @@ func _run() -> void:
 	_check(_game._answer_sequence.size() == 3, "演奏序列去掉了停顿（3 个音要复现）")
 	_check(slimes_root.visible, "交互后史莱姆出现")
 	_check(_player.输入软冻结, "演示期间玩家被软冻结")
-	_check(await _wait_for_state(3, 6.0), "演示结束 → PLAY")
-	_check(not _player.输入软冻结, "PLAY 阶段玩家解锁")
+	# 演示期间：镜头要框住所有史莱姆（玩家可以不在画面里 —— 用户明确要求演示时优先框史莱姆）
+	await get_tree().create_timer(0.9).timeout
+	_check(_state() == 2, "0.9s 后仍在演示中（演示间隔已拉长）")
+	var outside := _count_slimes_outside_camera()
+	_check(outside == 0, "演示时所有史莱姆都在镜头内（超出 %d 只）" % outside)
 
-	# 非 headless 跑时存一张截图，方便肉眼核对染色（headless 没有渲染器，跳过）。
-	# 用途：颜色/布局这类事 headless 断言只能验"参数对不对"，看不出实际画面。
+	# 演示中还存一张截图，方便肉眼核对取景
 	if DisplayServer.get_name() != "headless":
 		await RenderingServer.frame_post_draw
-		get_viewport().get_texture().get_image().save_png("user://music_game_shot.png")
-		print("[截图] 已保存 user://music_game_shot.png")
+		get_viewport().get_texture().get_image().save_png("user://music_game_demo.png")
+		print("[截图] 已保存 user://music_game_demo.png")
+
+	_check(await _wait_for_state(3, 8.0), "演示结束 → PLAY")
+	_check(not _game._demo_framing, "PLAY 阶段切回「跟着玩家」的取景")
+	_check(not _player.输入软冻结, "PLAY 阶段玩家解锁")
 
 	# 4b. 受击表现真的会发生（用户报过"打史莱姆没反应"）：
 	#     闪白靠 self_modulate、变暗靠 modulate —— 如果染色 shader 覆盖 COLOR 把它们吞掉，
@@ -376,6 +391,21 @@ func _wait_on_floor(body: CharacterBody2D) -> void:
 	while not body.is_on_floor() and settle < 2.0:
 		await get_tree().physics_frame
 		settle += 1.0 / 60.0
+
+
+func _count_slimes_outside_camera() -> int:
+	## 有几只史莱姆不在镜头里。史莱姆的视觉在根节点上方约 80px、
+	## 左右各约 50px，所以按这个小方框判断（不是只看根节点位置）。
+	var cam := _player.get_node_or_null("Camera2D") as Camera2D
+	if cam == null:
+		return 999
+	var half := get_viewport().get_visible_rect().size * 0.5 / cam.zoom
+	var outside := 0
+	for i in _game.get_node("Slimes").get_child_count():
+		var rel: Vector2 = _slime(i).global_position - cam.global_position
+		if rel.x - 50.0 < -half.x or rel.x + 50.0 > half.x 				or rel.y - 80.0 < -half.y or rel.y > half.y:
+			outside += 1
+	return outside
 
 
 func _player_in_camera_view() -> bool:

@@ -69,6 +69,13 @@ const NOTE_PICKUP_SCENE: PackedScene = preload("res://scenes/items/NotePickup.ts
 ## 玩家在范围内 → 镜头完全固定；超出范围 → 镜头跟着走这么多，好把玩家留在画面里。
 ## ⚠️ 两个分量都要明显小于半屏（1280×720 的一半 = 640×360），否则玩家会被甩出画面。
 @export var 相机滑动范围: Vector2 = Vector2(260.0, 170.0)
+## 演示期间改用"框住所有史莱姆"的取景：以史莱姆群包围盒（四周加 `演示框选留白`）为准，
+## 必要时把镜头拉远到 `演示最小缩放`。此时**不再保证玩家在画面内**
+## （玩家本来就被软冻结、动不了），演示结束后自动切回"跟着玩家"。
+@export var 演示自动缩放: bool = true
+@export var 演示框选留白: Vector2 = Vector2(120.0, 150.0)
+@export var 演示最小缩放: float = 0.55
+@export var 相机框选速度: float = 7.0
 @export var 流光周期: float = 2.4
 @export var 谱台浮动幅度: float = 7.0
 @export var 谱台浮动速度: float = 1.8
@@ -98,8 +105,10 @@ var _saved_top_level: bool = false
 var _saved_smoothing: bool = true
 var _saved_offset: Vector2 = Vector2.ZERO
 var _saved_position: Vector2 = Vector2.ZERO
+var _saved_zoom: Vector2 = Vector2.ONE
 var _camera_tween: Tween = null
 var _camera_locked: bool = false
+var _demo_framing: bool = false      # 演示取景中（框所有史莱姆，不管玩家）
 
 @onready var _slimes_root: Node2D = $Slimes
 @onready var _fx: Node2D = $FxLayer
@@ -140,7 +149,7 @@ func _process(delta: float) -> void:
 		return
 	_animate_pedestal(delta)
 	if _camera_locked:
-		_update_locked_camera()
+		_update_locked_camera(delta)
 	if _state == State.ARMED and _player_on_pedestal \
 			and Input.is_action_just_pressed("interact"):
 		_start_demo()
@@ -196,6 +205,7 @@ func _run_demo() -> void:
 	_serial += 1
 	var serial := _serial
 	_state = State.DEMO
+	_demo_framing = true      # 演示期间优先保证所有史莱姆在镜头内
 	_set_player_frozen(true)
 	_reset_progress()
 	await get_tree().create_timer(演示前停顿).timeout
@@ -212,6 +222,8 @@ func _run_demo() -> void:
 	if serial != _serial:
 		return
 	_state = State.PLAY
+	_demo_framing = false     # 回到"跟着玩家"的取景
+	_restore_locked_zoom()
 	_set_player_frozen(false)
 
 
@@ -525,10 +537,50 @@ func _camera_target_position() -> Vector2:
 		clampf(offset.y, -相机滑动范围.y, 相机滑动范围.y))
 
 
-func _update_locked_camera() -> void:
+func _update_locked_camera(delta: float) -> void:
 	if not is_instance_valid(_camera):
 		return
+	if _demo_framing:
+		# 演示取景：框住所有史莱姆，顺便把镜头拉远到能装下
+		var bounds := _slimes_bounds()
+		var target_position := bounds.get_center()
+		var target_zoom := _demo_zoom(bounds) if 演示自动缩放 else Vector2.ONE
+		# 平滑过去（直接赋值会是很突兀的一跳）
+		var t := clampf(delta * 相机框选速度, 0.0, 1.0)
+		_camera.global_position = _camera.global_position.lerp(target_position, t)
+		_camera.zoom = _camera.zoom.lerp(target_zoom, t)
+		return
 	_camera.global_position = _camera_target_position()
+
+
+func _slimes_bounds() -> Rect2:
+	## 史莱姆群的包围盒（四周加 `演示框选留白`），用来把它们全部框进画面。
+	if _slimes.is_empty():
+		return Rect2(global_position, Vector2.ZERO)
+	var min_x := INF
+	var max_x := -INF
+	var min_y := INF
+	var max_y := -INF
+	for slime in _slimes:
+		var p := (slime as Node2D).global_position
+		min_x = minf(min_x, p.x)
+		max_x = maxf(max_x, p.x)
+		min_y = minf(min_y, p.y)
+		max_y = maxf(max_y, p.y)
+	return Rect2(
+		Vector2(min_x - 演示框选留白.x, min_y - 演示框选留白.y),
+		Vector2((max_x - min_x) + 演示框选留白.x * 2.0,
+			(max_y - min_y) + 演示框选留白.y * 2.0))
+
+
+func _demo_zoom(bounds: Rect2) -> Vector2:
+	## 让 bounds 全部装进视口所需的缩放。
+	## ⚠️ Godot 里 zoom < 1 是**拉远**（看到更多），所以这里是 min() 不是 max()。
+	var view := get_viewport().get_visible_rect().size
+	if view.x <= 0.0 or view.y <= 0.0 or bounds.size.x <= 0.0 or bounds.size.y <= 0.0:
+		return Vector2.ONE
+	var z := minf(1.0, minf(view.x / bounds.size.x, view.y / bounds.size.y))
+	return Vector2(maxf(z, 演示最小缩放), maxf(z, 演示最小缩放))
 
 
 func _slide_camera_and_lock() -> void:
@@ -539,6 +591,7 @@ func _slide_camera_and_lock() -> void:
 	_saved_smoothing = _camera.position_smoothing_enabled
 	_saved_offset = _camera.offset
 	_saved_position = _camera.position
+	_saved_zoom = _camera.zoom
 	# 切 top_level 会改变继承来的变换，必须先存下世界坐标再赋回，否则会先跳一下。
 	_camera.top_level = true
 	_camera.position_smoothing_enabled = false
@@ -560,8 +613,17 @@ func _finish_camera_lock() -> void:
 	_camera.reset_smoothing()
 
 
+func _restore_locked_zoom() -> void:
+	## 退出演示取景后把缩放还原成玩家自己的值（演示期间我们改过 zoom）。
+	if not is_instance_valid(_camera):
+		return
+	var tw := create_tween()
+	tw.tween_property(_camera, "zoom", _saved_zoom, 0.4)
+
+
 func _restore_camera() -> void:
 	_camera_locked = false
+	_demo_framing = false
 	if not is_instance_valid(_camera):
 		return
 	if _camera_tween and _camera_tween.is_valid():
@@ -569,9 +631,11 @@ func _restore_camera() -> void:
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	var target := player.global_position if player != null else _camera.global_position
 	_camera_tween = create_tween()
+	_camera_tween.set_parallel(true)
 	_camera_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	_camera_tween.tween_property(_camera, "global_position", target, 相机滑入时长)
-	_camera_tween.tween_callback(_finish_camera_restore)
+	_camera_tween.tween_property(_camera, "zoom", _saved_zoom, 相机滑入时长)
+	_camera_tween.chain().tween_property(_camera, "global_position", target, 相机滑入时长)
+	_camera_tween.chain().tween_callback(_finish_camera_restore)
 
 
 func _finish_camera_restore() -> void:
