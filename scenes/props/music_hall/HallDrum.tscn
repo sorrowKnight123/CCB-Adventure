@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/HallDrum.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cmqtgixhcddhm" path="res://art/level/7_music_hall/hall_drum.png" id="2_tex"]
+[ext_resource type="AudioStream" uid="uid://e1wplgvaldv5" path="res://audio/props/music_hall/drum_snare_1.wav" id="3_s1"]
+[ext_resource type="AudioStream" uid="uid://deyv6cmrqhcfy" path="res://audio/props/music_hall/drum_snare_8bit.wav" id="4_s2"]
+[ext_resource type="AudioStream" uid="uid://ww8xo5u635qt" path="res://audio/props/music_hall/drum_snare_clean.wav" id="5_s3"]
+[ext_resource type="AudioStream" uid="uid://4rub62ee87a2" path="res://audio/props/music_hall/drum_kick.wav" id="6_k1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
+size = Vector2(120, 46)
+
+[node name="HallDrum" type="Sprite2D"]
+texture = ExtResource("2_tex")
+script = ExtResource("1_script")
+"音效列表" = Array[AudioStream]([ExtResource("6_k1")])
+
+[node name="Trigger" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trigger"]
+position = Vector2(0, -12)
+shape = SubResource("RectangleShape2D_trigger")
+
+[node name="DrumAudio" type="AudioStreamPlayer" parent="."]
+bus = &"SFX"

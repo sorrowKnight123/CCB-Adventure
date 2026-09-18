@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://dj5613db12oyi" path="res://art/level/7_music_hall/hall_platform.png" id="1_tex"]
+[ext_resource type="Texture2D" uid="uid://2eelrrbw6xb3" path="res://art/level/7_music_hall/hall_platform_edge.png" id="2_edge"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plat"]
+size = Vector2(196, 16)
+
+[node name="HallPlatform" type="StaticBody2D"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="Edge" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_edge")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_plat")
+one_way_collision = true
+one_way_collision_margin = 8.0
