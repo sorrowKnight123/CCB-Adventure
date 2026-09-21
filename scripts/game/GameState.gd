@@ -13,17 +13,31 @@ const MAX_HP_UPGRADE_PRICES: Array[int] = [18, 25, 30, 38, 45]
 const ATTACK_UPGRADE_PRICES: Array[int] = [78, 87]
 const RECORD_DEFAULT_ID := "debussy_cathedral"
 const RECORD_BRAHMS_ID := "brahms_op118_no2"
+## 真结局的钥匙。由小兰的隐藏任务发放（见 重要文档/开发任务.md §3）；
+## 暂停菜单作弊栏也能直接拿，方便在剧情链做完之前先跑通 88 的收尾。
+const RECORD_ECSTASY_ID := "ecstasy_poem"
+## 每条唱片的字段：id / title / audio_path / icon / placeholder
+## `icon` 留空时，唱片面板退回显示曲名（没有图标也能用）。
 const RECORDS: Array[Dictionary] = [
 	{
 		"id": RECORD_DEFAULT_ID,
 		"title": "Debussy: La Cathédrale engloutie",
 		"audio_path": "res://audio/music/La_Cath\u00e9drale_engloutie_-_Claude_Debussy_-_performed_by_Ivan_Ilic.ogg",
+		"icon": "",
 		"placeholder": false,
 	},
 	{
 		"id": RECORD_BRAHMS_ID,
 		"title": "Brahms: 6 Klavierstücke, Op. 118, No. 2 – Intermezzo in A Major",
 		"audio_path": "",
+		"icon": "",
+		"placeholder": true,
+	},
+	{
+		"id": RECORD_ECSTASY_ID,
+		"title": "Scriabin: 狂喜之诗",
+		"audio_path": "",
+		"icon": "",
 		"placeholder": true,
 	},
 ]
@@ -205,6 +219,16 @@ func is_records_unlocked() -> bool:
 
 func has_record(record_id: String) -> bool:
 	return record_id in owned_records
+
+
+## 作弊/调试用：**无视**"唱片菜单解锁"条件直接发放。
+## 正常流程（小兰的隐藏任务）走 `grant_record`，那里有 total_notes_spent >= 100 的门槛。
+func 强制获得唱片(record_id: String) -> bool:
+	if not _has_record_data(record_id) or has_record(record_id):
+		return false
+	owned_records.append(record_id)
+	progression_changed.emit()
+	return true
 
 
 func grant_record(record_id: String) -> bool:

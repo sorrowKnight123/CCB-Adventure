@@ -17,6 +17,13 @@
 [ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="26_2ld62"]
 [ext_resource type="Script" uid="uid://b72v20ke7irr4" path="res://scripts/game/MusicHallChase.gd" id="27_chase"]
 [ext_resource type="Texture2D" uid="uid://mlkrgkhepbvx" path="res://art/level/7_music_hall/phase2_blood_net.png" id="28_bloodnet"]
+[ext_resource type="PackedScene" uid="uid://b2twyputjtuww" path="res://scenes/enemies/boss/Boss88Phase1.tscn" id="30_boss88"]
+[ext_resource type="Script" path="res://scripts/enemy/boss/ArenaLock.gd" id="31_arena"]
+[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/C4.wav" id="32_piano_c4"]
+[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/E4.wav" id="33_piano_e4"]
+[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/G4.wav" id="34_piano_g4"]
+[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/A4.wav" id="35_piano_a4"]
+[ext_resource type="AudioStream" path="res://audio/music/moss_2.ogg" id="36_ph_music"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w413l"]
 size = Vector2(2960, 110)
@@ -35,6 +42,9 @@ size = Vector2(70, 260)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rksuf"]
 size = Vector2(1280, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena"]
+size = Vector2(1400, 300)
 
 [node name="MusicHall4_1" type="Node2D" unique_id=1515827076]
 
@@ -262,9 +272,30 @@ shape = SubResource("RectangleShape2D_bd3lt")
 position = Vector2(240, 3369)
 collision_mask = 49
 
+
+[node name="Boss88Phase1" parent="." instance=ExtResource("30_boss88")]
+position = Vector2(1100, 3426)
+
+[node name="ArenaLock" type="Node2D" parent="." unique_id=1902000001]
+script = ExtResource("31_arena")
+"竞技场矩形" = Rect2(0, 2880, 1600, 720)
+
+[node name="触发区" type="Area2D" parent="ArenaLock" unique_id=1902000002]
+position = Vector2(800, 3340)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ArenaLock/触发区" unique_id=1902000003]
+shape = SubResource("RectangleShape2D_arena")
 [node name="追逐段" type="Node2D" parent="." unique_id=1599123456]
 script = ExtResource("27_chase")
 
+
+[node name="闪烁提示" type="ColorRect" parent="." unique_id=1902000010]
+offset_right = 2560.0
+offset_bottom = 3600.0
+mouse_filter = 2
+color = Color(0.85, 0.1, 0.1, 0)
 [node name="UI" type="Node" parent="." unique_id=21452165]
 
 [node name="HUD" parent="UI" unique_id=1314740397 instance=ExtResource("18_m70p6")]

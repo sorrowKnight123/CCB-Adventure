@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://duy8noif473kp"]
+
+[ext_resource type="Script" path="res://scripts/enemy/boss/StaffSweep.gd" id="1_staff"]
+
+[node name="StaffSweep" type="Node2D"]
+script = ExtResource("1_staff")
+
+[node name="判定" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2

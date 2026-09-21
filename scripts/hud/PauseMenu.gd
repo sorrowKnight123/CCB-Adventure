@@ -17,6 +17,7 @@ var _cheat_magic_climb: CheckBox
 var _cheat_magic_flight: CheckBox
 var _cheat_heal_melody: CheckBox
 var _cheat_invincible: CheckBox
+var _cheat_ecstasy_record: CheckBox
 var _heal_tier_option: OptionButton
 
 
@@ -121,6 +122,10 @@ func _build_pause_panel() -> void:
 	cheat_box.add_child(_cheat_heal_melody)
 	_cheat_invincible = _make_cheat_toggle("无敌模式（HP 999）", _on_cheat_invincible, false)
 	cheat_box.add_child(_cheat_invincible)
+	# 真结局的钥匙：正常流程靠小兰的隐藏任务，这里给个直通口，方便先跑通 88 的收尾
+	_cheat_ecstasy_record = _make_cheat_toggle("狂喜之诗（真结局钥匙）",
+		_on_cheat_ecstasy_record, GameState.has_record(GameState.RECORD_ECSTASY_ID))
+	cheat_box.add_child(_cheat_ecstasy_record)
 
 	var heal_row := HBoxContainer.new()
 	heal_row.add_theme_constant_override("separation", 8)
@@ -226,6 +231,15 @@ func _refresh_cheat_toggles() -> void:
 
 func _on_heal_tier_changed(idx: int) -> void:
 	GameState.heal_tier = clamp(idx, 0, GameState.HEAL_TIERS.size() - 1)
+
+
+func _on_cheat_ecstasy_record(v: bool) -> void:
+	if v:
+		GameState.强制获得唱片(GameState.RECORD_ECSTASY_ID)
+	else:
+		GameState.owned_records.erase(GameState.RECORD_ECSTASY_ID)
+		if GameState.selected_record_id == GameState.RECORD_ECSTASY_ID:
+			GameState.select_record(GameState.RECORD_DEFAULT_ID)
 
 
 func _on_cheat_double_jump(v: bool) -> void:

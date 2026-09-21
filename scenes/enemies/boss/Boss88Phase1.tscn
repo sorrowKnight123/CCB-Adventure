@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://b2twyputjtuww"]
+
+[ext_resource type="Script" path="res://scripts/enemy/boss/Boss88Phase1.gd" id="1_boss"]
+[ext_resource type="SpriteFrames" path="res://art/enemies/boss88/88_frames.tres" id="2_frames"]
+[ext_resource type="PackedScene" path="res://scenes/ui/InteractBubble.tscn" id="3_bubble"]
+[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/C4.wav" id="4_c4"]
+[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/E4.wav" id="5_e4"]
+[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/G4.wav" id="6_g4"]
+[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/A4.wav" id="7_a4"]
+[ext_resource type="AudioStream" path="res://audio/music/moss_2.ogg" id="8_music"]
+[ext_resource type="AudioStream" path="res://audio/enemy/boss88/claw_swing.wav" id="9_claw"]
+[ext_resource type="AudioStream" path="res://audio/enemy/boss88/staff_cast.wav" id="10_staff"]
+[ext_resource type="AudioStream" path="res://audio/enemy/boss88/thrust.wav" id="11_thrust"]
+[ext_resource type="AudioStream" path="res://audio/enemy/boss88/blink_out.wav" id="12_blinkout"]
+[ext_resource type="AudioStream" path="res://audio/enemy/boss88/blink_in.wav" id="13_blinkin"]
+[ext_resource type="AudioStream" path="res://audio/enemy/boss88/hurt.wav" id="14_hurt"]
+[ext_resource type="AudioStream" path="res://audio/enemy/boss88/knocked_land.wav" id="15_land"]
+[ext_resource type="AudioStream" path="res://audio/enemy/boss88/armor_break.wav" id="16_break"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
+radius = 30.0
+height = 200.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
+size = Vector2(150, 130)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_near"]
+radius = 150.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mid"]
+radius = 420.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
+size = Vector2(280, 340)
+
+[node name="Boss88Phase1" type="CharacterBody2D" unique_id=1901230001]
+collision_layer = 4
+collision_mask = 17
+script = ExtResource("1_boss")
+"起手音_爪击" = ExtResource("4_c4")
+"起手音_五线谱" = ExtResource("5_e4")
+"起手音_突刺" = ExtResource("6_g4")
+"起手音_闪现" = ExtResource("7_a4")
+"招式音_爪击" = ExtResource("9_claw")
+"招式音_五线谱" = ExtResource("10_staff")
+"招式音_突刺" = ExtResource("11_thrust")
+"招式音_闪现消失" = ExtResource("12_blinkout")
+"招式音_闪现现身" = ExtResource("13_blinkin")
+"音效_受击" = ExtResource("14_hurt")
+"音效_击退落地" = ExtResource("15_land")
+"音效_破甲" = ExtResource("16_break")
+"一阶段曲" = ExtResource("8_music")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1901230002]
+position = Vector2(0, -100)
+shape = SubResource("CapsuleShape2D_body")
+
+[node name="BossSprite" type="AnimatedSprite2D" parent="." unique_id=1901230003]
+offset = Vector2(0, -120)
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="AttackHitbox" type="Area2D" parent="." unique_id=1901230004]
+position = Vector2(-56, -110)
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackHitbox" unique_id=1901230005]
+shape = SubResource("RectangleShape2D_attack")
+
+[node name="近身盒" type="Area2D" parent="." unique_id=1901230006]
+position = Vector2(0, -110)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="近身盒" unique_id=1901230007]
+shape = SubResource("CircleShape2D_near")
+
+[node name="中距盒" type="Area2D" parent="." unique_id=1901230008]
+position = Vector2(0, -110)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="中距盒" unique_id=1901230009]
+shape = SubResource("CircleShape2D_mid")
+
+[node name="InteractArea" type="Area2D" parent="." unique_id=1901230010]
+position = Vector2(0, -120)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=1901230011]
+shape = SubResource("RectangleShape2D_interact")
+
+[node name="Bubble" parent="." unique_id=1901230012 instance=ExtResource("3_bubble")]
+offset_top = -200.0
+"按键文本" = "W"
+
+[node name="SfxPlayer" type="AudioStreamPlayer" parent="." unique_id=1901230013]
+bus = &"SFX"

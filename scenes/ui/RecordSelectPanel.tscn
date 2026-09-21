@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://dod330marwgpu"]
+
+[ext_resource type="Script" path="res://scripts/ui/RecordSelectPanel.gd" id="1_panel"]
+
+[node name="RecordSelectPanel" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_panel")
+
+[node name="根" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="遮罩" type="ColorRect" parent="根"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.62)
+
+[node name="面板" type="VBoxContainer" parent="根"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -160.0
+offset_right = 260.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 14
+
+[node name="标题" type="Label" parent="根/面板"]
+layout_mode = 2
+text = "播放哪一张？"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 30
+
+[node name="列表" type="VBoxContainer" parent="根/面板"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="提示" type="Label" parent="根/面板"]
+layout_mode = 2
+text = "↑↓ 选择      W / 回车 确认      Esc 取消"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 18
