@@ -16,8 +16,15 @@ const LEVEL := preload("res://scenes/levels/music_hall/4_1.tscn")
 const 三关文本 := "res://scenes/levels/3_moss/3_1.tscn"
 
 ## 玩家能力（实测值，用来判定"跳得上去吗"；留了余量）
-const 二段跳高 := 240.0        # 单跳 150 + 二段跳 150
+## 单跳 150 + 二段跳 150 = 300。原来这里写 240（"留了余量"），
+## 结果把 17 → 18 那段 258px 的正常爬升判成不可达 —— 留余量的方向反了：
+## 这个模型要抓的是"玩家够不到"，余量会让它误报，实机明明是能上去的。
+const 二段跳高 := 300.0
 const 跳鼓高 := 204.0          # 踩鼓弹起 ~204（700²/(2·1200)）
+## 踩鼓会调用 player.reset_air_actions()，把二段跳次数回满 ——
+## 所以从鼓起跳还能再吃一次空中跳。不认这一条就会把 224px 的落差误判成不可达
+## （旧模型只给 204，于是报"26 个元素到不了"，而实机很轻松就爬上去了）。
+const 踩鼓后额外高 := 150.0
 const 横向跳距 := 320.0        # 弹起后空中横移约 280，留余量
 const 长缺口上限 := 900.0      # 超过这个距离连飞行都嫌长，视为设计错误
 const 地面_y := 3426.0      # 房间改成 2×5 格后，地面落到最下一格
@@ -125,7 +132,7 @@ func _检查鼓声(lvl: Node) -> void:
 	## 所以这里永久盯住：只要哪面鼓的音效列表不是"恰好 1 个"，就判失败。
 	var 鼓: Array = []
 	for n in lvl.find_children("*", "", true, false):
-		if str(n.name).begins_with("鼓") and n.get("音效列表") != null:
+		if _判元素类型(n) == "drum" and n.get("音效列表") != null:
 			鼓.append(n)
 	if 鼓.is_empty():
 		_check(false, "鼓声：场景里一个鼓都没找到")
@@ -148,15 +155,35 @@ func _检查鼓声(lvl: Node) -> void:
 # ──────────────────────────── 单向平台 ────────────────────────────
 
 
+## 按**结构**判元素类型，不看节点名、也不看 collision_layer。
+## ⚠️ 作者把爬升段重命名成 `1`…`18` 之后，`name.begins_with("鼓")` 那种写法就只剩
+##    `战斗层/鼓1`、`战斗层/鼓2` 能被认出来（22 面 → 2 面），检查会静默失效。
+## ⚠️ 也不能看 collision_layer：1.5 追逐段（MusicHallChase）会在开局把序号 >2 的元素
+##    连碰撞一起隐藏（层写成 0），于是平台会被当成"不是平台"。改用不会被改的
+##    `one_way_collision` 标志 —— 单向平台与墙片的区别本来就在这里。
+func _判元素类型(n: Node) -> String:
+	if n is Node2D and n.get_node_or_null("Trigger") != null:
+		return "drum"           # 鼓没有实体碰撞，靠自带 Trigger
+	var 形 := n.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if 形 != null and 形.one_way_collision:
+		return "plat"
+	return ""                   # 墙（层 1）不是落脚点，不参与落点模型
+
+
 func _元素(lvl: Node) -> Array:
-	## 从场景读：[名字, 落点, 类型, 宽度]
+	## 从场景**现算**：[名字, 真实落点, 类型, 宽度]
+	## ⚠️ 不读 `metadata/landing`：那是 `tools/build_music_hall_4_1.gd` 按**作者重排之前**的布局
+	##    写下的，作者挪动之后从没同步过（30 个元素里 24 个对不上）。
+	##    落点按建场脚本的约定现算：平台顶面 = 节点世界 y−13，鼓面 = 节点世界 y−31。
 	var out := []
 	for n in lvl.find_children("*", "", true, false):
-		if not n.has_meta("landing"):
+		var 类型 := _判元素类型(n)
+		if 类型 == "":
 			continue
-		var 是鼓 := str(n.name).begins_with("鼓")
-		out.append([str(n.name), n.get_meta("landing"),
-			("drum" if 是鼓 else "plat"), (鼓宽 if 是鼓 else 平台宽)])
+		var e := n as Node2D
+		var 顶: float = e.global_position.y - (31.0 if 类型 == "drum" else 13.0)
+		out.append([str(n.name), Vector2(e.global_position.x, 顶), 类型,
+			(鼓宽 if 类型 == "drum" else 平台宽)])
 	return out
 
 
@@ -200,7 +227,7 @@ func _检查可达性(lvl: Node) -> void:
 				var 方式 := ""
 				# dy = 借力点.y - 目标.y：> 0 表示借力点在下面 → 要"往上够"
 				var 上: float = dy
-				var 上限: float = 跳鼓高 if c[2] == "drum" else 二段跳高
+				var 上限: float = (跳鼓高 + 踩鼓后额外高) if c[2] == "drum" else 二段跳高
 				if gap <= 1.0 and absf(dy) <= 20.0:
 					方式 = "就在 %s 上" % c[0]
 				elif 上 > 0.0:
