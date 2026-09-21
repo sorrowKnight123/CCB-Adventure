@@ -1,10 +1,9 @@
-[gd_scene format=4 uid="uid://ctv8flvbvdbkw"]
+[gd_scene format=3 uid="uid://ctv8flvbvdbkw"]
 
 [ext_resource type="Texture2D" uid="uid://b0irdf6qg0uim" path="res://art/level/7_music_hall/hall_back_tall5.png" id="1_b32t3"]
 [ext_resource type="Texture2D" uid="uid://c0whsua65ongn" path="res://art/level/7_music_hall/hall_platform_mirror.png" id="2_xin10"]
 [ext_resource type="Script" uid="uid://cera7sjtxjru" path="res://scripts/props/HallBackdropDim.gd" id="3_esdw1"]
 [ext_resource type="PackedScene" path="res://scenes/props/music_hall/HallDrum.tscn" id="4_2l5vs"]
-[ext_resource type="Texture2D" uid="uid://iqt8708iouhl" path="res://art/level/7_music_hall/hall_wall.png" id="4_rksuf"]
 [ext_resource type="PackedScene" path="res://scenes/props/music_hall/HallPlatform.tscn" id="11_rpoi4"]
 [ext_resource type="PackedScene" path="res://scenes/props/music_hall/HallWall.tscn" id="12_b3l0l"]
 [ext_resource type="Script" uid="uid://ckaw7b6xpu0ir" path="res://scripts/game/GameFlow.gd" id="13_jcve4"]
@@ -16,6 +15,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/EndingScreen.tscn" id="22_bk786"]
 [ext_resource type="PackedScene" uid="uid://dch8dyylb7526" path="res://addons/MetroidvaniaSystem/Template/Nodes/Minimap.tscn" id="24_hglms"]
 [ext_resource type="PackedScene" uid="uid://bsg0351mx3b4u" path="res://addons/MetroidvaniaSystem/Nodes/RoomInstance.tscn" id="26_2ld62"]
+[ext_resource type="Script" uid="uid://b72v20ke7irr4" path="res://scripts/game/MusicHallChase.gd" id="27_chase"]
+[ext_resource type="Texture2D" uid="uid://mlkrgkhepbvx" path="res://art/level/7_music_hall/phase2_blood_net.png" id="28_bloodnet"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w413l"]
 size = Vector2(2960, 110)
@@ -29,130 +30,11 @@ size = Vector2(42, 4000)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sh7fj"]
 size = Vector2(2960, 42)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ggnbx"]
-texture = ExtResource("4_rksuf")
-0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-0:1/0 = 0
-0:2/0 = 0
-0:3/0 = 0
-0:4/0 = 0
-0:5/0 = 0
-0:6/0 = 0
-0:7/0 = 0
-0:8/0 = 0
-0:9/0 = 0
-0:10/0 = 0
-0:11/0 = 0
-0:12/0 = 0
-0:13/0 = 0
-1:0/0 = 0
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:1/0 = 0
-1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:2/0 = 0
-1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:3/0 = 0
-1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:4/0 = 0
-1:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:5/0 = 0
-1:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:6/0 = 0
-1:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:7/0 = 0
-1:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:8/0 = 0
-1:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:9/0 = 0
-1:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:10/0 = 0
-1:10/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:11/0 = 0
-1:11/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:12/0 = 0
-1:12/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-1:13/0 = 0
-1:13/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:0/0 = 0
-2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:1/0 = 0
-2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:2/0 = 0
-2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:3/0 = 0
-2:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:4/0 = 0
-2:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:5/0 = 0
-2:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:6/0 = 0
-2:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:7/0 = 0
-2:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:8/0 = 0
-2:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:9/0 = 0
-2:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:10/0 = 0
-2:10/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:11/0 = 0
-2:11/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:12/0 = 0
-2:12/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-2:13/0 = 0
-2:13/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:0/0 = 0
-3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:1/0 = 0
-3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:2/0 = 0
-3:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:3/0 = 0
-3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:4/0 = 0
-3:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:5/0 = 0
-3:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:6/0 = 0
-3:6/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:7/0 = 0
-3:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:8/0 = 0
-3:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:9/0 = 0
-3:9/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:10/0 = 0
-3:10/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:11/0 = 0
-3:11/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:12/0 = 0
-3:12/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-3:13/0 = 0
-3:13/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-4:0/0 = 0
-4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-4:1/0 = 0
-4:2/0 = 0
-4:3/0 = 0
-4:4/0 = 0
-4:5/0 = 0
-4:6/0 = 0
-4:7/0 = 0
-4:8/0 = 0
-4:9/0 = 0
-4:10/0 = 0
-4:11/0 = 0
-4:12/0 = 0
-4:13/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_u0ya7"]
-physics_layer_0/collision_layer = 1
-physics_layer_0/collision_mask = 0
-sources/1 = SubResource("TileSetAtlasSource_ggnbx")
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bd3lt"]
 size = Vector2(70, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rksuf"]
+size = Vector2(1280, 720)
 
 [node name="MusicHall4_1" type="Node2D" unique_id=1515827076]
 
@@ -185,6 +67,12 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0)
 script = ExtResource("3_esdw1")
 
+[node name="二阶段背景" type="Sprite2D" parent="." unique_id=1600111222]
+visible = false
+z_index = -1
+position = Vector2(1340, 565)
+texture = ExtResource("28_bloodnet")
+
 [node name="tile" type="Node2D" parent="." unique_id=1111349107]
 
 [node name="Ground" type="StaticBody2D" parent="tile" unique_id=259208503]
@@ -215,130 +103,134 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="tile/Ceiling" unique_id=2006477722]
 shape = SubResource("RectangleShape2D_sh7fj")
 
-[node name="wall" type="TileMapLayer" parent="tile" unique_id=353290083]
-tile_map_data = PackedByteArray("AAAuAGYAAQAAAAUAAAAuAGcAAQAAAAYAAAAuAGgAAQAAAAcAAAAuAGkAAQAAAAgAAAAuAGoAAQAAAAkAAAAuAGsAAQAAAAoAAAAuAGwAAQAAAAsAAAAuAG0AAQAAAAwAAAAuAG4AAQAAAA0AAAAvAGYAAQABAAUAAAAvAGcAAQABAAYAAAAvAGgAAQABAAcAAAAvAGkAAQABAAgAAAAvAGoAAQABAAkAAAAvAGsAAQABAAoAAAAvAGwAAQABAAsAAAAvAG0AAQABAAwAAAAvAG4AAQABAA0AAAAwAGYAAQACAAUAAAAwAGcAAQACAAYAAAAwAGgAAQACAAcAAAAwAGkAAQACAAgAAAAwAGoAAQACAAkAAAAwAGsAAQACAAoAAAAwAGwAAQACAAsAAAAwAG0AAQACAAwAAAAwAG4AAQACAA0AAAAxAGYAAQADAAUAAAAxAGcAAQADAAYAAAAxAGgAAQADAAcAAAAxAGkAAQADAAgAAAAxAGoAAQADAAkAAAAxAGsAAQADAAoAAAAxAGwAAQADAAsAAAAxAG0AAQADAAwAAAAxAG4AAQADAA0AAAAyAGYAAQAEAAUAAAAyAGcAAQAEAAYAAAAyAGgAAQAEAAcAAAAyAGkAAQAEAAgAAAAyAGoAAQAEAAkAAAAyAGsAAQAEAAoAAAAyAGwAAQAEAAsAAAAyAG0AAQAEAAwAAAAyAG4AAQAEAA0AAAAuAGMAAQAAAAUAAAAuAGQAAQAAAAYAAAAuAGUAAQAAAAcAAAAvAGMAAQABAAUAAAAvAGQAAQABAAYAAAAvAGUAAQABAAcAAAAwAGMAAQACAAUAAAAwAGQAAQACAAYAAAAwAGUAAQACAAcAAAAxAGMAAQADAAUAAAAxAGQAAQADAAYAAAAxAGUAAQADAAcAAAAyAGMAAQAEAAUAAAAyAGQAAQAEAAYAAAAyAGUAAQAEAAcAAAAuAGAAAQAAAAUAAAAuAGEAAQAAAAYAAAAuAGIAAQAAAAcAAAAvAGAAAQABAAUAAAAvAGEAAQABAAYAAAAvAGIAAQABAAcAAAAwAGAAAQACAAUAAAAwAGEAAQACAAYAAAAwAGIAAQACAAcAAAAxAGAAAQADAAUAAAAxAGEAAQADAAYAAAAxAGIAAQADAAcAAAAyAGAAAQAEAAUAAAAyAGEAAQAEAAYAAAAyAGIAAQAEAAcAAAAuAF0AAQAAAAUAAAAuAF4AAQAAAAYAAAAuAF8AAQAAAAcAAAAvAF0AAQABAAUAAAAvAF4AAQABAAYAAAAvAF8AAQABAAcAAAAwAF0AAQACAAUAAAAwAF4AAQACAAYAAAAwAF8AAQACAAcAAAAxAF0AAQADAAUAAAAxAF4AAQADAAYAAAAxAF8AAQADAAcAAAAyAF0AAQAEAAUAAAAyAF4AAQAEAAYAAAAyAF8AAQAEAAcAAAAuAFoAAQAAAAUAAAAuAFsAAQAAAAYAAAAuAFwAAQAAAAcAAAAvAFoAAQABAAUAAAAvAFsAAQABAAYAAAAvAFwAAQABAAcAAAAwAFoAAQACAAUAAAAwAFsAAQACAAYAAAAwAFwAAQACAAcAAAAxAFoAAQADAAUAAAAxAFsAAQADAAYAAAAxAFwAAQADAAcAAAAyAFoAAQAEAAUAAAAyAFsAAQAEAAYAAAAyAFwAAQAEAAcAAAAuAFcAAQAAAAAAAAAuAFgAAQAAAAEAAAAuAFkAAQAAAAIAAAAvAFcAAQABAAAAAAAvAFgAAQABAAEAAAAvAFkAAQABAAIAAAAwAFcAAQACAAAAAAAwAFgAAQACAAEAAAAwAFkAAQACAAIAAAAxAFcAAQADAAAAAAAxAFgAAQADAAEAAAAxAFkAAQADAAIAAAAyAFcAAQAEAAAAAAAyAFgAAQAEAAEAAAAyAFkAAQAEAAIAAACbAAcAAQAAAAAAAACbAAgAAQAAAAEAAACbAAkAAQAAAAIAAACcAAcAAQABAAAAAACcAAgAAQABAAEAAACcAAkAAQABAAIAAACdAAcAAQACAAAAAACdAAgAAQACAAEAAACdAAkAAQACAAIAAACeAAcAAQADAAAAAACeAAgAAQADAAEAAACeAAkAAQADAAIAAACfAAcAAQAEAAAAAACfAAgAAQAEAAEAAACfAAkAAQAEAAIAAACbAAoAAQAAAAMAAACbAAsAAQAAAAQAAACbAAwAAQAAAAUAAACcAAoAAQABAAMAAACcAAsAAQABAAQAAACcAAwAAQABAAUAAACdAAoAAQACAAMAAACdAAsAAQACAAQAAACdAAwAAQACAAUAAACeAAoAAQADAAMAAACeAAsAAQADAAQAAACeAAwAAQADAAUAAACfAAoAAQAEAAMAAACfAAsAAQAEAAQAAACfAAwAAQAEAAUAAACbAA0AAQAAAAMAAACbAA4AAQAAAAQAAACbAA8AAQAAAAUAAACcAA0AAQABAAMAAACcAA4AAQABAAQAAACcAA8AAQABAAUAAACdAA0AAQACAAMAAACdAA4AAQACAAQAAACdAA8AAQACAAUAAACeAA0AAQADAAMAAACeAA4AAQADAAQAAACeAA8AAQADAAUAAACfAA0AAQAEAAMAAACfAA4AAQAEAAQAAACfAA8AAQAEAAUAAACbABAAAQAAAAMAAACbABEAAQAAAAQAAACbABIAAQAAAAUAAACcABAAAQABAAMAAACcABEAAQABAAQAAACcABIAAQABAAUAAACdABAAAQACAAMAAACdABEAAQACAAQAAACdABIAAQACAAUAAACeABAAAQADAAMAAACeABEAAQADAAQAAACeABIAAQADAAUAAACfABAAAQAEAAMAAACfABEAAQAEAAQAAACfABIAAQAEAAUAAACbABMAAQAAAAMAAACbABQAAQAAAAQAAACbABUAAQAAAAUAAACcABMAAQABAAMAAACcABQAAQABAAQAAACcABUAAQABAAUAAACdABMAAQACAAMAAACdABQAAQACAAQAAACdABUAAQACAAUAAACeABMAAQADAAMAAACeABQAAQADAAQAAACeABUAAQADAAUAAACfABMAAQAEAAMAAACfABQAAQAEAAQAAACfABUAAQAEAAUAAACbABYAAQAAAAMAAACbABcAAQAAAAQAAACbABgAAQAAAAUAAACcABYAAQABAAMAAACcABcAAQABAAQAAACcABgAAQABAAUAAACdABYAAQACAAMAAACdABcAAQACAAQAAACdABgAAQACAAUAAACeABYAAQADAAMAAACeABcAAQADAAQAAACeABgAAQADAAUAAACfABYAAQAEAAMAAACfABcAAQAEAAQAAACfABgAAQAEAAUAAACbABkAAQAAAAMAAACbABoAAQAAAAQAAACbABsAAQAAAAUAAACcABkAAQABAAMAAACcABoAAQABAAQAAACcABsAAQABAAUAAACdABkAAQACAAMAAACdABoAAQACAAQAAACdABsAAQACAAUAAACeABkAAQADAAMAAACeABoAAQADAAQAAACeABsAAQADAAUAAACfABkAAQAEAAMAAACfABoAAQAEAAQAAACfABsAAQAEAAUAAACbABwAAQAAAAMAAACbAB0AAQAAAAQAAACbAB4AAQAAAAUAAACcABwAAQABAAMAAACcAB0AAQABAAQAAACcAB4AAQABAAUAAACdABwAAQACAAMAAACdAB0AAQACAAQAAACdAB4AAQACAAUAAACeABwAAQADAAMAAACeAB0AAQADAAQAAACeAB4AAQADAAUAAACfABwAAQAEAAMAAACfAB0AAQAEAAQAAACfAB4AAQAEAAUAAACbAB8AAQAAAAMAAACbACAAAQAAAAQAAACbACEAAQAAAAUAAACcAB8AAQABAAMAAACcACAAAQABAAQAAACcACEAAQABAAUAAACdAB8AAQACAAMAAACdACAAAQACAAQAAACdACEAAQACAAUAAACeAB8AAQADAAMAAACeACAAAQADAAQAAACeACEAAQADAAUAAACfAB8AAQAEAAMAAACfACAAAQAEAAQAAACfACEAAQAEAAUAAACbACIAAQAAAAMAAACbACMAAQAAAAQAAACbACQAAQAAAAUAAACcACIAAQABAAMAAACcACMAAQABAAQAAACcACQAAQABAAUAAACdACIAAQACAAMAAACdACMAAQACAAQAAACdACQAAQACAAUAAACeACIAAQADAAMAAACeACMAAQADAAQAAACeACQAAQADAAUAAACfACIAAQAEAAMAAACfACMAAQAEAAQAAACfACQAAQAEAAUAAACbACUAAQAAAAMAAACbACYAAQAAAAQAAACbACcAAQAAAAUAAACcACUAAQABAAMAAACcACYAAQABAAQAAACcACcAAQABAAUAAACdACUAAQACAAMAAACdACYAAQACAAQAAACdACcAAQACAAUAAACeACUAAQADAAMAAACeACYAAQADAAQAAACeACcAAQADAAUAAACfACUAAQAEAAMAAACfACYAAQAEAAQAAACfACcAAQAEAAUAAACbACgAAQAAAAMAAACbACkAAQAAAAQAAACbACoAAQAAAAUAAACcACgAAQABAAMAAACcACkAAQABAAQAAACcACoAAQABAAUAAACdACgAAQACAAMAAACdACkAAQACAAQAAACdACoAAQACAAUAAACeACgAAQADAAMAAACeACkAAQADAAQAAACeACoAAQADAAUAAACfACgAAQAEAAMAAACfACkAAQAEAAQAAACfACoAAQAEAAUAAACbACsAAQAAAAMAAACbACwAAQAAAAQAAACbAC0AAQAAAAUAAACcACsAAQABAAMAAACcACwAAQABAAQAAACcAC0AAQABAAUAAACdACsAAQACAAMAAACdACwAAQACAAQAAACdAC0AAQACAAUAAACeACsAAQADAAMAAACeACwAAQADAAQAAACeAC0AAQADAAUAAACfACsAAQAEAAMAAACfACwAAQAEAAQAAACfAC0AAQAEAAUAAACbAC4AAQAAAAkAAACbAC8AAQAAAAoAAACbADAAAQAAAAsAAACbADEAAQAAAAwAAACbADIAAQAAAA0AAACcAC4AAQABAAkAAACcAC8AAQABAAoAAACcADAAAQABAAsAAACcADEAAQABAAwAAACcADIAAQABAA0AAACdAC4AAQACAAkAAACdAC8AAQACAAoAAACdADAAAQACAAsAAACdADEAAQACAAwAAACdADIAAQACAA0AAACeAC4AAQADAAkAAACeAC8AAQADAAoAAACeADAAAQADAAsAAACeADEAAQADAAwAAACeADIAAQADAA0AAACfAC4AAQAEAAkAAACfAC8AAQAEAAoAAACfADAAAQAEAAsAAACfADEAAQAEAAwAAACfADIAAQAEAA0AAABVAHIAAQAAAAAAAABVAHMAAQAAAAEAAABVAHQAAQAAAAIAAABVAHUAAQAAAAMAAABVAHYAAQAAAAQAAABVAHcAAQAAAAUAAABVAHgAAQAAAAYAAABVAHkAAQAAAAcAAABVAHoAAQAAAAgAAABVAHsAAQAAAAkAAABVAHwAAQAAAAoAAABVAH0AAQAAAAsAAABVAH4AAQAAAAwAAABVAH8AAQAAAA0AAABWAHIAAQABAAAAAABWAHMAAQABAAEAAABWAHQAAQABAAIAAABWAHUAAQABAAMAAABWAHYAAQABAAQAAABWAHcAAQABAAUAAABWAHgAAQABAAYAAABWAHkAAQABAAcAAABWAHoAAQABAAgAAABWAHsAAQABAAkAAABWAHwAAQABAAoAAABWAH0AAQABAAsAAABWAH4AAQABAAwAAABWAH8AAQABAA0AAABXAHIAAQACAAAAAABXAHMAAQACAAEAAABXAHQAAQACAAIAAABXAHUAAQACAAMAAABXAHYAAQACAAQAAABXAHcAAQACAAUAAABXAHgAAQACAAYAAABXAHkAAQACAAcAAABXAHoAAQACAAgAAABXAHsAAQACAAkAAABXAHwAAQACAAoAAABXAH0AAQACAAsAAABXAH4AAQACAAwAAABXAH8AAQACAA0AAABYAHIAAQADAAAAAABYAHMAAQADAAEAAABYAHQAAQADAAIAAABYAHUAAQADAAMAAABYAHYAAQADAAQAAABYAHcAAQADAAUAAABYAHgAAQADAAYAAABYAHkAAQADAAcAAABYAHoAAQADAAgAAABYAHsAAQADAAkAAABYAHwAAQADAAoAAABYAH0AAQADAAsAAABYAH4AAQADAAwAAABYAH8AAQADAA0AAABZAHIAAQAEAAAAAABZAHMAAQAEAAEAAABZAHQAAQAEAAIAAABZAHUAAQAEAAMAAABZAHYAAQAEAAQAAABZAHcAAQAEAAUAAABZAHgAAQAEAAYAAABZAHkAAQAEAAcAAABZAHoAAQAEAAgAAABZAHsAAQAEAAkAAABZAHwAAQAEAAoAAABZAH0AAQAEAAsAAABZAH4AAQAEAAwAAABZAH8AAQAEAA0AAAB4AHIAAQAAAAAAAAB4AHMAAQAAAAEAAAB4AHQAAQAAAAIAAAB4AHUAAQAAAAMAAAB4AHYAAQAAAAQAAAB4AHcAAQAAAAUAAAB4AHgAAQAAAAYAAAB4AHkAAQAAAAcAAAB4AHoAAQAAAAgAAAB4AHsAAQAAAAkAAAB4AHwAAQAAAAoAAAB4AH0AAQAAAAsAAAB4AH4AAQAAAAwAAAB4AH8AAQAAAA0AAAB5AHIAAQABAAAAAAB5AHMAAQABAAEAAAB5AHQAAQABAAIAAAB5AHUAAQABAAMAAAB5AHYAAQABAAQAAAB5AHcAAQABAAUAAAB5AHgAAQABAAYAAAB5AHkAAQABAAcAAAB5AHoAAQABAAgAAAB5AHsAAQABAAkAAAB5AHwAAQABAAoAAAB5AH0AAQABAAsAAAB5AH4AAQABAAwAAAB5AH8AAQABAA0AAAB6AHIAAQACAAAAAAB6AHMAAQACAAEAAAB6AHQAAQACAAIAAAB6AHUAAQACAAMAAAB6AHYAAQACAAQAAAB6AHcAAQACAAUAAAB6AHgAAQACAAYAAAB6AHkAAQACAAcAAAB6AHoAAQACAAgAAAB6AHsAAQACAAkAAAB6AHwAAQACAAoAAAB6AH0AAQACAAsAAAB6AH4AAQACAAwAAAB6AH8AAQACAA0AAAB7AHIAAQADAAAAAAB7AHMAAQADAAEAAAB7AHQAAQADAAIAAAB7AHUAAQADAAMAAAB7AHYAAQADAAQAAAB7AHcAAQADAAUAAAB7AHgAAQADAAYAAAB7AHkAAQADAAcAAAB7AHoAAQADAAgAAAB7AHsAAQADAAkAAAB7AHwAAQADAAoAAAB7AH0AAQADAAsAAAB7AH4AAQADAAwAAAB7AH8AAQADAA0AAAB8AHIAAQAEAAAAAAB8AHMAAQAEAAEAAAB8AHQAAQAEAAIAAAB8AHUAAQAEAAMAAAB8AHYAAQAEAAQAAAB8AHcAAQAEAAUAAAB8AHgAAQAEAAYAAAB8AHkAAQAEAAcAAAB8AHoAAQAEAAgAAAB8AHsAAQAEAAkAAAB8AHwAAQAEAAoAAAB8AH0AAQAEAAsAAAB8AH4AAQAEAAwAAAB8AH8AAQAEAA0AAAA=")
-tile_set = SubResource("TileSet_u0ya7")
-
 [node name="跳跳乐" type="Node2D" parent="." unique_id=1639562576]
 
-[node name="鼓1" parent="跳跳乐" unique_id=856529844 instance=ExtResource("4_2l5vs")]
+[node name="1" parent="跳跳乐" unique_id=856529844 instance=ExtResource("4_2l5vs")]
 position = Vector2(620, 3345)
 metadata/landing = Vector2(620, 3314)
 
-[node name="鼓2" parent="跳跳乐" unique_id=760945512 instance=ExtResource("4_2l5vs")]
+[node name="2" parent="跳跳乐" unique_id=760945512 instance=ExtResource("4_2l5vs")]
 position = Vector2(490, 3119)
 metadata/landing = Vector2(620, 3090)
 
-[node name="鼓3" parent="跳跳乐" unique_id=471566538 instance=ExtResource("4_2l5vs")]
+[node name="3" parent="跳跳乐" unique_id=471566538 instance=ExtResource("4_2l5vs")]
 position = Vector2(880, 3009)
 metadata/landing = Vector2(880, 2978)
 
-[node name="段2_上行段" type="Node2D" parent="跳跳乐" unique_id=2008735465]
-
-[node name="鼓4" parent="跳跳乐/段2_上行段" unique_id=1221597601 instance=ExtResource("4_2l5vs")]
+[node name="4" parent="跳跳乐" unique_id=1221597601 instance=ExtResource("4_2l5vs")]
 position = Vector2(759, 2765)
 metadata/landing = Vector2(880, 2754)
 
-[node name="鼓5" parent="跳跳乐/段2_上行段" unique_id=323936061 instance=ExtResource("4_2l5vs")]
+[node name="5" parent="跳跳乐" unique_id=323936061 instance=ExtResource("4_2l5vs")]
 position = Vector2(282, 2695)
 metadata/landing = Vector2(620, 2642)
 
-[node name="鼓6" parent="跳跳乐/段2_上行段" unique_id=885389422 instance=ExtResource("4_2l5vs")]
+[node name="6" parent="跳跳乐" unique_id=885389422 instance=ExtResource("4_2l5vs")]
 position = Vector2(522, 2415)
 metadata/landing = Vector2(880, 2530)
 
-[node name="鼓7" parent="跳跳乐/段2_上行段" unique_id=1311576713 instance=ExtResource("4_2l5vs")]
+[node name="7" parent="跳跳乐" unique_id=1311576713 instance=ExtResource("4_2l5vs")]
 position = Vector2(329, 2100)
 metadata/landing = Vector2(620, 2194)
 
-[node name="鼓8" parent="跳跳乐/段2_上行段" unique_id=1918962575 instance=ExtResource("4_2l5vs")]
+[node name="8" parent="跳跳乐" unique_id=1918962575 instance=ExtResource("4_2l5vs")]
 position = Vector2(261, 1858)
 metadata/landing = Vector2(620, 2418)
 
-[node name="平台1" parent="跳跳乐/段2_上行段" unique_id=1856796256 instance=ExtResource("11_rpoi4")]
+[node name="9" parent="跳跳乐" unique_id=1856796256 instance=ExtResource("11_rpoi4")]
 position = Vector2(492, 1701)
 metadata/landing = Vector2(880, 1746)
 
-[node name="鼓17" parent="跳跳乐/段2_上行段" unique_id=284664628 instance=ExtResource("4_2l5vs")]
+[node name="10" type="Node2D" parent="跳跳乐" unique_id=1566536753]
+position = Vector2(832, 1688)
+
+[node name="墙片02" parent="跳跳乐/10" unique_id=395295428 instance=ExtResource("12_b3l0l")]
+position = Vector2(-5, -230)
+
+[node name="墙片03" parent="跳跳乐/10" unique_id=1080574293 instance=ExtResource("12_b3l0l")]
+position = Vector2(-80, -376)
+rotation = 2.0943952
+
+[node name="墙片01" parent="跳跳乐/10" unique_id=733071362 instance=ExtResource("12_b3l0l")]
+position = Vector2(-5, -5)
+
+[node name="11" parent="跳跳乐" unique_id=284664628 instance=ExtResource("4_2l5vs")]
 position = Vector2(1000, 1776)
 metadata/landing = Vector2(620, 1298)
 
-[node name="平台04" parent="跳跳乐/段2_上行段" unique_id=786820955 instance=ExtResource("11_rpoi4")]
-position = Vector2(2227, 1176)
-metadata/landing = Vector2(620, 1186)
-
-[node name="鼓20" parent="跳跳乐/段2_上行段" unique_id=1885635474 instance=ExtResource("4_2l5vs")]
+[node name="12" parent="跳跳乐" unique_id=1885635474 instance=ExtResource("4_2l5vs")]
 position = Vector2(1256, 1948)
 metadata/landing = Vector2(620, 850)
 
-[node name="鼓26" parent="跳跳乐/段2_上行段" unique_id=256024059 instance=ExtResource("4_2l5vs")]
-position = Vector2(2219, 2185)
-metadata/landing = Vector2(620, 850)
+[node name="13" type="Node2D" parent="跳跳乐" unique_id=1746906411]
+position = Vector2(816, 1472)
 
-[node name="鼓21" parent="跳跳乐/段2_上行段" unique_id=1140802464 instance=ExtResource("4_2l5vs")]
+[node name="墙片01" parent="跳跳乐/13" unique_id=638594973 instance=ExtResource("12_b3l0l")]
+position = Vector2(848, 416)
+
+[node name="14" parent="跳跳乐" unique_id=1140802464 instance=ExtResource("4_2l5vs")]
 position = Vector2(2057, 1925)
 metadata/landing = Vector2(620, 850)
 
-[node name="鼓22" parent="跳跳乐/段2_上行段" unique_id=1529831383 instance=ExtResource("4_2l5vs")]
+[node name="15" parent="跳跳乐" unique_id=1529831383 instance=ExtResource("4_2l5vs")]
 position = Vector2(2301, 1643)
 metadata/landing = Vector2(620, 850)
 
-[node name="鼓23" parent="跳跳乐/段2_上行段" unique_id=1545549 instance=ExtResource("4_2l5vs")]
+[node name="16" parent="跳跳乐" unique_id=1545549 instance=ExtResource("4_2l5vs")]
 position = Vector2(1940, 1421)
 metadata/landing = Vector2(1600, 700)
 
-[node name="鼓25" parent="跳跳乐/段2_上行段" unique_id=1869861063 instance=ExtResource("4_2l5vs")]
-position = Vector2(2409, 965)
+[node name="17" parent="跳跳乐" unique_id=786820955 instance=ExtResource("11_rpoi4")]
+position = Vector2(2227, 1176)
+metadata/landing = Vector2(620, 1186)
+
+[node name="18" parent="跳跳乐" unique_id=1869861063 instance=ExtResource("4_2l5vs")]
+position = Vector2(2128, 936)
+"跳跃强度" = 800.0
 metadata/landing = Vector2(1300, 700)
 
-[node name="段3_战斗层" type="Node2D" parent="跳跳乐" unique_id=1351971510]
+[node name="战斗层" type="Node2D" parent="跳跳乐" unique_id=1351971510]
 position = Vector2(199, 119)
 
-[node name="鼓24" parent="跳跳乐/段3_战斗层" unique_id=854052097 instance=ExtResource("4_2l5vs")]
-position = Vector2(1155, 727)
-metadata/landing = Vector2(1000, 480)
-
-[node name="鼓25" parent="跳跳乐/段3_战斗层" unique_id=979548534 instance=ExtResource("4_2l5vs")]
-position = Vector2(1602, 727)
+[node name="鼓2" parent="跳跳乐/战斗层" unique_id=979548534 instance=ExtResource("4_2l5vs")]
+position = Vector2(1580, 733)
 metadata/landing = Vector2(1300, 480)
 
-[node name="鼓27" parent="跳跳乐/段3_战斗层" unique_id=155676487 instance=ExtResource("4_2l5vs")]
+[node name="鼓1" parent="跳跳乐/战斗层" unique_id=155676487 instance=ExtResource("4_2l5vs")]
 position = Vector2(699, 738)
 metadata/landing = Vector2(1000, 240)
 
-[node name="平台11" parent="跳跳乐/段3_战斗层" unique_id=353088535 instance=ExtResource("11_rpoi4")]
-position = Vector2(900, 133)
+[node name="1" parent="跳跳乐/战斗层" unique_id=353088535 instance=ExtResource("11_rpoi4")]
+position = Vector2(919, 202)
 metadata/landing = Vector2(900, 120)
 
-[node name="平台12" parent="跳跳乐/段3_战斗层" unique_id=286236960 instance=ExtResource("11_rpoi4")]
-position = Vector2(1400, 133)
+[node name="2" parent="跳跳乐/战斗层" unique_id=286236960 instance=ExtResource("11_rpoi4")]
+position = Vector2(1339, 202)
 metadata/landing = Vector2(1400, 120)
 
-[node name="平台13" parent="跳跳乐/段3_战斗层" unique_id=1746785636 instance=ExtResource("11_rpoi4")]
-position = Vector2(1156, 374)
+[node name="middle" parent="跳跳乐/战斗层" unique_id=1746785636 instance=ExtResource("11_rpoi4")]
+position = Vector2(1129, 374)
 metadata/landing = Vector2(900, 120)
 
-[node name="鼓28" parent="跳跳乐/段3_战斗层" unique_id=1326256118 instance=ExtResource("4_2l5vs")]
-position = Vector2(704, 385)
-metadata/landing = Vector2(1000, 240)
+[node name="3" parent="跳跳乐/战斗层" unique_id=2067037308 instance=ExtResource("11_rpoi4")]
+position = Vector2(702, 370)
+metadata/landing = Vector2(900, 120)
 
-[node name="鼓26" parent="跳跳乐/段3_战斗层" unique_id=851399695 instance=ExtResource("4_2l5vs")]
-position = Vector2(1592, 383)
-metadata/landing = Vector2(1300, 480)
+[node name="4" parent="跳跳乐/战斗层" unique_id=885203781 instance=ExtResource("11_rpoi4")]
+position = Vector2(1562, 371)
+metadata/landing = Vector2(900, 120)
 
-[node name="鼓29" parent="跳跳乐/段3_战斗层" unique_id=319809176 instance=ExtResource("4_2l5vs")]
-position = Vector2(923, 554)
-metadata/landing = Vector2(1000, 480)
+[node name="5" parent="跳跳乐/战斗层" unique_id=345238975 instance=ExtResource("11_rpoi4")]
+position = Vector2(915, 568)
+metadata/landing = Vector2(900, 120)
 
-[node name="鼓30" parent="跳跳乐/段3_战斗层" unique_id=345602911 instance=ExtResource("4_2l5vs")]
-position = Vector2(1379, 554)
-metadata/landing = Vector2(1000, 480)
+[node name="6" parent="跳跳乐/战斗层" unique_id=1252661766 instance=ExtResource("11_rpoi4")]
+position = Vector2(1346, 571)
+metadata/landing = Vector2(900, 120)
 
-[node name="墙片模板（复制这个）" type="Node2D" parent="跳跳乐" unique_id=1812381575]
-position = Vector2(949, 1707)
-
-[node name="墙片01" parent="跳跳乐/墙片模板（复制这个）" unique_id=487612279 instance=ExtResource("12_b3l0l")]
-position = Vector2(740, 1600)
+[node name="7" parent="跳跳乐/战斗层" unique_id=1585564397 instance=ExtResource("11_rpoi4")]
+position = Vector2(1130, 742)
+metadata/landing = Vector2(900, 120)
 
 [node name="GameFlow" type="Node" parent="." unique_id=46866215]
 script = ExtResource("13_jcve4")
@@ -370,6 +262,9 @@ shape = SubResource("RectangleShape2D_bd3lt")
 position = Vector2(240, 3369)
 collision_mask = 49
 
+[node name="追逐段" type="Node2D" parent="." unique_id=1599123456]
+script = ExtResource("27_chase")
+
 [node name="UI" type="Node" parent="." unique_id=21452165]
 
 [node name="HUD" parent="UI" unique_id=1314740397 instance=ExtResource("18_m70p6")]
@@ -393,3 +288,12 @@ grow_horizontal = 0
 display_player_location = true
 
 [node name="RoomInstance" parent="." unique_id=1246059462 instance=ExtResource("26_2ld62")]
+
+[node name="phase_2_area" type="Area2D" parent="." unique_id=1580833285]
+position = Vector2(1341, 565)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="phase_2_area" unique_id=1743979937]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_rksuf")
