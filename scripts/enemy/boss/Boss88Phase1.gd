@@ -516,6 +516,14 @@ func _出闪现背刺(token: int) -> void:
 	await _等动画结束(token)
 
 
+## 原点往下到胶囊底边（脚底）的距离。落点要按它上抬，否则 88 会瞬移进地面里。
+func _脚底偏移() -> float:
+	var cs := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if cs != null and cs.shape is CapsuleShape2D:
+		return cs.position.y + (cs.shape as CapsuleShape2D).height * 0.5
+	return 14.0
+
+
 ## 落点：玩家背后一段距离，夹进活动范围，并向下探一下确认脚下有地
 func _闪现落点() -> Vector2:
 	if player == null:
@@ -530,7 +538,10 @@ func _闪现落点() -> Vector2:
 	参.exclude = [get_rid()]
 	var 命中 := get_world_2d().direct_space_state.intersect_ray(参)
 	if not 命中.is_empty():
-		y = 命中.position.y - 1.0
+		# 让**胶囊底边**落在地面上，不是让原点落在地面上 ——
+		# 以前是 `命中.position.y - 1.0`，于是原点落在地表下 1px、胶囊沉进地面 13px，
+		# 下一帧才被物理顶出来（一帧的 13px 跳变，占身高 10%，看得见）。
+		y = 命中.position.y - _脚底偏移()
 	return Vector2(x, y)
 
 

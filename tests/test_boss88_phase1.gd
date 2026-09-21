@@ -60,9 +60,25 @@ func _等物理(n: int) -> void:
 		await get_tree().physics_frame
 
 
+## 地面碰撞顶边（**从关卡里读，不写死** —— 作者会调关卡布局，写死会让自检误报）
+func _地面顶边() -> float:
+	var g := _lvl.get_node_or_null("tile/Ground") as Node2D
+	if g == null:
+		return 3426.0
+	var cs := g.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if cs == null or not (cs.shape is RectangleShape2D):
+		return g.global_position.y
+	return g.global_position.y - (cs.shape as RectangleShape2D).size.y * 0.5
+
+
+## Boss 站在地面上时原点该在的 y（胶囊底边在原点下方 14px）
+func _站位y() -> float:
+	return _地面顶边() - 14.0
+
+
 ## 把玩家挪远，避免断言时真打到人
 func _挪开玩家() -> void:
-	_player.global_position = Vector2(300.0, 3369.0)
+	_player.global_position = Vector2(300.0, _站位y() - 43.0)
 	_player.velocity = Vector2.ZERO
 
 
@@ -223,7 +239,7 @@ func _检查命中帧() -> void:
 			"命中帧：五线谱生成帧落在 staff_cast 动画内（改它不用改代码）")
 	# ④ 跑完整招之后判定盒不能卡在开着
 	_挪开玩家()
-	_boss.global_position = Vector2(1100.0, 3426.0)
+	_boss.global_position = Vector2(1100.0, _站位y())
 	_boss.state = _boss.State.IDLE
 	await _boss._出前突刺(int(_boss._attack_serial))
 	_check(not 盒.monitoring, "命中帧：一招跑完后判定盒没卡住")
@@ -382,7 +398,9 @@ func _检查体型与几何() -> void:
 
 
 ## 把玩家摆到指定位置、满血、清掉无敌帧
-func _摆好玩家(x: float, y: float = 3412.0) -> void:
+func _摆好玩家(x: float, y: float = -1.0) -> void:
+	if y < 0.0:
+		y = _站位y()
 	_player.global_position = Vector2(x, y)
 	_player.velocity = Vector2.ZERO
 	_player.hp = GameState.MAX_HP
@@ -392,7 +410,7 @@ func _摆好玩家(x: float, y: float = 3412.0) -> void:
 
 ## 让 Boss 站到 x，并强制只走「招式判定盒」这一条伤害通道
 func _摆好Boss(x: float) -> void:
-	_boss.global_position = Vector2(x, 3426.0)
+	_boss.global_position = Vector2(x, _站位y())
 	_boss.velocity = Vector2.ZERO
 	_boss.contact_damage = 0
 	_boss.state = _boss.State.IDLE
@@ -487,7 +505,7 @@ func _检查招式命中() -> void:
 		var 试线 := (load("res://scenes/enemies/boss/StaffSweep.tscn") as PackedScene).instantiate()
 		add_child(试线)
 		await get_tree().physics_frame
-		试线.setup(260.0, 1, 模板, 200.0, 1400.0, 3412.0)
+		试线.setup(260.0, 1, 模板, 200.0, 1400.0, _站位y())
 		await get_tree().physics_frame
 		var 判定 := 试线.get_node_or_null("判定") as Area2D
 		var 块数 := 0
@@ -570,7 +588,7 @@ func _检查选招() -> void:
 
 	# ── 距离带 → 偏好招（把玩家摆到带上，然后跑 400 次统计分布）──
 	_boss._attack_index = 99
-	_boss.global_position = Vector2(1100.0, 3426.0)
+	_boss.global_position = Vector2(1100.0, _站位y())
 	# 近带：贴身 120px
 	await _摆玩家到(1220.0)
 	await _验分布("近", {"claw": 0.75}, 0.0833)
@@ -601,7 +619,7 @@ func _检查选招() -> void:
 
 
 func _摆玩家到(x: float) -> void:
-	_player.global_position = Vector2(x, 3369.0)
+	_player.global_position = Vector2(x, _站位y() - 43.0)
 	_player.velocity = Vector2.ZERO
 	await _等物理(5)
 
@@ -631,14 +649,14 @@ func _验分布(带名: String, 期望: Dictionary, 非偏好期望: float) -> v
 func _检查闪现落点() -> void:
 	if _boss == null:
 		return
-	_boss.global_position = Vector2(1200.0, 3426.0)
-	_player.global_position = Vector2(210.0, 3369.0)
+	_boss.global_position = Vector2(1200.0, _站位y())
+	_player.global_position = Vector2(210.0, _站位y() - 43.0)
 	await _等物理(2)
 	var 点: Vector2 = _boss._闪现落点()
 	_check(点.x >= float(_boss.活动左) - 0.5 and 点.x <= float(_boss.活动右) + 0.5,
 		"闪现落点：夹在活动范围 200~1400（实际 x=%.0f）" % 点.x)
-	_check(absf(点.y - 3426.0) < 6.0,
-		"闪现落点：向下探到地面（y=%.0f，地面顶边 3426）" % 点.y)
+	_check(absf(点.y - _站位y()) < 6.0,
+		"闪现落点：向下探到地面（y=%.0f，站位 %.0f）" % [点.y, _站位y()])
 	_挪开玩家()
 
 
