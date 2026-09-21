@@ -32,6 +32,8 @@ func _ready() -> void:
 	await _检查接线()
 	await _检查动画骨架()
 	await _检查命中帧()
+	await _检查体型与几何()
+	await _检查招式命中()
 	await _检查状态机()
 	await _检查选招()
 	await _检查闪现落点()
@@ -181,9 +183,11 @@ func _检查动画骨架() -> void:
 func _检查命中帧() -> void:
 	if _boss == null:
 		return
-	# ① 设计硬闸：判定盒开启时长必须 1~2 帧
-	_check(int(_boss.命中盒持续帧) >= 1 and int(_boss.命中盒持续帧) <= 2,
-		"命中帧：命中盒持续帧 = %d（**设计硬闸：1~2**）" % int(_boss.命中盒持续帧))
+	# ① 判定窗口语义：盒子只在出手/冲刺期间开，且至少 2 帧（1 帧刷重叠表 + 1 帧结算）。
+	#    旧断言是"必须 <= 2" —— 那约束的是实现细节，而且挡不住真正的 bug：
+	#    以前开盒与查询在同一物理帧，2 帧窗口照样一下都打不中。
+	_check(int(_boss.命中盒持续帧) >= 2,
+		"命中帧：判定窗口 >= 2 物理帧（1 帧刷重叠表 + 1 帧结算），实际 %d" % int(_boss.命中盒持续帧))
 	# ② 开关真的能切 monitoring
 	var 盒 := _boss.get_node("AttackHitbox") as Area2D
 	_boss._设判定盒(true)
@@ -226,6 +230,285 @@ func _检查命中帧() -> void:
 	_挪开玩家()
 
 
+# ──────────────────────────── 体型与判定几何 ────────────────────────────
+#
+# 作者实测："88 体型过大，差不多有 6 个 77 大"、"88 一直在攻击空气，因为够不着"。
+# 这两件事都是**几何**问题，所以必须有几何断言 —— 否则下次换美术/改碰撞又会漂移。
+
+
+## 贴图里**非透明内容**的像素包围盒（相对帧左上角）。
+## 必须用 alpha 包围盒而不是整帧：77 的美术帧里有一大片透明留白，
+## 按整帧算会得出 153.6px —— 那是帧高，不是人高；按内容算才是 125.4px。
+## 取不到图（压缩格式异常等）就退回整帧，不让断言因为读图失败而误报。
+func _内容盒(贴图: Texture2D, 帧矩形: Rect2i) -> Rect2:
+	var 全帧 := Rect2(Vector2.ZERO, Vector2(帧矩形.size))
+	var 图 := 贴图.get_image()
+	if 图 == null:
+		return 全帧
+	var 裁 := 图
+	if 帧矩形 != Rect2i(0, 0, 图.get_width(), 图.get_height()):
+		裁 = 图.get_region(帧矩形)
+	if 裁 == null:
+		return 全帧
+	var 用 := 裁.get_used_rect()
+	if 用.size.x <= 0 or 用.size.y <= 0:
+		return 全帧
+	return Rect2(用.position, 用.size)
+
+
+## 一个 Sprite 的**实际可视**包围盒（屏幕坐标，相对其父节点）。
+## 绘制顺序：纹理以 offset 为中心画在局部坐标，再乘节点 scale、加 position。
+func _可视盒(节点: Node2D, 帧尺寸: Vector2, 偏移: Vector2, 内容: Rect2) -> Rect2:
+	var 帧左上 := 偏移 - 帧尺寸 * 0.5
+	var 局部左上 := 帧左上 + 内容.position
+	return Rect2(
+		节点.position.x + 节点.scale.x * 局部左上.x,
+		节点.position.y + 节点.scale.y * 局部左上.y,
+		absf(节点.scale.x) * 内容.size.x,
+		absf(节点.scale.y) * 内容.size.y)
+
+
+func _检查体型与几何() -> void:
+	if _boss == null or _player == null:
+		return
+
+	# ── ① 88 的可视包围盒必须等于 77 的（"跟 77 同体型"）
+	var 八八精灵 := _boss.get_node_or_null("BossSprite") as AnimatedSprite2D
+	var 七七精灵 := _player.get_node_or_null("Sprite2D") as Sprite2D
+	_check(八八精灵 != null and 七七精灵 != null, "体型：找得到 88 的 BossSprite 与 77 的 Sprite2D")
+	if 八八精灵 != null and 七七精灵 != null:
+		var 八八贴图 := 八八精灵.sprite_frames.get_frame_texture("idle", 0)
+		var 七七贴图 := 七七精灵.texture
+		_check(八八贴图 != null and 七七贴图 != null, "体型：两边都拿得到贴图")
+		if 八八贴图 != null and 七七贴图 != null:
+			var 八八帧 := Vector2(八八贴图.get_width(), 八八贴图.get_height())
+			var 七七帧 := Vector2(七七贴图.get_width() / float(maxi(七七精灵.hframes, 1)),
+				七七贴图.get_height() / float(maxi(七七精灵.vframes, 1)))
+			var 八八内容 := _内容盒(八八贴图, Rect2i(0, 0, int(八八帧.x), int(八八帧.y)))
+			var 七七内容 := _内容盒(七七贴图, Rect2i(0, 0, int(七七帧.x), int(七七帧.y)))
+			var 八八盒 := _可视盒(八八精灵, 八八帧, 八八精灵.offset, 八八内容)
+			var 七七盒 := _可视盒(七七精灵, 七七帧, 七七精灵.offset, 七七内容)
+			_check(absf(八八盒.size.y - 七七盒.size.y) <= 3.0,
+				"体型：88 可视高 = 77 可视高（88 %.1f vs 77 %.1f）" % [八八盒.size.y, 七七盒.size.y])
+			_check(absf(八八盒.end.y - 七七盒.end.y) <= 3.0,
+				"体型：88 可视底边与 77 对齐（88 %.1f vs 77 %.1f）" % [八八盒.end.y, 七七盒.end.y])
+			# 面积比也要贴近 1 —— 只等高但宽 2.6 倍的话，观感还是"大得离谱"
+			var 面积比 := (八八盒.size.x * 八八盒.size.y) / maxf(七七盒.size.x * 七七盒.size.y, 0.001)
+			_check(面积比 <= 2.2,
+				"体型：88 可视面积不超过 77 的 2.2 倍（实际 %.2f 倍）" % 面积比)
+
+	# ── ② 两个距离盒的圆心必须和身体胶囊同心。
+	#    以前它们在 y=-110（旧的高体型中心），而 77 胶囊中心在 -43 → 竖向偏差 67px，
+	#    把 r150 的近身盒水平有效半径压成 sqrt(150²-67²)=134px。同心后水平半径才等于标称值。
+	var 胶囊 := _boss.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	_check(胶囊 != null, "几何：本体碰撞节点叫 CollisionShape2D（作者手改过名字，这里钉住）")
+	if 胶囊 != null:
+		for 对 in [["近身盒", "近身盒半径"], ["中距盒", "中距盒半径"]]:
+			var 盒 := _boss.get_node_or_null(对[0]) as Area2D
+			_check(盒 != null and absf(盒.position.y - 胶囊.position.y) <= 1.0,
+				"几何：%s 与胶囊同心（盒 y=%.1f，胶囊 y=%.1f）"
+				% [对[0], 盒.position.y if 盒 else 999.0, 胶囊.position.y])
+
+	# ── ③ 判定盒前缘必须 >= 近身盒半径，否则"玩家站在近身带边缘"时爪击够不着
+	var 判形 := _boss.get_node_or_null("AttackHitbox/CollisionShape2D") as CollisionShape2D
+	if 判形 != null and 判形.shape is RectangleShape2D:
+		var 半宽 := (判形.shape as RectangleShape2D).size.x * 0.5
+		var 前缘 := float(_boss.判定盒前伸) + 半宽
+		_check(前缘 >= float(_boss.近身盒半径),
+			"几何：判定盒前缘 %.0f >= 近身盒半径 %.0f（爪击在近身带边缘够得着）"
+			% [前缘, float(_boss.近身盒半径)])
+
+	# ── ④ 突刺真的冲了 `突刺距离` 那么远（按位移停，不受帧率/顿帧影响）
+	_摆好Boss(400.0)
+	_摆好玩家(2200.0)          # 挪到很远的场地外，别被突刺撞到干扰测距
+	await _等物理(4)
+	var 起 := _boss.global_position.x
+	var token := int(_boss._attack_serial)
+	_boss.state = _boss.State.ATTACK
+	await _boss._出前突刺(token)
+	_boss.state = _boss.State.IDLE
+	var 冲了 := absf(_boss.global_position.x - 起)
+	_check(冲了 >= float(_boss.突刺距离) * 0.9,
+		"位移：前突刺冲了 %.0fpx（目标 %.0f，下限 90%%）" % [冲了, float(_boss.突刺距离)])
+
+	# ── ⑤ 顿帧期间冲刺距离不能归零。
+	#    `FeedbackManager.hit_stop()` 会把 time_scale 压到 0，那时物理帧照常 tick 但
+	#    delta = 0 → 按帧数等会直接得到 0 位移。按位移等则只是把动作拉长。
+	_摆好Boss(400.0)
+	await _等物理(4)
+	起 = _boss.global_position.x
+	token = int(_boss._attack_serial)
+	_boss.state = _boss.State.ATTACK
+	Engine.time_scale = 0.0
+	# 用 ignore_time_scale = true 的真实时间计时器解冻（否则冻结后没人能解开）
+	get_tree().create_timer(0.4, true, true, true).timeout.connect(
+		func() -> void: Engine.time_scale = 1.0)
+	await _boss._冲刺(float(_boss.突刺距离), float(_boss.突刺速度), token)
+	Engine.time_scale = 1.0
+	_boss.state = _boss.State.IDLE
+	冲了 = absf(_boss.global_position.x - 起)
+	_check(冲了 >= float(_boss.突刺距离) * 0.9,
+		"位移：顿帧（time_scale=0）期间冲刺距离不归零（实冲 %.0fpx）" % 冲了)
+
+	# ── ⑥ 判定盒在前摇期间必须是关的（可读性：前摇不该有判定）。
+	#    只观察前摇那几帧，不跑完整招 —— 这样断言直接对应"可读性"这个意图。
+	_摆好Boss(1100.0)
+	_摆好玩家(1400.0)
+	await _等物理(3)
+	var 前摇期间开着 := 0
+	_boss.state = _boss.State.ATTACK
+	_boss._摆("thrust")
+	for _i in maxi(int(_boss.突刺命中帧) - 1, 1):
+		await get_tree().physics_frame
+		if (_boss.get_node("AttackHitbox") as Area2D).monitoring:
+			前摇期间开着 += 1
+	_check(前摇期间开着 == 0,
+		"判定窗口：前突刺前摇 %d 帧内判定盒始终关闭（实测开着 %d 帧）"
+		% [int(_boss.突刺命中帧), 前摇期间开着])
+
+	_boss.state = _boss.State.IDLE
+	_boss.contact_damage = int(_boss.伤害)
+	_挪开玩家()
+
+
+# ──────────────────────────── 招式命中（核心：这招到底打不打得到人） ────────────────────────────
+#
+# 这一段是整套自检里**最该有却一直缺的**：此前没有任何断言验证「Boss 出招 → 玩家掉血」，
+# 测试还刻意 `_挪开玩家()` 把这条链路绕开。结果是判定盒同帧查询、突刺判定早于位移
+# 这类 bug 一个都拦不住（feel-pass 的 Impact 0 分档：`Hitting an enemy feels the same
+# as hitting air.`）。
+#
+# 关掉接触伤害再测 —— 否则分不清是「招式判定盒打到的」还是「身体撞到的」。
+
+
+## 把玩家摆到指定位置、满血、清掉无敌帧
+func _摆好玩家(x: float, y: float = 3412.0) -> void:
+	_player.global_position = Vector2(x, y)
+	_player.velocity = Vector2.ZERO
+	_player.hp = GameState.MAX_HP
+	_player.invincible_timer = 0.0
+	_player._is_dash_intangible = false
+
+
+## 让 Boss 站到 x，并强制只走「招式判定盒」这一条伤害通道
+func _摆好Boss(x: float) -> void:
+	_boss.global_position = Vector2(x, 3426.0)
+	_boss.velocity = Vector2.ZERO
+	_boss.contact_damage = 0
+	_boss.state = _boss.State.IDLE
+	_boss.出手间隔 = 999.0
+	_boss.出手间隔_半血 = 999.0
+
+
+## 跑一招，返回玩家掉了几滴血
+func _试一招(招: String) -> int:
+	var 血前: int = _player.hp
+	var token: int = int(_boss._attack_serial)
+	_boss.state = _boss.State.ATTACK
+	match 招:
+		"claw": await _boss._出爪击连段(token)
+		"staff": await _boss._出五线谱(token)
+		"thrust": await _boss._出前突刺(token)
+		"blink": await _boss._出闪现背刺(token)
+	_boss.state = _boss.State.IDLE
+	_boss.velocity = Vector2.ZERO
+	return 血前 - _player.hp
+
+
+func _检查招式命中() -> void:
+	if _boss == null or _player == null:
+		return
+
+	# ── ① 爪击 @130px：距离在旧判定盒前缘（151px）之内。
+	#    如果这条都不过，说明问题不是"够不着"而是"判定盒根本没查到人"。
+	_摆好Boss(1100.0)
+	_摆好玩家(1230.0)
+	await _等物理(3)
+	var 掉 := await _试一招("claw")
+	_check(掉 >= 1, "命中：爪击在 130px 处能打到玩家（实测掉 %d 血）" % 掉)
+	_check(_boss.boss_sprite.animation == "claw_3",
+		"命中：三连爪击真的跑完三段（收招时动画 = %s）" % _boss.boss_sprite.animation)
+
+	# ── ② 三段是三次独立打击：站着不动吃满三下 = 3 血。
+	#    这条同时验证"每段只结算一次"—— 如果 `_结算过` 没生效，前压的 7 帧里
+	#    每帧都会再扣一次，总数会远大于 3。
+	_check(掉 == 3, "命中：三连爪击三段各命中一次 = 正好 3 血（实测 %d）" % 掉)
+
+	# ── ③ 前突刺 @200px：旧实现（前突 83px + 判定盒前缘 151px）理论上够得着，
+	#    够不着就说明判定发生在位移之前
+	_摆好Boss(600.0)
+	_摆好玩家(800.0)
+	await _等物理(3)
+	掉 = await _试一招("thrust")
+	_check(掉 >= 1, "命中：前突刺在 200px 处能打到玩家（实测掉 %d 血）" % 掉)
+
+	# ── ④ 前突刺 @420px：这是它的偏好带远端，必须够得着
+	_摆好Boss(600.0)
+	_摆好玩家(1020.0)
+	await _等物理(3)
+	掉 = await _试一招("thrust")
+	_check(掉 >= 1, "命中：前突刺在 420px 处能打到玩家（实测掉 %d 血）" % 掉)
+
+	# ── ⑤ 闪现背刺：从远带（>420px）瞬移到玩家背后再突进
+	_摆好Boss(1100.0)
+	_摆好玩家(500.0)
+	await _等物理(3)
+	掉 = await _试一招("blink")
+	_check(掉 >= 1, "命中：闪现背刺在远距离能打到玩家（实测掉 %d 血）" % 掉)
+
+	# ── ⑥ 五线谱：生成位置的 y 必须跟 88 站在同一高度
+	#    （曾经生成在世界 y=0 —— 画面上方约 2900px，看不见也打不到）
+	_摆好Boss(1100.0)
+	_摆好玩家(700.0)
+	await _等物理(6)
+	_boss._attack_index = 0          # 固定用模板 0（贴地·中间留缝），让断言可复现
+	_boss._生成五线谱()
+	await _等物理(2)
+	var 线 := get_tree().get_first_node_in_group("boss_hazard") as Node2D
+	_check(线 != null, "命中：五线谱已生成（在 boss_hazard 组）")
+	if 线 != null:
+		_check(absf(线.global_position.y - _boss.global_position.y) < 2.0,
+			"命中：五线谱锚在 88 的高度（y=%.0f，88 在 %.0f）"
+			% [线.global_position.y, _boss.global_position.y])
+		_check(线.global_position.y > 2880.0 and 线.global_position.y < 3600.0,
+			"命中：五线谱落在竞技场 y 区间 2880~3600 内（y=%.0f）" % 线.global_position.y)
+		# 挪到玩家右边一点，让它自己横扫进来（瞬移首次重叠不触发 body_entered，
+		# 但它是靠 _physics_process 每帧往左推的，会真的"扫进"玩家 → 信号正常发）
+		线.position.x = _player.global_position.x + 180.0
+		await _等物理(14)
+		掉 = GameState.MAX_HP - _player.hp
+		_check(掉 >= 1, "命中：五线谱横扫能打到玩家（实测掉 %d 血）" % 掉)
+		线.queue_free()
+
+	# ── ⑦ 五线谱 5 个模板的判定都不能是空的
+	#    （空判定 = 那一招在某个模板下完全打不到人，而且从画面上看不出来）
+	var 空模板: Array = []
+	for 模板 in 5:
+		var 试线 := (load("res://scenes/enemies/boss/StaffSweep.tscn") as PackedScene).instantiate()
+		add_child(试线)
+		await get_tree().physics_frame
+		试线.setup(260.0, 1, 模板, 200.0, 1400.0, 3412.0)
+		await get_tree().physics_frame
+		var 判定 := 试线.get_node_or_null("判定") as Area2D
+		var 块数 := 0
+		var 尺寸都对 := true
+		if 判定 != null:
+			for c in 判定.get_children():
+				var cs := c as CollisionShape2D
+				if cs != null and cs.shape is RectangleShape2D:
+					块数 += 1
+					if (cs.shape as RectangleShape2D).size.x <= 0.0 \
+							or (cs.shape as RectangleShape2D).size.y <= 0.0:
+						尺寸都对 = false
+		if 块数 < 2 or not 尺寸都对:
+			空模板.append("模板%d:块数%d" % [模板, 块数])
+		试线.queue_free()
+	_check(空模板.is_empty(), "命中：五线谱 5 个模板的判定都非空（%s）" % str(空模板))
+
+	_boss.contact_damage = int(_boss.伤害)
+	_挪开玩家()
+
+
 # ──────────────────────────── 状态机 ────────────────────────────
 
 
@@ -264,7 +547,7 @@ func _检查状态机() -> void:
 	裸.hp = int(round(裸.max_hp * 裸.半血阈值)) + 1
 	裸.take_damage(1, Vector2.ZERO)
 	_check(裸._半血已触发 and 裸.phase == 2,
-		"数值：跨过 50% 阈值时置位 phase=2（hp=%d / max=%d）" % [裸.hp, 裸.max_hp])
+		"数值：跨过 50%% 阈值时置位 phase=2（hp=%d / max=%d）" % [裸.hp, 裸.max_hp])
 	裸.queue_free()
 	# 主实例推进到 IDLE，供后面的招式断言用
 	_boss.state = _boss.State.IDLE
@@ -278,29 +561,66 @@ func _检查选招() -> void:
 	if _boss == null:
 		return
 	_boss.state = _boss.State.IDLE
+	# 教程序列：前两招固定（设计稿 §8）
 	_boss._attack_index = 0
+	_boss.重置选招历史()
 	_check(_boss._选招() == "claw", "选招：第 0 招固定爪击（教学）")
 	_boss._attack_index = 1
 	_check(_boss._选招() == "staff", "选招：第 1 招固定五线谱（教学）")
-	_boss._attack_index = 9
-	_boss._贴脸计时 = 0.0
+
+	# ── 距离带 → 偏好招（把玩家摆到带上，然后跑 400 次统计分布）──
+	_boss._attack_index = 99
 	_boss.global_position = Vector2(1100.0, 3426.0)
-	_player.global_position = Vector2(1160.0, 3369.0)
-	await _等物理(4)
-	_check(_boss._选招() == "claw", "选招：玩家贴身 → 爪击")
-	_player.global_position = Vector2(1400.0, 3369.0)
-	await _等物理(4)
-	var 招: String = _boss._选招()
-	_check(招 == "thrust", "选招：中距 → 前突刺（实际 %s）" % 招)
-	_player.global_position = Vector2(2000.0, 3369.0)
-	await _等物理(4)
-	_check(_boss._选招() == "staff", "选招：很远 → 五线谱控空间")
-	_player.global_position = Vector2(1140.0, 3369.0)
-	await _等物理(4)
-	_boss._贴脸计时 = float(_boss.贴脸容忍秒) + 0.1
-	_check(_boss._选招() == "blink", "选招：持续贴脸超时 → 闪现背刺（惩罚无脑追击）")
-	_boss._贴脸计时 = 0.0
+	# 近带：贴身 120px
+	await _摆玩家到(1220.0)
+	await _验分布("近", {"claw": 0.75}, 0.0833)
+	# 中带：300px
+	await _摆玩家到(1400.0)
+	await _验分布("中", {"thrust": 0.75}, 0.0833)
+	# 远带：>420px，**两招**偏好（闪现 + 五线谱）平分 3/4 → 各 3/8
+	await _摆玩家到(2000.0)
+	await _验分布("远", {"blink": 0.375, "staff": 0.375}, 0.125)
+
+	# ── 防重复：同一招不得连用超过 2 次 ──
+	_boss.重置选招历史()
+	var 序列: Array[String] = []
+	for _i in 400:
+		序列.append(_boss._选招())
+	var 最长 := 1
+	var 当前 := 1
+	for i in 序列.size():
+		if i > 0 and 序列[i] == 序列[i - 1]:
+			当前 += 1
+			最长 = maxi(最长, 当前)
+		else:
+			当前 = 1
+	_check(最长 <= int(_boss.同招连用上限),
+		"选招：同一招最多连用 %d 次（实测最长 %d）" % [int(_boss.同招连用上限), 最长])
+	_boss.重置选招历史()
 	_挪开玩家()
+
+
+func _摆玩家到(x: float) -> void:
+	_player.global_position = Vector2(x, 3369.0)
+	_player.velocity = Vector2.ZERO
+	await _等物理(5)
+
+
+## 跑 400 次选招，统计每招占比。`容差` 是绝对值容差（±0.10 之类）。
+func _验分布(带名: String, 期望: Dictionary, 非偏好期望: float) -> void:
+	const 次数 := 400
+	var 计 := {"claw": 0, "thrust": 0, "blink": 0, "staff": 0}
+	for _i in 次数:
+		_boss.重置选招历史()      # 清掉防重复，单独验权重
+		计[_boss._选招()] += 1
+	var 差: Array = []
+	for 招 in 计:
+		var 实际 := float(计[招]) / float(次数)
+		var 目标: float = float(期望.get(招, 非偏好期望))
+		# 400 次、单类概率 ~0.08 时标准差约 0.014 → ±0.05 是宽松但有效的闸
+		if absf(实际 - 目标) > 0.05:
+			差.append("%s=%.3f(期望%.3f)" % [招, 实际, 目标])
+	_check(差.is_empty(), "选招：%s带权重分布符合（%s）" % [带名, str(差)])
 
 
 # ──────────────────────────── 闪现落点防呆 ────────────────────────────

@@ -43,7 +43,13 @@ var _安全区: Rect2 = Rect2()
 @onready var 判定: Area2D = $判定
 
 
-func setup(速度: float, 招伤: int, 模板序号: int, 活动左: float, 活动右: float) -> void:
+## `锚点y` = 88 所在的地面高度（世界坐标）。**必须由调用方传进来** ——
+## 以前这里读的是 `global_position.y`，而刚 `instantiate()` 出来的节点还没进场景树，
+## 那个值是 **0**，于是五线谱生成在世界 (1620, 0)：在画面上方约 2900px 处横扫，
+## 整个生命周期都在视野外，既看不见也打不到玩家。
+## 模板坐标本来就是以"脚下 y = 0"为基准设计的（外框 y 从 -60 到 -430）。
+func setup(速度: float, 招伤: int, 模板序号: int, 活动左: float, 活动右: float,
+		锚点y: float) -> void:
 	行进速度 = 速度
 	伤害 = 招伤
 	_模板 = clampi(模板序号, 0, 模板表.size() - 1)
@@ -52,12 +58,13 @@ func setup(速度: float, 招伤: int, 模板序号: int, 活动左: float, 活�
 	_外框 = 条["外框"]
 	_安全区 = 条["安全区"]
 	# 从场地右侧推入，纵向贴在 88 所在的地面高度上
-	global_position = Vector2(活动右 + 220.0, global_position.y)
+	global_position = Vector2(活动右 + 220.0, 锚点y)
 	_重建判定()
 	_存活 = true
 	queue_redraw()
-	print("[五线谱] 模板 %d：%s ｜ 速度 %d ｜ 缝 %s"
-		% [_模板, 条["说明"], int(行进速度), str(_安全区)])
+	print("[五线谱] 模板 %d：%s ｜ 速度 %d ｜ 生成于 (%.0f, %.0f) ｜ 缝 %s"
+		% [_模板, 条["说明"], int(行进速度), global_position.x, global_position.y,
+			str(_安全区)])
 
 
 func _ready() -> void:

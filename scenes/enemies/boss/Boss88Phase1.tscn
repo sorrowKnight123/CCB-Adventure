@@ -1,28 +1,28 @@
 [gd_scene format=3 uid="uid://b2twyputjtuww"]
 
-[ext_resource type="Script" path="res://scripts/enemy/boss/Boss88Phase1.gd" id="1_boss"]
-[ext_resource type="SpriteFrames" path="res://art/enemies/boss88/88_frames.tres" id="2_frames"]
+[ext_resource type="Script" uid="uid://6m4pwhy105cv" path="res://scripts/enemy/boss/Boss88Phase1.gd" id="1_boss"]
+[ext_resource type="SpriteFrames" uid="uid://boaxigamvs2g1" path="res://art/enemies/boss88/88_frames.tres" id="2_frames"]
 [ext_resource type="PackedScene" path="res://scenes/ui/InteractBubble.tscn" id="3_bubble"]
-[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/C4.wav" id="4_c4"]
-[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/E4.wav" id="5_e4"]
-[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/G4.wav" id="6_g4"]
-[ext_resource type="AudioStream" path="res://audio/enemy/effect/piano_notes_C4-C5/A4.wav" id="7_a4"]
-[ext_resource type="AudioStream" path="res://audio/music/moss_2.ogg" id="8_music"]
-[ext_resource type="AudioStream" path="res://audio/enemy/boss88/claw_swing.wav" id="9_claw"]
-[ext_resource type="AudioStream" path="res://audio/enemy/boss88/staff_cast.wav" id="10_staff"]
-[ext_resource type="AudioStream" path="res://audio/enemy/boss88/thrust.wav" id="11_thrust"]
-[ext_resource type="AudioStream" path="res://audio/enemy/boss88/blink_out.wav" id="12_blinkout"]
-[ext_resource type="AudioStream" path="res://audio/enemy/boss88/blink_in.wav" id="13_blinkin"]
-[ext_resource type="AudioStream" path="res://audio/enemy/boss88/hurt.wav" id="14_hurt"]
-[ext_resource type="AudioStream" path="res://audio/enemy/boss88/knocked_land.wav" id="15_land"]
-[ext_resource type="AudioStream" path="res://audio/enemy/boss88/armor_break.wav" id="16_break"]
+[ext_resource type="AudioStream" uid="uid://bmvf576l4mdpj" path="res://audio/enemy/effect/piano_notes_C4-C5/C4.wav" id="4_c4"]
+[ext_resource type="AudioStream" uid="uid://cjcn4ix54gmc" path="res://audio/enemy/effect/piano_notes_C4-C5/E4.wav" id="5_e4"]
+[ext_resource type="AudioStream" uid="uid://bafrju81rl474" path="res://audio/enemy/effect/piano_notes_C4-C5/G4.wav" id="6_g4"]
+[ext_resource type="AudioStream" uid="uid://kad83iyiejum" path="res://audio/enemy/effect/piano_notes_C4-C5/A4.wav" id="7_a4"]
+[ext_resource type="AudioStream" uid="uid://btxnpumiardhh" path="res://audio/music/moss_2.ogg" id="8_music"]
+[ext_resource type="AudioStream" uid="uid://cmjex2g0sub8y" path="res://audio/enemy/boss88/claw_swing.wav" id="9_claw"]
+[ext_resource type="AudioStream" uid="uid://c0c5n87ug5t1p" path="res://audio/enemy/boss88/staff_cast.wav" id="10_staff"]
+[ext_resource type="AudioStream" uid="uid://bsyo2wqioflhe" path="res://audio/enemy/boss88/thrust.wav" id="11_thrust"]
+[ext_resource type="AudioStream" uid="uid://ciad8aj6j6x5a" path="res://audio/enemy/boss88/blink_out.wav" id="12_blinkout"]
+[ext_resource type="AudioStream" uid="uid://cvbwadqe46hlh" path="res://audio/enemy/boss88/blink_in.wav" id="13_blinkin"]
+[ext_resource type="AudioStream" uid="uid://dj13x60icqvct" path="res://audio/enemy/boss88/hurt.wav" id="14_hurt"]
+[ext_resource type="AudioStream" uid="uid://cxh1rr4hdgsy" path="res://audio/enemy/boss88/knocked_land.wav" id="15_land"]
+[ext_resource type="AudioStream" uid="uid://ks1pqxkdw8fm" path="res://audio/enemy/boss88/armor_break.wav" id="16_break"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_body"]
-radius = 30.0
-height = 200.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1vtww"]
+radius = 20.0
+height = 114.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
-size = Vector2(150, 130)
+size = Vector2(130, 90)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_near"]
 radius = 150.0
@@ -31,7 +31,7 @@ radius = 150.0
 radius = 420.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_interact"]
-size = Vector2(280, 340)
+size = Vector2(200, 180)
 
 [node name="Boss88Phase1" type="CharacterBody2D" unique_id=1901230001]
 collision_layer = 4
@@ -51,18 +51,19 @@ script = ExtResource("1_boss")
 "音效_破甲" = ExtResource("16_break")
 "一阶段曲" = ExtResource("8_music")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1901230002]
-position = Vector2(0, -100)
-shape = SubResource("CapsuleShape2D_body")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1549596240]
+position = Vector2(0, -43)
+shape = SubResource("CapsuleShape2D_1vtww")
 
 [node name="BossSprite" type="AnimatedSprite2D" parent="." unique_id=1901230003]
-offset = Vector2(0, -120)
+scale = Vector2(0.522, 0.522)
 sprite_frames = ExtResource("2_frames")
 animation = &"idle"
 autoplay = "idle"
+offset = Vector2(0, -59)
 
 [node name="AttackHitbox" type="Area2D" parent="." unique_id=1901230004]
-position = Vector2(-56, -110)
+position = Vector2(-95, -43)
 collision_layer = 0
 collision_mask = 2
 monitoring = false
@@ -71,7 +72,7 @@ monitoring = false
 shape = SubResource("RectangleShape2D_attack")
 
 [node name="近身盒" type="Area2D" parent="." unique_id=1901230006]
-position = Vector2(0, -110)
+position = Vector2(0, -43)
 collision_layer = 0
 collision_mask = 2
 
@@ -79,7 +80,7 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_near")
 
 [node name="中距盒" type="Area2D" parent="." unique_id=1901230008]
-position = Vector2(0, -110)
+position = Vector2(0, -43)
 collision_layer = 0
 collision_mask = 2
 
@@ -87,7 +88,7 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_mid")
 
 [node name="InteractArea" type="Area2D" parent="." unique_id=1901230010]
-position = Vector2(0, -120)
+position = Vector2(0, -43)
 collision_layer = 0
 collision_mask = 2
 
@@ -95,7 +96,7 @@ collision_mask = 2
 shape = SubResource("RectangleShape2D_interact")
 
 [node name="Bubble" parent="." unique_id=1901230012 instance=ExtResource("3_bubble")]
-offset_top = -200.0
+offset_top = -140.0
 "按键文本" = "W"
 
 [node name="SfxPlayer" type="AudioStreamPlayer" parent="." unique_id=1901230013]

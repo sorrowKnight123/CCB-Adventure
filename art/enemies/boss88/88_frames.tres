@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://boaxigamvs2g1"]
 
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/88_placeholder.png" id="1_uinxr"]
+[ext_resource type="Texture2D" uid="uid://cf5m3gij03ubb" path="res://art/enemies/boss88/88_placeholder.png" id="1_uinxr"]
 
 [resource]
 animations = [{

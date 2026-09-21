@@ -26,6 +26,8 @@ const BOSS_ID := "boss88_phase1"
 const DIALOGUE_FILE: String = "res://dialogues/game.dialogue"
 const 狂喜之诗ID: String = "ecstasy_poem"
 const STAFF_SWEEP: PackedScene = preload("res://scenes/enemies/boss/StaffSweep.tscn")
+## 四招的 id（`_选招` 的返回值 / 权重表的键）
+const 全部招式: Array[String] = ["claw", "thrust", "blink", "staff"]
 
 @export_group("数值")
 @export var 最大生命值: int = 90
@@ -41,11 +43,9 @@ const STAFF_SWEEP: PackedScene = preload("res://scenes/enemies/boss/StaffSweep.t
 ## 88 自己的活动范围（竞技场锁 x0~1600，这里留 200px 可视边距）
 @export var 活动左: float = 200.0
 @export var 活动右: float = 1400.0
-## 两个距离盒的半径（编辑器里可视化；改这两个值就等于改"太近 / 中距"的定义）
+## 两个距离盒的半径（编辑器里可视化；改这两个值就等于改"近 / 中"的定义）
 @export var 近身盒半径: float = 150.0
 @export var 中距盒半径: float = 420.0
-## 玩家持续贴脸超过这么久 → 出闪现背刺（惩罚无脑追击）
-@export var 贴脸容忍秒: float = 2.5
 
 @export_group("出招节奏")
 @export var 出手间隔: float = 1.8
@@ -57,14 +57,36 @@ const STAFF_SWEEP: PackedScene = preload("res://scenes/enemies/boss/StaffSweep.t
 @export var 闪现前摇帧: int = 5
 ## 五线谱在哪一帧生成（staff_cast 共 18 帧，17 = 举棒预警的最后一帧）
 @export var 五线谱生成帧: int = 17
-## 判定盒开启时长（帧）。**必须 <= 2** —— 这是"命中帧要尖锐"的硬闸
-@export_range(1, 4, 1) var 命中盒持续帧: int = 2
+## 站定打击（爪击）的判定盒开启时长，单位**物理帧**。2 = 1 帧刷重叠表 + 1 帧结算。
+@export_range(2, 6, 1) var 命中盒持续帧: int = 2
+
+@export_group("判定盒几何")
+## 判定盒中心相对身体的**前伸距离**。判定盒前缘 = 本值 + 形状半宽(65)，
+## 必须 >= 近身盒半径，否则玩家站在"近身"带边缘时爪击够不着（自检会拦）。
+## ⚠️ 改体型/换贴图时这里要跟着调 —— 以前它是硬编码的 56，不随体型更新。
+@export var 判定盒前伸: float = 95.0
+
+@export_group("位移距离")
+## 出手时向前压的距离（像素）。**按距离驱动、不按帧数** ——
+## 顿帧会把 time_scale 压到 0，等帧数会让位移归零，等距离只是把动作拉长。
+@export var 爪击前突距离: float = 60.0
+@export var 爪击三前突距离: float = 40.0
+## 前突刺的冲程。设计稿写 225px，实机手感要 5 倍（= 417px）才够得着中距带远端
+@export var 突刺距离: float = 417.0
 @export var 爪击前突速度: float = 520.0
 @export var 爪击三前突速度: float = 360.0
 @export var 突刺速度: float = 1250.0
-@export var 突刺持续帧: int = 4
+## 冲刺保险丝：最多等这么多物理帧（防"距离永远走不到"时卡死协程）
+@export var 冲刺最长帧: int = 600
 @export var 闪现背后距离: float = 200.0
 @export var 落点探测距离: float = 260.0
+
+@export_group("AI 权重")
+## 符合距离带的招式概率；剩下三招平分 1-本值。
+## 远带有**两招**偏好（闪现/五线谱）→ 它们平分这个 3/4。
+@export_range(0.5, 0.9, 0.05) var 偏好概率: float = 0.75
+## 同一招最多连用几次（连满就把它权重归零，在其余招里重抽）
+@export_range(1, 4, 1) var 同招连用上限: int = 2
 
 @export_group("五线谱")
 @export var 五线谱速度: float = 260.0
@@ -118,9 +140,12 @@ var player: CharacterBody2D = null
 
 var _attack_serial: int = 0
 var _attack_index: int = 0
-var _贴脸计时: float = 0.0
 var _半血已触发: bool = false
 var _玩家在范围: bool = false
+## 一次攻击只结算一次伤害（判定盒可能开着好几帧、冲刺期间每帧都在查）
+var _结算过: bool = false
+## 最近出过的招（新的在前），只用来数"同一招连用了几次"
+var _选招历史: Array[String] = []
 
 ## 音效池：一个播放器会让后一个音掐掉前一个（受击音切掉突刺风声最明显）。
 ## `SfxPlayer` 就是池里的第一个 —— 保留场景里已有的节点名，旧接线与自检都不受影响。
@@ -246,7 +271,6 @@ func _physics_process(delta: float) -> void:
 		_滑行(delta)
 		return
 	_走位(delta)
-	_贴脸计时 = maxf(_贴脸计时 + (delta if _在盒内(近身盒) else -delta), 0.0)
 
 
 func _滑行(delta: float) -> void:
@@ -256,22 +280,21 @@ func _滑行(delta: float) -> void:
 	move_and_slide()
 
 
-## 走位：只用两个距离盒判断，不引入距离数值
+## 走位：只用两个距离盒判断，不引入距离数值（§13.4）。
+##
+## ⚠️ 近身盒内**不再主动后退**。以前它会以 移动速度 往远离玩家的方向退，
+##    而 `_选招()` 正是在出手间隔结束那一瞬取样 —— 结果间距被稳定顶到近身盒
+##    **外侧**，于是"近身 → 三连爪击"这条分支几乎永远拿不到（玩家实测：几乎
+##    见不到三连爪击，Boss 总在出突刺）。现在近身就站定，让"近身优先爪击"成立；
+##    贴脸的代价改成"吃 3/4 概率的爪击 + 第三段有 14 帧后摇"。
 func _走位(delta: float) -> void:
 	if player == null:
 		player = get_tree().get_first_node_in_group("player") as CharacterBody2D
 		if player == null:
 			return
 	_face_player()
-	if _在盒内(近身盒):
-		var 方向 := -signf(player.global_position.x - global_position.x)
-		if _能后退(方向):
-			velocity.x = 方向 * 移动速度
-			_摆("walk")
-		else:
-			velocity.x = 0.0
-			_摆("idle")
-	elif _在盒内(中距盒):
+	if _在盒内(近身盒) or _在盒内(中距盒):
+		# 近身 / 中距：站定读招（距离盒决定偏好哪一招，走位不再干扰这个判断）
 		velocity.x = 0.0
 		_摆("idle")
 	else:
@@ -284,11 +307,6 @@ func _走位(delta: float) -> void:
 		velocity.y += 重力 * delta
 	global_position.x = clampf(global_position.x, 活动左, 活动右)
 	move_and_slide()
-
-
-func _能后退(方向: float) -> bool:
-	var 目标 := global_position.x + 方向 * 24.0
-	return 目标 > 活动左 and 目标 < 活动右
 
 
 # ──────────────────────────── 攻击循环 ────────────────────────────
@@ -304,26 +322,93 @@ func _攻击循环() -> void:
 		_attack_index += 1
 
 
-## 选招：**只用两个距离盒**决定，不引入距离数值（§13.4）。
-## 教程序列：第 0 招固定爪击、第 1 招固定五线谱，之后才按距离随机。
+## 三个距离带 → 偏好招。远带有**两招**偏好（闪现是瞬移贴脸的接近手段，
+## 五线谱是全屏控场，两者都是远距离工具）。
+func _距离带() -> String:
+	if player == null:
+		return "近"
+	if _在盒内(近身盒):
+		return "近"
+	if _在盒内(中距盒):
+		return "中"
+	return "远"
+
+
+## 偏好招列表（按当前距离带）
+func _偏好招() -> Array[String]:
+	match _距离带():
+		"近": return ["claw"] as Array[String]
+		"中": return ["thrust"] as Array[String]
+	return ["blink", "staff"] as Array[String]
+
+
+## 选招：加权随机 + 防重复。
+##
+## 规则（作者定的）：每招基础概率均等；符合距离带的那一招提到 `偏好概率`（默认 3/4），
+## 其余各招平分剩下的 1/4。远带有两招偏好 → 两招平分 3/4（各 3/8）。
+## 另外：同一招不得连用超过 `同招连用上限` 次 —— 连满的招权重归零，在其余招里归一化重抽。
+## 教程序列仍然保留（第 0 招爪击、第 1 招五线谱），之后才进加权随机。
 func _选招() -> String:
 	if _attack_index == 0:
-		return "claw"
+		return _记入历史("claw")
 	if _attack_index == 1:
-		return "staff"
+		return _记入历史("staff")
 	if player == null:
-		return "claw"
-	if _贴脸计时 >= 贴脸容忍秒:
-		return "blink"          # 惩罚无脑追击
-	if _在盒内(近身盒):
-		return "claw"
-	if _在盒内(中距盒):
-		return "thrust"
-	return "staff"              # 太远：用五线谱控空间
+		return _记入历史("claw")
+
+	var 偏好 := _偏好招()
+	var 权重: Dictionary = {}
+	for 招 in 全部招式:
+		权重[招] = (偏好概率 / float(偏好.size())) if 招 in 偏好 else ((1.0 - 偏好概率) / float(全部招式.size() - 偏好.size()))
+
+	# 防重复：连满上限的招权重归零
+	for 招 in 全部招式:
+		if _连用次数(招) >= 同招连用上限:
+			权重[招] = 0.0
+
+	var 总 := 0.0
+	for 招 in 全部招式:
+		总 += float(权重[招])
+	if 总 <= 0.0:
+		# 兜底：所有招都被禁（同招连用上限 = 1 且刚出过某一招时不会发生，但保险）
+		return _记入历史(全部招式[randi() % 全部招式.size()])
+
+	var 掷 := randf() * 总
+	for 招 in 全部招式:
+		掷 -= float(权重[招])
+		if 掷 < 0.0:
+			return _记入历史(招)
+	return _记入历史(全部招式[全部招式.size() - 1])
+
+
+## 某一招最近连续用了多少次（历史新的在前）
+func _连用次数(招: String) -> int:
+	var n := 0
+	for 名 in _选招历史:
+		if 名 != 招:
+			break
+		n += 1
+	return n
+
+
+func _记入历史(招: String) -> String:
+	_选招历史.push_front(招)
+	if _选招历史.size() > 8:
+		_选招历史.resize(8)
+	return 招
+
+
+## 自检用：把防重复历史清空，好在干净状态下验概率分布
+func 重置选招历史() -> void:
+	_选招历史.clear()
 
 
 func _出招(token: int) -> void:
 	state = State.ATTACK
+	# 清掉走位残留的 x 速度 —— 否则爪击的 10 帧前摇里 88 会继续按上一帧的
+	# 走位速度滑出去（曾经让第一段爪击的净位移变成"倒退 45.8px"）
+	velocity.x = 0.0
+	_结算过 = false
 	match _选招():
 		"claw": await _出爪击连段(token)
 		"staff": await _出五线谱(token)
@@ -333,7 +418,6 @@ func _出招(token: int) -> void:
 		_设判定盒(false)
 		state = State.IDLE
 		_摆("idle")
-	_贴脸计时 = 0.0
 
 
 # ── 招一 / 二 / 三：爪击连段 ──
@@ -342,22 +426,20 @@ func _出爪击连段(token: int) -> void:
 	var 名表 := ["claw_1", "claw_2", "claw_3"]
 	var 命中表 := [爪击命中帧, 爪击命中帧, 爪击三命中帧]
 	var 速度表 := [爪击前突速度, 爪击前突速度, 爪击三前突速度]
+	var 距离表 := [爪击前突距离, 爪击前突距离, 爪击三前突距离]
 	for 段 in 3:
 		_face_player()
 		_摆(名表[段])
 		# 起手音在第 0 帧：claw_1 命中帧 10 → 约 0.42 秒预警，玩家听得出"要抓了"
 		if 段 == 0:
 			_播(起手音_爪击)
-		# 前摇与悬停都在动画里，这里等到命中帧才开判定（命中帧只有 1~2 帧）
+		# 前摇与悬停都在动画里，这里等到命中帧才开判定
 		if not await _等到帧(命中表[段], token):
 			return
 		_播(招式音_爪击, 0.06)
-		_设判定盒(true)
-		_前突(速度表[段])
-		if not await _等物理帧(命中盒持续帧, token):
+		# 前压 + 判定：整段前压期间盒子都开着，只结算一次；冲程走完再留 `命中盒持续帧` 帧
+		if not await _冲刺(距离表[段], 速度表[段], token, 命中盒持续帧):
 			return
-		_设判定盒(false)
-		_停突()
 		if not await _等动画结束(token):
 			return
 
@@ -383,7 +465,10 @@ func _生成五线谱() -> void:
 		return
 	var 线 := STAFF_SWEEP.instantiate()
 	场景.add_child(线)
-	线.setup(五线谱速度, 五线谱伤害, _attack_index % 5, 活动左, 活动右)
+	# ⚠️ 必须把 88 的 y 传进去。以前 setup 里读的是刚实例化节点的 global_position.y，
+	#    那是 0 —— 于是五线谱生成在世界 (1620, 0)，在画面上方约 2900px 横扫，
+	#    整个生命周期都在视野外，既看不见也打不到人。
+	线.setup(五线谱速度, 五线谱伤害, _attack_index % 5, 活动左, 活动右, global_position.y)
 
 
 # ── 招三：前突刺 ──
@@ -396,12 +481,8 @@ func _出前突刺(token: int) -> void:
 	if not await _等到帧(突刺命中帧, token):
 		return
 	_播(招式音_突刺, 0.06)
-	_设判定盒(true)
-	_前突(突刺速度)
-	if not await _等物理帧(突刺持续帧, token):
+	if not await _冲刺(突刺距离, 突刺速度, token):
 		return
-	_设判定盒(false)
-	_停突()
 	await _等动画结束(token)
 
 
@@ -430,12 +511,8 @@ func _出闪现背刺(token: int) -> void:
 	_摆("thrust")
 	if not await _等到帧(突刺命中帧, token):
 		return
-	_设判定盒(true)
-	_前突(突刺速度)
-	if not await _等物理帧(突刺持续帧, token):
+	if not await _冲刺(突刺距离, 突刺速度, token):
 		return
-	_设判定盒(false)
-	_停突()
 	await _等动画结束(token)
 
 
@@ -624,21 +701,76 @@ func _攻击作废() -> void:
 	_attack_serial += 1
 
 
-## 判定盒：开的那一帧立刻结算一次（§13.4 只在命中帧取一次，不改成记录集合）
+## 判定盒开关。**只切 monitoring，不查询** ——
+## ⚠️ 查询必须隔一个物理帧（见 `_判定窗口`）。以前这里在开盒的同一帧就
+##    `_结算命中()`，而 Area2D 的重叠表是在物理步里刷新的，刚开 monitoring
+##    时表还是空的 → 每次拿到空数组，**所有招式判定全部空过**（玩家掉的血其实
+##    来自接触伤害）。项目其它敌人（`Enemy.gd` / `SharpEnemy.gd`）都是
+##    「开 → 下一物理帧才开始查」。
 func _设判定盒(开: bool) -> void:
 	if attack_hitbox == null:
 		return
 	attack_hitbox.monitoring = 开
 	attack_hitbox.set_deferred("collision_layer", 4 if 开 else 0)
-	if 开:
-		_结算命中()
 
 
-func _结算命中() -> void:
+## 查一次重叠体；命中就扣血并返回 true。配合 `_结算过` 保证一次攻击只打一下。
+func _结算命中() -> bool:
+	if attack_hitbox == null:
+		return false
 	for body in attack_hitbox.get_overlapping_bodies():
 		if body.is_in_group("player"):
 			body.take_damage(伤害, global_position)
+			return true
+	return false
+
+
+## 站定打击的判定窗口：开盒 → 等一物理帧让重叠表刷出来 → 逐帧查 → 关盒。
+## `窗口帧` 是盒子保持开启的物理帧数（默认 2 = 1 帧刷表 + 1 帧结算），
+## 这样"命中仍然是一个尖锐的时刻"，但不再靠"只开 2 帧"去赌重叠表已经就绪。
+func _判定窗口(窗口帧: int, token: int) -> bool:
+	_结算过 = false
+	_设判定盒(true)
+	for i in maxi(窗口帧, 2):
+		await get_tree().physics_frame
+		if not _攻击有效(token):
 			break
+		if not _结算过:
+			_结算过 = _结算命中()
+	_设判定盒(false)
+	return _攻击有效(token)
+
+
+## 位移打击：向前冲 `距离` 像素，整段冲刺期间判定盒都开着、每帧查一次、只结算一次。
+##
+## ⚠️ **按位移停，不按帧数停**。顿帧（`FeedbackManager.hit_stop` 把 time_scale 压到 0）
+##    期间物理帧照常 tick 但 delta = 0，`move_and_slide()` 位移为 0 —— 等帧数会让
+##    冲刺距离直接归零，等位移只是把冲刺在墙上多拉长几帧。
+## 尾巴帧：冲程走完后盒子再多留几帧，覆盖"玩家刚好贴在判定边缘"的情况。
+func _冲刺(距离: float, 速度: float, token: int, 尾巴帧: int = 0) -> bool:
+	_结算过 = false
+	_设判定盒(true)
+	_前突(速度)
+	var 起点 := global_position.x
+	var 剩余 := 冲刺最长帧
+	while 剩余 > 0:
+		await get_tree().physics_frame
+		剩余 -= 1
+		if not _攻击有效(token):
+			break
+		if not _结算过:
+			_结算过 = _结算命中()
+		if absf(global_position.x - 起点) >= 距离:
+			break
+	for _i in maxi(尾巴帧, 0):
+		await get_tree().physics_frame
+		if not _攻击有效(token):
+			break
+		if not _结算过:
+			_结算过 = _结算命中()
+	_停突()
+	_设判定盒(false)
+	return _攻击有效(token)
 
 
 func _设接触伤害(开: bool) -> void:
@@ -657,7 +789,8 @@ func _update_facing() -> void:
 		return
 	boss_sprite.flip_h = facing < 0
 	if attack_hitbox != null:
-		attack_hitbox.position.x = facing * 56.0
+		# y 也不动 —— 判定盒与身体同心（场景里 AttackHitbox.position.y == 胶囊中心）
+		attack_hitbox.position.x = facing * 判定盒前伸
 
 
 func _在盒内(盒: Area2D) -> bool:

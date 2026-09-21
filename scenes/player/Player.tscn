@@ -955,7 +955,7 @@ scale = Vector2(0.15, 0.15)
 texture = ExtResource("2_v6fml")
 hframes = 3
 
-[node name="ActionPivot" type="Node2D" parent="."]
+[node name="ActionPivot" type="Node2D" parent="." unique_id=1839046079]
 
 [node name="ActionSprite" type="Sprite2D" parent="ActionPivot" unique_id=574150034]
 position = Vector2(6.999999, -36.999996)
