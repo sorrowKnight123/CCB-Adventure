@@ -56,11 +56,11 @@ position = Vector2(0, -43)
 shape = SubResource("CapsuleShape2D_1vtww")
 
 [node name="BossSprite" type="AnimatedSprite2D" parent="." unique_id=1901230003]
-scale = Vector2(0.522, 0.522)
+scale = Vector2(0.5077, 0.5077)
 sprite_frames = ExtResource("2_frames")
 animation = &"idle"
 autoplay = "idle"
-offset = Vector2(0, -59)
+offset = Vector2(0, -81.86)
 
 [node name="AttackHitbox" type="Area2D" parent="." unique_id=1901230004]
 position = Vector2(-95, -43)

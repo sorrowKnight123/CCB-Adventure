@@ -206,6 +206,28 @@ func _检查动画骨架() -> void:
 	_check(后摇长.is_empty(),
 		"动画：爪击三段的后摇都 <= 8 帧（%s）" % str(后摇长))
 
+	# 后摇**帧数** <= 8 只是必要条件 —— 2026-09-21 第二次收紧改的是**每帧 duration**
+	# （挥击 1.5 倍速、后摇 2 倍速），帧数一个没动，上面那条完全抓不到时长漂移。
+	# 所以这里按 duration 算**真实秒数**：后摇是玩家的输出窗口，必须短；
+	# 挥击要有可读的下限（太快玩家看不清预警），也不能慢回去。
+	# 作者原话："挥击 1.5 倍速，然后后摇也缩短到 0.5 倍。实测手感，后摇还是有点点长。"
+	var 后摇秒长: Array = []
+	var 挥击秒偏: Array = []
+	for 对 in [["claw_1", 0.31], ["claw_2", 0.31], ["claw_3", 0.47]]:
+		var 名: String = 对[0]
+		var 命中 := int(_boss.爪击命中帧 if 名 != "claw_3" else _boss.爪击三命中帧)
+		var 挥击秒 := _前段秒(sf, 名, 命中 + 1)
+		var 后摇秒 := _动画秒(sf, 名) - 挥击秒
+		if 后摇秒 > 0.20:
+			后摇秒长.append("%s=%.2fs" % [名, 后摇秒])
+		if absf(挥击秒 - float(对[1])) > 0.06:
+			挥击秒偏.append("%s=%.2fs(期望%.2f)" % [名, 挥击秒, 对[1]])
+	_check(后摇秒长.is_empty(),
+		"动画：爪击三段的后摇真实时长 <= 0.20 秒（%s）—— 后摇是玩家的输出窗口"
+		% str(后摇秒长))
+	_check(挥击秒偏.is_empty(),
+		"动画：爪击三段的挥击真实时长 ≈ 设计值 ±0.06 秒（%s）" % str(挥击秒偏))
+
 
 # ──────────────────────────── 命中帧（核心） ────────────────────────────
 
@@ -312,6 +334,26 @@ func _检查关卡没覆写调参() -> void:
 ## 必须用 alpha 包围盒而不是整帧：77 的美术帧里有一大片透明留白，
 ## 按整帧算会得出 153.6px —— 那是帧高，不是人高；按内容算才是 125.4px。
 ## 取不到图（压缩格式异常等）就退回整帧，不让断言因为读图失败而误报。
+## 一个动画的**真实时长**（秒）= Σ 每帧 duration ÷ 动画速度。
+## ⚠️ 不能按"帧数 ÷ 24"算：爪击三段用**每帧 duration** 分了挥击/后摇两档
+## （挥击 1.5 倍速、后摇 2 倍速），帧数与时长已经不是线性关系了。
+func _动画秒(sf: SpriteFrames, 名: String) -> float:
+	return _前段秒(sf, 名, sf.get_frame_count(名))
+
+
+## 一个动画**前 n 帧**的真实时长（秒）。
+func _前段秒(sf: SpriteFrames, 名: String, n: int) -> float:
+	if sf == null or not sf.has_animation(名):
+		return 0.0
+	var 速 := sf.get_animation_speed(名)
+	if 速 <= 0.0:
+		return 0.0
+	var 总 := 0.0
+	for i in mini(n, sf.get_frame_count(名)):
+		总 += sf.get_frame_duration(名, i)
+	return 总 / 速
+
+
 func _内容盒(贴图: Texture2D, 帧矩形: Rect2i) -> Rect2:
 	var 全帧 := Rect2(Vector2.ZERO, Vector2(帧矩形.size))
 	var 图 := 贴图.get_image()
@@ -380,6 +422,32 @@ func _检查体型与几何() -> void:
 			_check(盒 != null and absf(盒.position.y - 胶囊.position.y) <= 1.0,
 				"几何：%s 与胶囊同心（盒 y=%.1f，胶囊 y=%.1f）"
 				% [对[0], 盒.position.y if 盒 else 999.0, 胶囊.position.y])
+
+	# ── ②.5 跨动画体型一致（作者 2026-09-21 实测："88 使用三连击时体型变小"）。
+	#    根因：`AnimatedSprite2D` 的 scale/offset 是**按节点**的、只有一套，所以各组动画
+	#    必须共用同一画布尺寸，且中立姿势身高要一致。爪击那几组当初抽帧用了小尺寸的首帧
+	#    参考图，角色只画到 idle 的 66%，切过去 88 就缩水。
+	#    上面 ① 只比了 idle 第 0 帧与 77 —— 漏的正是"动画之间"这一维，这里补上。
+	var 已用真帧 := ["idle", "claw_1", "claw_2", "claw_3"]
+	var 参考帧寸 := Vector2.ZERO
+	var 参考高 := 0.0
+	for 名 in 已用真帧:
+		if 八八精灵 == null or not 八八精灵.sprite_frames.has_animation(名):
+			continue
+		var 贴 := 八八精灵.sprite_frames.get_frame_texture(名, 0)
+		if 贴 == null:
+			continue
+		var 寸 := Vector2(贴.get_width(), 贴.get_height())
+		var 内容 := _内容盒(贴, Rect2i(0, 0, int(寸.x), int(寸.y)))
+		if 参考帧寸 == Vector2.ZERO:
+			参考帧寸 = 寸
+			参考高 = 内容.size.y
+		_check(寸 == 参考帧寸,
+			"体型：%s 的画布尺寸与 idle 相同（%s vs %s —— 不同则切动画时 88 会跳/缩）"
+			% [名, str(寸), str(参考帧寸)])
+		_check(absf(内容.size.y - 参考高) <= 参考高 * 0.06,
+			"体型：%s 的中立姿势身高与 idle 一致（%.0f vs %.0f，容差 6%%）"
+			% [名, 内容.size.y, 参考高])
 
 	# ── ③ 判定盒前缘必须 >= 近身盒半径，否则"玩家站在近身带边缘"时爪击够不着
 	var 判形 := _boss.get_node_or_null("AttackHitbox/CollisionShape2D") as CollisionShape2D
@@ -543,10 +611,16 @@ func _检查招式命中() -> void:
 	_check(_boss.boss_sprite.animation == "claw_3",
 		"命中：三连爪击真的跑完三段（收招时动画 = %s）" % _boss.boss_sprite.animation)
 
-	# ── ② 三段是三次独立打击：站着不动吃满三下 = 3 血。
-	#    这条同时验证"每段只结算一次"—— 如果 `_结算过` 没生效，前压的 7 帧里
-	#    每帧都会再扣一次，总数会远大于 3。
-	_check(掉 == 3, "命中：三连爪击三段各命中一次 = 正好 3 血（实测 %d）" % 掉)
+	# ── ② 三段是三次独立打击。这条同时验证"每段只结算一次" —— 如果 `_结算过` 没生效，
+	#    前压的那几帧会每帧再扣一次，总数会**远大于 3**。
+	#
+	#    ⚠️ 2026-09-21 段间隔缩短后（挥击 1.5 倍速 + 后摇减半）**掉 2 血而不是 3**：
+	#    段间隔 ≈ 0.44s < 玩家受击无敌 `Player.invincible_time = 0.5s`，后面的段被无敌帧吸收。
+	#    实测：把 `invincible_time` 临时置 0 → 立刻回到 3 血，确认就是无敌帧挡的。
+	#    作者确认"允许无敌帧挡，是的话不用改" —— 所以这里守的是**上限**（结算次数没失控）
+	#    与**下限**（不是只剩一下），不是精确的 3。
+	_check(掉 >= 2 and 掉 <= 3,
+		"命中：三连爪击掉 2~3 血（实测 %d；段间隔 < 0.5s 时无敌帧会吸收后段）" % 掉)
 
 	# ── ③ 前突刺 @200px：旧实现（前突 83px + 判定盒前缘 151px）理论上够得着，
 	#    够不着就说明判定发生在位移之前
