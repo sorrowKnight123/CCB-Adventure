@@ -11,8 +11,10 @@ extends Node
 ## 运行：godot --headless --path . res://tests/test_hall_chase.tscn --quit-after 9000
 
 const LEVEL := preload("res://scenes/levels/music_hall/4_1.tscn")
-## phase_2_area 的世界矩形：节点 (1341,565)，形状本地 (-1,0)、1280×720
-const 期望区域 := Rect2(700.0, 205.0, 1280.0, 720.0)
+## 二阶段视口尺寸的**设计不变量**：正好一屏（1280×720）。
+## ⚠️ 区域**位置**不再写死 —— 作者会调二阶段场地（2026-09-21 就把 phase_2_area
+##    右移了 176px，连带平台与背景层）。位置改成从场景推，见 `_期望区域()`。
+const 期望尺寸 := Vector2(1280.0, 720.0)
 
 var _p: int = 0
 var _f: int = 0
@@ -60,6 +62,18 @@ func _等一帧() -> void:
 	await get_tree().physics_frame
 	for _i in 6:
 		await get_tree().process_frame
+
+
+## 二阶段区域的世界矩形（**从场景推，不写死** —— 作者会调场地布局）
+func _期望区域() -> Rect2:
+	var a := _lvl.get_node_or_null("phase_2_area") as Area2D
+	if a == null:
+		return Rect2()
+	var cs := a.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if cs == null or not (cs.shape is RectangleShape2D):
+		return Rect2()
+	var 尺寸 := (cs.shape as RectangleShape2D).size
+	return Rect2(cs.global_position - 尺寸 * 0.5, 尺寸)
 
 
 ## 玩家身上的 Camera2D（找不到就返回 null，断言会自己跳过）
@@ -285,7 +299,17 @@ func _检查二阶段() -> void:
 	_check(not _碰撞开着(1), "二阶段：序号 1 的碰撞也关了")
 	_check(not _碰撞开着(9), "二阶段：序号 9（平台）的碰撞也关了")
 	_check(_区域相等(s["区域矩形"]),
-		"二阶段：区域矩形 = 期望 %s（实际 %s）" % [str(期望区域), str(s["区域矩形"])])
+		"二阶段：区域矩形 = 期望 %s（实际 %s）" % [str(_期望区域()), str(s["区域矩形"])])
+	# 尺寸是设计不变量：正好一屏（位置作者会调，尺寸不该变）
+	_check(_期望区域().size == 期望尺寸,
+		"二阶段：区域尺寸 = 一屏 %s（实际 %s）" % [str(期望尺寸), str(_期望区域().size)])
+	# 血丝背景层必须跟着区域走 —— 作者调 phase_2_area 位置时很容易漏掉它，
+	# 漏了的话背景会整体偏移（画面上看着"背景不对"但没有任何报错）
+	var 血丝 := _lvl.get_node_or_null("二阶段背景") as Sprite2D
+	if 血丝 != null and _期望区域().size != Vector2.ZERO:
+		var 偏 := (血丝.global_position - _期望区域().get_center()).length()
+		_check(偏 <= 8.0,
+			"二阶段：血丝背景层与区域同心（偏移 %.1fpx，作者挪场地时别忘了它）" % 偏)
 	_check(_chase.二阶段 == true, "二阶段：状态位已置位")
 	_check(_chase.追逐中 == false, "二阶段：追逐中 已关闭")
 
@@ -306,12 +330,12 @@ func _检查二阶段() -> void:
 	#    二阶段区域根本进不了画面，而且**完全不报错**（背景层看着"没生效"）。
 	var 相机 := _相机()
 	if 相机 != null:
-		_check(相机.limit_left == int(期望区域.position.x)
-			and 相机.limit_right == int(期望区域.end.x)
-			and 相机.limit_top == int(期望区域.position.y)
-			and 相机.limit_bottom == int(期望区域.end.y),
+		_check(相机.limit_left == int(_期望区域().position.x)
+			and 相机.limit_right == int(_期望区域().end.x)
+			and 相机.limit_top == int(_期望区域().position.y)
+			and 相机.limit_bottom == int(_期望区域().end.y),
 			"二阶段：镜头 limits 收到区域 %s（实际 %d~%d / %d~%d）"
-			% [str(期望区域), 相机.limit_left, 相机.limit_right,
+			% [str(_期望区域()), 相机.limit_left, 相机.limit_right,
 			  相机.limit_top, 相机.limit_bottom])
 		_check(相机.limit_top < 2880,
 			"二阶段：limit_top 已脱离竞技场（%d < 2880，否则镜头还在下面那个房间）"
@@ -324,7 +348,7 @@ func _检查二阶段() -> void:
 	var 还原了 := false
 	for _i in 200:
 		await get_tree().physics_frame
-		if 相机 == null or 相机.limit_top != int(期望区域.position.y):
+		if 相机 == null or 相机.limit_top != int(_期望区域().position.y):
 			还原了 = true
 			break
 	_check(还原了, "二阶段：退出后 limits 已还原（limit_top=%d）"
@@ -346,10 +370,10 @@ func _检查物理轮询() -> void:
 	_player.restore_full_hp()
 	_chase._宽限 = 0.0
 	var hp0: int = _player.hp
-	_player.global_position = Vector2(1340.0, 期望区域.end.y + 200.0)
+	_player.global_position = Vector2(_期望区域().get_center().x, _期望区域().end.y + 200.0)
 	_chase._判掉出视口()
 	_check(_player.hp == hp0 - 1, "二阶段掉落：掉出视口扣 1 血（%d → %d）" % [hp0, _player.hp])
-	_check(期望区域.has_point(_player.global_position),
+	_check(_期望区域().has_point(_player.global_position),
 		"二阶段掉落：在战斗区域内的平台上方重生（实际 %s）" % str(_player.global_position))
 	_check(_chase._宽限 > 0.0, "二阶段掉落：重生后有宽限时间")
 
@@ -372,7 +396,7 @@ func _检查物理轮询() -> void:
 
 
 func _区域相等(a: Rect2) -> bool:
-	return absf(a.position.x - 期望区域.position.x) < 0.5 \
-		and absf(a.position.y - 期望区域.position.y) < 0.5 \
-		and absf(a.size.x - 期望区域.size.x) < 0.5 \
-		and absf(a.size.y - 期望区域.size.y) < 0.5
+	return absf(a.position.x - _期望区域().position.x) < 0.5 \
+		and absf(a.position.y - _期望区域().position.y) < 0.5 \
+		and absf(a.size.x - _期望区域().size.x) < 0.5 \
+		and absf(a.size.y - _期望区域().size.y) < 0.5

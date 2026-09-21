@@ -7,6 +7,7 @@ extends Node
 ## 运行：godot --headless --path . res://tests/test_boss88_phase1.tscn --quit-after 9000
 
 const LEVEL := preload("res://scenes/levels/music_hall/4_1.tscn")
+const LEVEL_PATH := "res://scenes/levels/music_hall/4_1.tscn"
 const 面板场景 := preload("res://scenes/ui/RecordSelectPanel.tscn")
 const 对话文件 := "res://dialogues/game.dialogue"
 const 新增CUE: Array[String] = ["boss88_intro", "boss88_taunt_half", "boss88_weakened",
@@ -30,6 +31,7 @@ func _ready() -> void:
 	_player = _lvl.get_node_or_null("Player")
 
 	await _检查接线()
+	await _检查关卡没覆写调参()
 	await _检查动画骨架()
 	await _检查命中帧()
 	await _检查体型与几何()
@@ -244,6 +246,48 @@ func _检查命中帧() -> void:
 	await _boss._出前突刺(int(_boss._attack_serial))
 	_check(not 盒.monitoring, "命中帧：一招跑完后判定盒没卡住")
 	_挪开玩家()
+
+
+# ──────────────────────────── 关卡不许覆写调参（踩过两次的坑） ────────────────────────────
+#
+# 作者的 Godot 编辑器两次把**旧值**写回 4_1 里的 Boss88Phase1 实例
+# （判定盒前伸=95、爪击前突距离=60、爪击前突速度=520…），于是脚本里调好的值
+# 在关卡里被静默 revert —— 而自检的期望值也跟着导出项走，**完全发现不了**。
+# 还会顺手写下 `"新导出项" = null` 这种无效序列化行。
+# 这里直接读 .tscn 文本查覆写行；关卡里只该有 `position`。
+
+
+## 调参导出项：只该在脚本里定，关卡实例不许覆写
+const 调参导出项: Array[String] = [
+	"判定盒前伸", "爪击前突距离", "爪击三前突距离", "爪击前突速度", "爪击三前突速度",
+	"突刺距离", "突刺速度", "偏好概率", "同招连用上限", "冲刺卡住帧", "冲刺提前帧",
+	"闪现落点比例", "闪现最小落点间距", "最大生命值", "出手间隔", "出手间隔_半血",
+]
+
+
+func _检查关卡没覆写调参() -> void:
+	var f := FileAccess.open(LEVEL_PATH, FileAccess.READ)
+	_check(f != null, "关卡覆写：读得到 4_1.tscn")
+	if f == null:
+		return
+	var 文本 := f.get_as_text()
+	f.close()
+	var 起 := 文本.find('name="Boss88Phase1" parent="."')
+	_check(起 >= 0, "关卡覆写：找得到 Boss88Phase1 实例块")
+	if 起 < 0:
+		return
+	var 尾 := 文本.find("
+[node ", 起)
+	var 块 := 文本.substr(起, (尾 - 起) if 尾 > 0 else 文本.length() - 起)
+	var 命中: Array = []
+	for 名 in 调参导出项:
+		if 块.find('"%s" =' % 名) >= 0:
+			命中.append(名)
+	_check(命中.is_empty(),
+		"关卡覆写：实例块没覆写调参导出项（命中 %s）—— 覆写会把脚本里的值在关卡里 revert 掉"
+		% str(命中))
+	_check(块.find("= null") < 0,
+		"关卡覆写：实例块里没有编辑器写坏的 `= null` 行（会污染序列化）")
 
 
 # ──────────────────────────── 体型与判定几何 ────────────────────────────

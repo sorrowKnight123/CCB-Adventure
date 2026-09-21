@@ -75,7 +75,7 @@ script = ExtResource("3_esdw1")
 [node name="二阶段背景" type="Sprite2D" parent="." unique_id=1600111222]
 visible = false
 z_index = -1
-position = Vector2(1340, 565)
+position = Vector2(1516, 565)
 texture = ExtResource("28_bloodnet")
 
 [node name="tile" type="Node2D" parent="." unique_id=1111349107]
@@ -190,12 +190,12 @@ position = Vector2(2227, 1176)
 metadata/landing = Vector2(620, 1186)
 
 [node name="18" parent="跳跳乐" unique_id=1869861063 instance=ExtResource("4_2l5vs")]
-position = Vector2(2128, 936)
+position = Vector2(2256, 990)
 "跳跃强度" = 800.0
 metadata/landing = Vector2(1300, 700)
 
 [node name="战斗层" type="Node2D" parent="跳跳乐" unique_id=1351971510]
-position = Vector2(199, 119)
+position = Vector2(375, 119)
 
 [node name="鼓2" parent="跳跳乐/战斗层" unique_id=979548534 instance=ExtResource("4_2l5vs")]
 position = Vector2(1580, 733)
@@ -315,7 +315,7 @@ display_player_location = true
 [node name="RoomInstance" parent="." unique_id=1246059462 instance=ExtResource("26_2ld62")]
 
 [node name="phase_2_area" type="Area2D" parent="." unique_id=1580833285]
-position = Vector2(1341, 565)
+position = Vector2(1517, 565)
 collision_layer = 0
 collision_mask = 2
 
