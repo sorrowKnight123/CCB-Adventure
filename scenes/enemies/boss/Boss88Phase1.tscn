@@ -22,7 +22,7 @@ radius = 20.0
 height = 114.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
-size = Vector2(130, 90)
+size = Vector2(150, 90)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_near"]
 radius = 150.0

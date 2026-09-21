@@ -62,6 +62,13 @@ func _等一帧() -> void:
 		await get_tree().process_frame
 
 
+## 玩家身上的 Camera2D（找不到就返回 null，断言会自己跳过）
+func _相机() -> Camera2D:
+	if _player == null:
+		return null
+	return _player.get_node_or_null("Camera2D") as Camera2D
+
+
 func _踩(序号: int) -> void:
 	_chase._碰触(_chase.取元素(序号))
 
@@ -284,6 +291,48 @@ func _检查二阶段() -> void:
 
 	var 背景 := _lvl.get_node_or_null("二阶段背景") as Sprite2D
 	_check(背景 != null and 背景.visible, "二阶段：单层背景已显示")
+
+	# ── 背景压暗（设计稿 §9 原本写好、一直没接的一环）──
+	#    透明血丝层叠在**压暗后**的音乐厅上才显眼；实测压暗把远景墙亮度 75.5 → 34.2。
+	var 遮罩 := _lvl.get_node_or_null("背景压暗遮罩")
+	_check(遮罩 != null and 遮罩.has_method("是否变暗"),
+		"二阶段：找得到 背景压暗遮罩 且它有 是否变暗 接口")
+	if 遮罩 != null and 遮罩.has_method("是否变暗"):
+		_check(bool(遮罩.call("是否变暗")), "二阶段：背景压暗已打开")
+
+	# ── 镜头 limits 必须收到二阶段区域 ──
+	#    一阶段的 ArenaLock 会把 limits 夹到竞技场（y 2880~3600），而二阶段区域在
+	#    y 205~925 —— 只改相机位置、不改 limits 的话镜头会被夹回下面那个房间，
+	#    二阶段区域根本进不了画面，而且**完全不报错**（背景层看着"没生效"）。
+	var 相机 := _相机()
+	if 相机 != null:
+		_check(相机.limit_left == int(期望区域.position.x)
+			and 相机.limit_right == int(期望区域.end.x)
+			and 相机.limit_top == int(期望区域.position.y)
+			and 相机.limit_bottom == int(期望区域.end.y),
+			"二阶段：镜头 limits 收到区域 %s（实际 %d~%d / %d~%d）"
+			% [str(期望区域), 相机.limit_left, 相机.limit_right,
+			  相机.limit_top, 相机.limit_bottom])
+		_check(相机.limit_top < 2880,
+			"二阶段：limit_top 已脱离竞技场（%d < 2880，否则镜头还在下面那个房间）"
+			% 相机.limit_top)
+
+	# 退出后 limits 必须还原（不然回到一阶段会被锁在二阶段的框里）。
+	# ⚠️ 退出是 0.6s 的镜头补间，limits 在补间**结束的回调里**才还原 ——
+	#    提前还原会把回程补间夹在半路。所以这里要等补间走完，不能只等两帧。
+	_chase.退出二阶段()
+	var 还原了 := false
+	for _i in 200:
+		await get_tree().physics_frame
+		if 相机 == null or 相机.limit_top != int(期望区域.position.y):
+			还原了 = true
+			break
+	_check(还原了, "二阶段：退出后 limits 已还原（limit_top=%d）"
+		% (相机.limit_top if 相机 != null else -1))
+	if 遮罩 != null and 遮罩.has_method("是否变暗"):
+		_check(not bool(遮罩.call("是否变暗")), "二阶段：退出后背景压暗已关闭")
+	_chase.进入二阶段()      # 还原状态，别影响后面的断言
+	await _等一帧()
 
 
 # ──────────────────────────── 二阶段掉落 + 物理轮询 ────────────────────────────

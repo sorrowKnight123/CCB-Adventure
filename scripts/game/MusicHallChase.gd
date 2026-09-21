@@ -33,6 +33,10 @@ signal 掉落扣血(扣血: int)   ## 二阶段掉出视口（给音效/表现�
 ## 二阶段专属的背景层（血丝网 + 四边危险带已合成一层），
 ## 进二阶段时显示、退出时隐藏（节点不存在时静默跳过）
 @export var 二阶段背景路径: NodePath = ^"../二阶段背景"
+## 背景压暗遮罩。二阶段把它打开 —— 透明血丝层叠在**压暗后**的音乐厅上才显眼
+## （设计稿 §9：实测压暗把远景墙亮度 75.5 → 34.2，约 55%）。
+@export var 压暗遮罩路径: NodePath = ^"../背景压暗遮罩"
+@export var 二阶段压暗: bool = true
 
 @export_group("浮现规则")
 ## 浮现到"已碰最高序号 + 这个值"
@@ -79,6 +83,12 @@ var _区域矩形: Rect2 = Rect2()
 var _存_top_level: bool = false
 var _存_本地位置: Vector2 = Vector2.ZERO
 var _存_zoom: Vector2 = Vector2.ONE
+## 二阶段锁定前存下的镜头 limits。**必须存**：一阶段的 ArenaLock 会把 limits
+## 夹到竞技场（0~1600 / 2880~3600），而二阶段区域在 y 205~925 ——
+## 只改相机位置、不改 limits 的话，镜头会被 limits 夹回下面那个房间，
+## 二阶段区域根本进不了画面（表现为"背景一片不对/看不见"，且完全不报错）。
+var _存_limits: Rect2 = Rect2()
+var _有存_limits: bool = false
 var _镜头补间: Tween = null
 var _y_was_down: bool = false
 var _u_was_down: bool = false
@@ -382,6 +392,7 @@ func 进入二阶段() -> void:
 		for e in _元素:
 			_设显示(e, false)
 	_设背景层(true)
+	_设压暗(二阶段压暗)
 	_算区域矩形()
 	if _区域矩形.size != Vector2.ZERO:
 		_锁镜头到区域(_区域矩形)
@@ -397,6 +408,13 @@ func _设背景层(开: bool) -> void:
 	var n := get_node_or_null(二阶段背景路径)
 	if n is CanvasItem:
 		(n as CanvasItem).visible = 开
+
+
+## 背景压暗开关。用 `has_method` 守卫 —— 遮罩脚本可能被换掉或路径没填。
+func _设压暗(开: bool) -> void:
+	var n := get_node_or_null(压暗遮罩路径)
+	if n != null and n.has_method("设置变暗"):
+		n.call("设置变暗", 开)
 
 
 func _算区域矩形() -> void:
@@ -490,11 +508,38 @@ func _锁镜头到区域(区域: Rect2) -> void:
 	var 起点 := _相机.global_position
 	_相机.top_level = true
 	_相机.global_position = 起点        # 同一个值赋回，抵消 top_level 带来的继承变换
+	_套限制(区域)
 	if _镜头补间 != null and _镜头补间.is_valid():
 		_镜头补间.kill()
 	_镜头补间 = create_tween()
 	_镜头补间.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	_镜头补间.tween_property(_相机, "global_position", 区域.get_center(), 二阶段镜头时长)
+
+
+## 把镜头 limits 收到目标区域（区域正好一屏 → 相机被钉死在区域中心）。
+## ⚠️ **只碰 limit_\***（`agent.md §20`）：绝不碰 position_smoothing_enabled / offset，
+## 也绝不调 reset_smoothing()。
+func _套限制(区域: Rect2) -> void:
+	if _相机 == null:
+		return
+	if not _有存_limits:
+		_存_limits = Rect2(_相机.limit_left, _相机.limit_top,
+			_相机.limit_right - _相机.limit_left, _相机.limit_bottom - _相机.limit_top)
+		_有存_limits = true
+	_相机.limit_left = int(round(区域.position.x))
+	_相机.limit_right = int(round(区域.end.x))
+	_相机.limit_top = int(round(区域.position.y))
+	_相机.limit_bottom = int(round(区域.end.y))
+
+
+func _还原限制() -> void:
+	if _相机 == null or not _有存_limits:
+		return
+	_相机.limit_left = int(round(_存_limits.position.x))
+	_相机.limit_right = int(round(_存_limits.end.x))
+	_相机.limit_top = int(round(_存_limits.position.y))
+	_相机.limit_bottom = int(round(_存_limits.end.y))
+	_有存_limits = false
 
 
 ## 退出二阶段（回普通跟随）。top_level 与本地位置的两次赋值必须在同一次调用里完成。
@@ -503,6 +548,7 @@ func 退出二阶段() -> void:
 		return
 	二阶段 = false
 	_设背景层(false)
+	_设压暗(false)
 	if _相机 == null:
 		return
 	if _镜头补间 != null and _镜头补间.is_valid():
@@ -520,3 +566,5 @@ func _镜头还原收尾() -> void:
 	if not _存_top_level:
 		_相机.position = _存_本地位置
 	_相机.zoom = _存_zoom
+	# limits 在补间**之后**还原 —— 提前还原会把回程补间夹在半路
+	_还原限制()
