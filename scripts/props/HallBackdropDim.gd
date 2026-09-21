@@ -17,6 +17,10 @@ var _b_was_down: bool = false
 
 func _ready() -> void:
 	color = Color(0, 0, 0, 0)
+	# ⚠️ 调试键必须用 ALWAYS：本节点的 process_mode 默认是 INHERIT（= 可暂停），
+	#    所以**暂停菜单开着的时候按 B 是没反应的**（实测过：正常游玩有效、暂停中失效）。
+	#    遮罩本身的压暗逻辑不受影响，只有这个按键受暂停影响。
+	process_mode = Node.PROCESS_MODE_ALWAYS if 调试按键 else Node.PROCESS_MODE_INHERIT
 	set_process(调试按键)
 
 
