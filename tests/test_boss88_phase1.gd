@@ -378,7 +378,14 @@ func _检查竞技场() -> void:
 	_arena.战斗中 = false
 	_arena.开始()
 	await _等物理(4)
-	_check(_arena.门是否锁着(), "竞技场：开战后回程门被锁")
+	_check(_arena.门是否锁着(), "竞技场：开战后回程门被锁（意图）")
+	# ⚠️ 意图之外还要验「物理属性真的落地」：_锁门 走 set_deferred（它从 body_entered 里被调下来，
+	#    直接赋值会被引擎挡掉且只报一行 ERROR，门其实没锁上）。只验意图会漏掉这个 bug。
+	var 门 := _lvl.get_node_or_null("Door/4_1-3_1") as Area2D
+	_check(门 != null, "竞技场：找得到回程门 Door/4_1-3_1")
+	if 门 != null:
+		_check(not 门.monitoring and not 门.monitorable,
+			"竞技场：门的 monitoring/monitorable 真关掉了（set_deferred 已落地）")
 	var 相机 := _player.get_node_or_null("Camera2D") as Camera2D
 	if 相机 != null:
 		_check(相机.limit_right - 相机.limit_left == 1600,
@@ -387,7 +394,10 @@ func _检查竞技场() -> void:
 			"竞技场：镜头上下限到第 1 格（%d~%d）" % [相机.limit_top, 相机.limit_bottom])
 	_arena._on_胜利()
 	await _等物理(4)
-	_check(not _arena.门是否锁着(), "竞技场：胜利后门解锁")
+	_check(not _arena.门是否锁着(), "竞技场：胜利后门解锁（意图）")
+	if 门 != null:
+		_check(门.monitoring and 门.monitorable,
+			"竞技场：胜利后门的 monitoring/monitorable 真的开回来了")
 
 
 # ──────────────────────────── 唱片面板 ────────────────────────────

@@ -19,6 +19,10 @@ extends Node2D
 @export var 镜头滑入时长: float = 0.0
 @export var 已战胜时也锁场: bool = false
 
+## 门的意图状态。`门是否锁着()` 读它而不是读 Area2D 的 monitoring ——
+## 因为 `_锁门` 走的是 set_deferred，物理属性要下一帧才变，读它会有假阴性。
+var _门已锁: bool = false
+
 var 战斗中: bool = false
 var 已结束: bool = false
 
@@ -162,13 +166,19 @@ func 补间有效() -> bool:
 # ──────────────────────────── 门 ────────────────────────────
 
 
-## 锁门 = 关掉 Area2D 的 monitoring/monitorable（与 BossArena 同一套语义）
+## 锁门 = 关掉 Area2D 的 monitoring/monitorable（与 BossArena 同一套语义）。
+##
+## ⚠️ 必须 `set_deferred`：`开始()` 是从触发区的 `body_entered` 里调下来的，
+##    物理回调期间直接改 monitoring / monitorable 会被引擎挡掉 —— 只在输出里留一行
+##    「Function blocked during in/out signal」，**门其实没锁上**。这类错误不崩不卡，
+##    只能靠翻日志发现，所以这里连同 `_门已锁` 一起记意图，供自检立刻读到。
 func _锁门(锁: bool) -> void:
+	_门已锁 = 锁
 	var 门 := get_node_or_null(回程门路径) as Area2D
 	if 门 == null:
 		return
-	门.monitoring = not 锁
-	门.monitorable = not 锁
+	门.set_deferred("monitoring", not 锁)
+	门.set_deferred("monitorable", not 锁)
 
 
 # ──────────────────────────── 自检/调试接口 ────────────────────────────
@@ -179,5 +189,4 @@ func 取竞技场矩形() -> Rect2:
 
 
 func 门是否锁着() -> bool:
-	var 门 := get_node_or_null(回程门路径) as Area2D
-	return 门 != null and not 门.monitoring
+	return _门已锁
