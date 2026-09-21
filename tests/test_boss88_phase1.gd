@@ -176,7 +176,8 @@ func _检查动画骨架() -> void:
 	if sf == null:
 		return
 	var 期望 := {
-		"idle": 24, "walk": 16, "intro": 36, "claw_1": 26, "claw_2": 26, "claw_3": 32,
+		# 爪击三段的后摇 2026-09-21 减半（16 → 8 帧），见 build_88_frames.gd
+		"idle": 24, "walk": 16, "intro": 36, "claw_1": 18, "claw_2": 18, "claw_3": 24,
 		"thrust": 26, "blink_out": 10, "blink_in": 12, "staff_cast": 18,
 		"hurt": 6, "knocked": 12, "weakened": 32,
 	}
@@ -193,6 +194,17 @@ func _检查动画骨架() -> void:
 		"动画：idle / weakened 循环")
 	_check(not sf.get_animation_loop("claw_1") and not sf.get_animation_loop("thrust")
 		and not sf.get_animation_loop("hurt"), "动画：attack / thrust / hurt 不循环")
+	# 爪击三段的**后摇**（命中帧之后的帧数）必须 <= 8 —— 作者定的手感：
+	# 连段每段之间的间隔就是后摇，太长会"每段间隔特别大"。
+	var 后摇长: Array = []
+	if sf != null:
+		for 对 in [["claw_1", int(_boss.爪击命中帧)], ["claw_2", int(_boss.爪击命中帧)],
+				["claw_3", int(_boss.爪击三命中帧)]]:
+			var 后摇 := sf.get_frame_count(对[0]) - int(对[1])
+			if 后摇 > 8:
+				后摇长.append("%s=%d帧" % [对[0], 后摇])
+	_check(后摇长.is_empty(),
+		"动画：爪击三段的后摇都 <= 8 帧（%s）" % str(后摇长))
 
 
 # ──────────────────────────── 命中帧（核心） ────────────────────────────
@@ -418,9 +430,16 @@ func _检查体型与几何() -> void:
 	var 爪起 := _boss.global_position.x
 	var t3 := int(_boss._attack_serial)
 	_boss.state = _boss.State.ATTACK
+	var 爪表 := Time.get_ticks_msec()
 	await _boss._出爪击连段(t3)
+	var 爪秒 := float(Time.get_ticks_msec() - 爪表) / 1000.0
 	_boss.state = _boss.State.IDLE
 	var 爪推 := absf(_boss.global_position.x - 爪起)
+	# 连段总时长：三段动画（18+18+24 帧 @24fps = 2.5 秒）+ 三段前压。
+	# **每段之间的间隔就是后摇**，作者定的手感是"后摇减半"—— 3.5 秒会显得拖。
+	# 这里钉一个上限，防止后摇帧数被改回去。
+	_check(爪秒 <= 3.0,
+		"位移：三连爪击整段耗时 %.2f 秒 <= 3.0（后摇 8 帧/段，曾被砍到 16 帧 = 3.5 秒）" % 爪秒)
 	var 爪期望 := float(_boss.爪击前突距离) * 2.0 + float(_boss.爪击三前突距离)
 	# 位移是逐物理帧量化的，停下时会过冲约 2 帧行程（1040px/s 时约 36px/段），
 	# 所以用区间：下限证明"推够了"，上限抓"失控跑飞"。

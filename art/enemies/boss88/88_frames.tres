@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://boaxigamvs2g1"]
+[gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" uid="uid://cf5m3gij03ubb" path="res://art/enemies/boss88/88_placeholder.png" id="1_uinxr"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/88_placeholder.png" id="1_uinxr"]
 
 [resource]
 animations = [{
@@ -134,30 +134,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
 }],
 "loop": 0,
 "name": &"claw_1",
@@ -217,60 +193,12 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
 }],
 "loop": 0,
 "name": &"claw_2",
 "speed": 24.0
 }, {
 "frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_uinxr")
-}, {
 "duration": 1.0,
 "texture": ExtResource("1_uinxr")
 }, {
