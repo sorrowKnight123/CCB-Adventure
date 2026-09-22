@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://q52ui3saqymp"
-path="res://.godot/imported/013.png-f4a1fb76572944d2d5621bc637d1ed77.ctex"
+uid="uid://d1r35q3kmi08r"
+path="res://.godot/imported/record_ecstasy.png-bfefa1ea85d94299491dec73d2c45852.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/enemies/boss88/idle/013.png"
-dest_files=["res://.godot/imported/013.png-f4a1fb76572944d2d5621bc637d1ed77.ctex"]
+source_file="res://art/icons/record_ecstasy.png"
+dest_files=["res://.godot/imported/record_ecstasy.png-bfefa1ea85d94299491dec73d2c45852.ctex"]
 
 [params]
 

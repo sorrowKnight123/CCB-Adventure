@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://unijpk3c4efb"
-path="res://.godot/imported/015.png-a1d7084b8ff90583e60b7740ca07bae6.ctex"
+uid="uid://40ek8clj0kqt"
+path="res://.godot/imported/thrust_streak.png-0907d817cd15a3675219028cf25f94a5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/enemies/boss88/idle/015.png"
-dest_files=["res://.godot/imported/015.png-a1d7084b8ff90583e60b7740ca07bae6.ctex"]
+source_file="res://art/enemies/boss88/fx/thrust_streak.png"
+dest_files=["res://.godot/imported/thrust_streak.png-0907d817cd15a3675219028cf25f94a5.ctex"]
 
 [params]
 

@@ -8,7 +8,9 @@ extends ColorRect
 ## 调试：默认开着 `调试按键`，在场景里按 **B** 就能切换，方便直接看效果。
 
 @export var 变暗程度: float = 0.55      ## 完全不透明时压多黑（0~1）
-@export var 渐变时长: float = 0.4       ## 开关的过渡时长（秒）
+## 开关的过渡时长（秒）。作者 2026-09-22 定 **1 秒** —— 压暗从"跳跳乐出现"就开始，
+## 渐变得够慢才不像"突然换了个场景"。
+@export var 渐变时长: float = 1.0
 @export var 调试按键: bool = true       ## 是否允许用 B 键手动切换（上线前可关）
 
 var _on: bool = false

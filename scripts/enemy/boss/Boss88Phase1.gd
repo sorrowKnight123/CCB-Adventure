@@ -19,6 +19,9 @@ signal phase_changed(phase: int)
 signal victory
 ## 收尾完成：`走真结局` 由唱片选择决定，交给关卡去接变身或结局
 signal 收尾完成(走真结局: bool)
+## 开场演出结束（对话结束 + intro 动画播完）。`ArenaLock` 等它来还原镜头 + 解冻玩家。
+## 作者要求："intro 完整播放完，镜头才恢复，玩家才能动，boss 战才开始。"
+signal intro_finished
 
 enum State { AWAIT, INTRO, IDLE, ATTACK, KNOCKED, WEAKENED, RECORD, DONE }
 
@@ -26,6 +29,7 @@ const BOSS_ID := "boss88_phase1"
 const DIALOGUE_FILE: String = "res://dialogues/game.dialogue"
 const 狂喜之诗ID: String = "ecstasy_poem"
 const STAFF_SWEEP: PackedScene = preload("res://scenes/enemies/boss/StaffSweep.tscn")
+const SLASH_VFX: PackedScene = preload("res://scenes/enemies/boss/BossSlashVfx.tscn")
 ## 四招的 id（`_选招` 的返回值 / 权重表的键）
 const 全部招式: Array[String] = ["claw", "thrust", "blink", "staff"]
 
@@ -117,6 +121,34 @@ const 全部招式: Array[String] = ["claw", "thrust", "blink", "staff"]
 ## 标记存在多久（秒）。`_出闪现背刺` 提前这么多秒放它。
 @export var 落点标记时长: float = 0.3
 
+@export_group("命中特效 · 爪击")
+## 爪击命中帧炸开的猩红 slash 贴图（GPT 出的，透明底）。
+## 为什么要分离节点而不是烘焙进帧：帧里的拖尾只有 1~2 屏幕像素宽、比暖棕背景还暗，
+## 而且帧**没法叠加发光**（`BLEND_MODE_ADD`）。详见 `BossSlashVfx.gd` 顶部注释。
+##
+## ⚠️ 爪击与前突刺的参数是**分开的两套**（作者 2026-09-22：两招大小差很多，一起调没法用）。
+@export var 爪击slash贴图: Texture2D
+## 特效中心相对身体的**前伸**（像素）
+@export var 爪击特效前伸: float = 95.0
+## 整体大小。**作者实测爪击那版偏大**，默认调到 0.7（突刺保持 1.0）
+@export var 爪击特效缩放: float = 0.7
+@export var 爪击特效时长: float = 0.2
+## 贴图是朝右画的；这三项给"朝向之外还想微调"的场合（左右朝向会自动镜像）。
+## **水平翻转 = 在自动镜像之上再翻一次**（作者 2026-09-22："现在需要水平翻转一次"）。
+@export var 爪击特效水平翻转: bool = true
+@export var 爪击特效垂直翻转: bool = false
+@export_range(-180.0, 180.0, 5.0) var 爪击特效旋转: float = 0.0
+
+@export_group("命中特效 · 前突刺")
+## ⚠️ 这一版作者验收过："效果非常完美，就用这版，再也不变了" —— 别动默认值。
+@export var 突刺slash贴图: Texture2D
+@export var 突刺特效前伸: float = 120.0
+@export var 突刺特效缩放: float = 1.0
+@export var 突刺特效时长: float = 0.2
+@export var 突刺特效水平翻转: bool = false
+@export var 突刺特效垂直翻转: bool = false
+@export_range(-180.0, 180.0, 5.0) var 突刺特效旋转: float = 0.0
+
 @export_group("音效 · 起手音（预备拍）")
 ## 四招各一个起手音，**在动画第 0 帧播** —— 音乐主题的 Boss，让玩家"听出下一招"。
 ## ⚠️ 这几个音是玩家的判断依据，播放时**不做音高抖动**（抖了就分不清是哪一招）。
@@ -207,6 +239,12 @@ func _ready() -> void:
 		_闪烁.color = Color(0.85, 0.1, 0.1, 0.0)
 	health_changed.emit(hp, max_hp)
 	_update_facing()
+	# 场景是 `autoplay = "intro"` → **加载就开始播**。这里主动停在第 0 帧：
+	# 开打前 88 一直**坐在钢琴前**（作者："开打前默认的 88 就用这个动画的第一帧"）。
+	# 不 stop 的话 3 秒后它自己播完，会停在"站着"的末帧。
+	if boss_sprite != null:
+		boss_sprite.stop()
+		boss_sprite.frame = 0
 	# 上次已经打赢过（可能没选唱片就退出了）→ 直接进虚弱，等玩家来选
 	if GameState.is_boss_defeated(BOSS_ID):
 		call_deferred("_进入虚弱")
@@ -263,16 +301,30 @@ func start_battle() -> void:
 	_开场()
 
 
+## 开场演出。作者定的顺序（2026-09-22）：
+##   ① 对话期间**保持 intro 第 0 帧**（他坐在钢琴前不动）
+##   ② 对话结束**才**播 intro 动画（坐姿弹琴 → 起身 → 黑洞把钢琴卷走 → 转身站定）
+##   ③ intro 播完**才**发 `intro_finished` → `ArenaLock` 还原镜头 + 解冻玩家 → 进 IDLE 开战
+##
+## 为什么要显式停在帧 0：场景 `autoplay = "intro"` 会让它在加载时就播，
+## 对话还没看完动画就跑掉一半了。
 func _开场() -> void:
 	# INTRO 期间**关闭受击判定与接触伤害**，演出不被打断
 	_设判定盒(false)
 	_设接触伤害(false)
-	boss_sprite.play("intro")
+	if boss_sprite != null:
+		boss_sprite.stop()
+		boss_sprite.frame = 0
 	DialogueBridge.show_cue(DIALOGUE_FILE, "boss88_intro")
 	await DialogueManager.dialogue_ended
 	if not battle_started or state != State.INTRO:
 		return
-	boss_sprite.play("idle")
+	# 对话结束 → 现在才播整段 intro，并等它播完（照抄 `_播虚弱呼吸` 的等法）
+	boss_sprite.play("intro")
+	await boss_sprite.animation_finished
+	if not battle_started or state != State.INTRO:
+		return
+	intro_finished.emit()
 	state = State.IDLE
 	_设接触伤害(true)
 	_攻击循环()
@@ -339,12 +391,24 @@ func _走位(delta: float) -> void:
 
 func _攻击循环() -> void:
 	while battle_started and state not in [State.DONE, State.KNOCKED, State.WEAKENED, State.RECORD]:
+		# 对话期间**完全停手**：既不选招也不出招（作者 2026-09-22 要求）。
+		# `_physics_process` 的 `停手` 只管走位，这里要管"不出手"。
+		while _对话中():
+			await get_tree().physics_frame
+			if not battle_started:
+				return
 		var 间隔 := 出手间隔_半血 if phase == 2 else 出手间隔
 		await _等秒(间隔)
-		if not battle_started or state != State.IDLE:
+		if not battle_started or state != State.IDLE or _对话中():
 			continue
 		await _出招(_attack_serial)
 		_attack_index += 1
+
+
+## 对话是否在进行（`DialogueBridge` 在 `dialogue` 组里，与 Player 的软冻结同一套判断）
+func _对话中() -> bool:
+	var dlg := get_tree().get_first_node_in_group("dialogue")
+	return dlg != null and bool(dlg.get("is_active"))
 
 
 ## 三个距离带 → 偏好招。远带有**两招**偏好（闪现是瞬移贴脸的接近手段，
@@ -462,6 +526,8 @@ func _出爪击连段(token: int) -> void:
 		if not await _等到帧(命中表[段], token):
 			return
 		_播(招式音_爪击, 0.06)
+		_放命中特效(爪击slash贴图, 爪击特效前伸, 爪击特效缩放, 爪击特效时长,
+			爪击特效水平翻转, 爪击特效垂直翻转, 爪击特效旋转)
 		# 前压 + 判定：整段前压期间盒子都开着，只结算一次；冲程走完再留 `命中盒持续帧` 帧
 		if not await _冲刺(距离表[段], 速度表[段], token, 命中盒持续帧):
 			return
@@ -506,6 +572,8 @@ func _出前突刺(token: int) -> void:
 	if not await _等到帧(突刺命中帧, token):
 		return
 	_播(招式音_突刺, 0.06)
+	_放命中特效(突刺slash贴图, 突刺特效前伸, 突刺特效缩放, 突刺特效时长,
+		突刺特效水平翻转, 突刺特效垂直翻转, 突刺特效旋转)
 	if not await _冲刺(突刺距离, 突刺速度, token):
 		return
 	await _等动画结束(token)
@@ -545,9 +613,30 @@ func _出闪现背刺(token: int) -> void:
 	_摆("thrust")
 	if not await _等到帧(突刺命中帧, token):
 		return
+	# ⚠️ 这一段是闪现后的那一刺，走的是 `_冲刺` 而不是 `_出前突刺` ——
+	#    作者实测"消失-出现之后的突刺没有特效"，就是漏了这一处。
+	_播(招式音_突刺, 0.06)
+	_放命中特效(突刺slash贴图, 突刺特效前伸, 突刺特效缩放, 突刺特效时长,
+		突刺特效水平翻转, 突刺特效垂直翻转, 突刺特效旋转)
 	if not await _冲刺(突刺距离, 突刺速度, token):
 		return
 	await _等动画结束(token)
+
+
+## 命中帧炸一道猩红 slash。挂在 `_出爪击连段` / `_出前突刺` 的命中帧那一刻
+## （就是 `_播(招式音_*)` 那一行、`_冲刺` 之前）。
+func _放命中特效(贴图: Texture2D, 前伸: float, 缩放: float, 时长秒: float,
+		水平翻转: bool = false, 垂直翻转: bool = false, 旋转度: float = 0.0) -> void:
+	if 贴图 == null:
+		return
+	var 场景 := get_tree().current_scene
+	if 场景 == null:
+		return
+	var 效 := SLASH_VFX.instantiate()
+	场景.add_child(效)
+	# 炸在身体前方（爪尖/判定盒前缘附近），y 抬到胸口高度
+	效.setup(贴图, global_position + Vector2(facing * 前伸, -43.0), facing,
+		缩放, 时长秒, 垂直翻转, deg_to_rad(旋转度), 水平翻转)
 
 
 ## 在落点放一个血红黑洞漩涡标记：由小放大 + 淡入 → 淡出 → 自毁。
@@ -636,6 +725,12 @@ func take_damage(amount: int, from_pos: Vector2, from_magic := false) -> void:
 		phase_changed.emit(phase)
 		# 不换曲，只把出手间隔缩短（_攻击循环 下一次循环生效）
 		DialogueBridge.show_cue(DIALOGUE_FILE, "boss88_taunt_half")
+		# ⚠️ 作者 2026-09-22："半血时候的对话 88 也应该冻结，而不是玩家进入对话，
+		#    88 还在那攻击。" —— 光靠 `_physics_process` 里的 `停手` 只停走位，
+		#    **正在跑的攻击协程不会自己停**。所以这里要把攻击作废并回 IDLE。
+		_攻击作废()
+		if state == State.ATTACK:
+			state = State.IDLE
 	if hp <= 0:
 		_进入击退()
 		return
@@ -997,6 +1092,14 @@ func _留残影() -> void:
 		return
 	var 影 := Sprite2D.new()
 	影.texture = boss_sprite.sprite_frames.get_frame_texture(boss_sprite.animation, boss_sprite.frame)
+	# ⚠️ **scale / offset / rotation 必须一起复制**（2026-09-22 修的真 bug）。
+	#    新建的 `Sprite2D` 默认 scale=(1,1)、offset=(0,0)，而 `BossSprite` 是
+	#    scale=0.5077、offset=(0,-81.86) —— 只复制贴图/位置/朝向的话，残影会按
+	#    **scale 1.0 画出来 = 比 88 正好大一倍**，位置也偏。作者实测反馈
+	#    "blink 消失最后几帧 88 会莫名其妙变大"，就是这里。
+	影.scale = boss_sprite.scale
+	影.offset = boss_sprite.offset
+	影.rotation = boss_sprite.rotation
 	影.global_position = boss_sprite.global_position
 	影.flip_h = boss_sprite.flip_h
 	影.z_index = -1

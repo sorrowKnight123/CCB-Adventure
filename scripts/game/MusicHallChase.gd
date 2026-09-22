@@ -27,6 +27,8 @@ signal 掉落扣血(扣血: int)   ## 二阶段掉出视口（给音效/表现�
 
 @export_group("节点")
 @export var 跳跳乐路径: NodePath = ^"../跳跳乐"
+## 一阶段 Boss。接它的 `收尾完成(走真结局)`：玩家给《狂喜之诗》→ 变身对话结束 → 进跳跳乐。
+@export var 战斗对象路径: NodePath = ^"../Boss88Phase1"
 @export var 二阶段区域路径: NodePath = ^"../phase_2_area"
 ## 这棵子树整个不参与浮现（二阶段场地）
 @export var 排除子树路径: NodePath = ^"../跳跳乐/战斗层"
@@ -53,7 +55,8 @@ signal 掉落扣血(扣血: int)   ## 二阶段掉出视口（给音效/表现�
 @export var 切换二阶段时全部隐藏: bool = true
 
 @export_group("调试")
-## 一阶段 Boss 还没做，所以"变身结束 → 开始追逐"这一步暂时没人调。
+## 2026-09-22 起"一阶段收尾 → 开始追逐"已经接上（见 `_on_收尾完成`），
+## 下面两个键只在**调试**时用（`调试按键` 打开才生效）。
 ## 开着这个开关就能在游戏里直接试：
 ##   Y = 开始追逐（跳跳乐开始依次浮现）    U = 直接进二阶段（隐藏跳跳乐 + 显示背景 + 锁视口）
 ## 上线前关掉。（比照 `HallBackdropDim.gd` 的 调试按键）
@@ -101,6 +104,28 @@ func _ready() -> void:
 	if not 启用:
 		# 一个序号都没有：完全不介入，行为与以前一致
 		set_physics_process(false)
+	# 2026-09-22 接上收尾：一阶段战胜 + 玩家给《狂喜之诗》→ 变身对话结束 → 进跳跳乐。
+	# 原先 `Boss88Phase1.收尾完成` 这个信号**没有任何人监听** —— 所以跳跳乐只能靠
+	# 调试键 Y 触发（作者："对话结束后，进入跳跳乐阶段（效果同现在的 y 键）"）。
+	var boss := get_node_or_null(战斗对象路径)
+	if boss != null and boss.has_signal("收尾完成") and not boss.收尾完成.is_connected(_on_收尾完成):
+		boss.收尾完成.connect(_on_收尾完成)
+
+
+## 一阶段收尾：走真结局（给了《狂喜之诗》）时，等**变身对话**结束再进跳跳乐。
+## 给普通唱片则不介入（那条路走普通结局，不进二阶段）。
+func _on_收尾完成(走真结局: bool) -> void:
+	if not 走真结局:
+		return
+	# 对话是由 `Boss88Phase1._on_唱片选定` 在同一帧里放出来的，这里等它结束。
+	# ⚠️ 等"**对话不再活跃**"而不是只等 `DialogueManager.dialogue_ended`：
+	#    `DialogueBridge.interrupt()`（打断）只关气球、**不发** `dialogue_ended`，
+	#    只等信号的话被打断时会永远卡住。两种结束方式都要能接上。
+	while DialogueBridge.is_active:
+		await get_tree().process_frame
+		if not is_inside_tree():
+			return
+	开始追逐()
 
 
 ## 调试：按一下切一次（不是按住连切）
@@ -378,6 +403,11 @@ func 开始追逐() -> void:
 		return
 	追逐中 = true
 	_宽限 = 掉落宽限
+	# ⚠️ 2026-09-22 作者要求：**背景压暗从"跳跳乐出现"就开始**，不是等到二阶段。
+	#    原先只在 `进入二阶段()` 里压暗 —— 那之前跳跳乐已经在亮背景上浮出来了，
+	#    观感上"跳跳乐是亮的、二阶段才暗"，割裂。现在一进追逐段就压暗（渐变 1 秒，
+	#    见 `HallBackdropDim.渐变时长`）。`进入二阶段()` 里那次调用保留（幂等）。
+	_设压暗(true)
 	_推导()          # 游标为 0 → 浮现序号 ≤ 领先级数
 
 

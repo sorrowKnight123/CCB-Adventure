@@ -1,332 +1,303 @@
 [gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/000.png" id="1_be0yf"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/001.png" id="2_55gi0"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/002.png" id="3_7btgs"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/003.png" id="4_7c2j2"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/004.png" id="5_a2ty1"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/005.png" id="6_lbxxx"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/006.png" id="7_6ickw"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/007.png" id="8_13afk"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/008.png" id="9_cy2ff"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/009.png" id="10_6xncq"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/010.png" id="11_2f76i"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/011.png" id="12_pcoxi"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/000.png" id="13_o2sok"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/001.png" id="14_fckm6"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/002.png" id="15_5f23i"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/003.png" id="16_arl3k"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/004.png" id="17_6tmo5"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/005.png" id="18_mfeq5"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/006.png" id="19_vbwl4"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/007.png" id="20_551oo"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/008.png" id="21_fj03j"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/009.png" id="22_85ts5"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/000.png" id="23_35x8o"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/001.png" id="24_52bqd"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/002.png" id="25_4v4wi"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/003.png" id="26_jp8q4"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/004.png" id="27_i1iq1"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/005.png" id="28_dgidf"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/006.png" id="29_du3cv"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/007.png" id="30_3anqj"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/008.png" id="31_gamsb"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/009.png" id="32_42lnw"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/010.png" id="33_sg2qu"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/011.png" id="34_bh7pc"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/012.png" id="35_t5nar"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/013.png" id="36_rjl5q"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/014.png" id="37_qpipa"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/015.png" id="38_3ryba"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/016.png" id="39_4fuoc"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/017.png" id="40_jcecy"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/000.png" id="41_rqiuf"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/001.png" id="42_iidx8"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/002.png" id="43_6p3xw"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/003.png" id="44_kjtem"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/004.png" id="45_na4kq"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/005.png" id="46_17qen"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/006.png" id="47_1s6vq"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/007.png" id="48_ma1ik"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/008.png" id="49_k68js"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/009.png" id="50_kmj7u"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/010.png" id="51_w87at"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/011.png" id="52_jp1ty"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/012.png" id="53_c1fvv"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/013.png" id="54_b7ut0"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/014.png" id="55_qqcu8"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/015.png" id="56_n3581"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/016.png" id="57_dh3lo"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/017.png" id="58_qu72u"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/000.png" id="59_faywb"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/001.png" id="60_qo4xr"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/002.png" id="61_d3hov"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/003.png" id="62_4orr7"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/004.png" id="63_1j1bj"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/005.png" id="64_lhxsa"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/006.png" id="65_dlyov"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/007.png" id="66_pj7eh"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/008.png" id="67_glyeu"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/009.png" id="68_8slxb"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/010.png" id="69_7h0rl"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/011.png" id="70_vtbwe"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/012.png" id="71_vmpt7"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/013.png" id="72_yhtgs"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/014.png" id="73_kbfvd"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/015.png" id="74_4gcwd"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/016.png" id="75_45snp"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/017.png" id="76_7pfmf"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/018.png" id="77_os8eu"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/019.png" id="78_kgq08"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/020.png" id="79_npfgu"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/021.png" id="80_avtds"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/022.png" id="81_iexm4"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/023.png" id="82_1iycv"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/hurt/000.png" id="83_xb045"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/hurt/001.png" id="84_qaq1d"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/hurt/002.png" id="85_70pl3"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/hurt/003.png" id="86_6n6d1"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/hurt/004.png" id="87_7266x"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/hurt/005.png" id="88_r8108"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/000.png" id="89_7h63v"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/001.png" id="90_uqfdl"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/002.png" id="91_cyw1b"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/003.png" id="92_l65vp"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/004.png" id="93_4xtsd"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/005.png" id="94_iprtj"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/006.png" id="95_qo2r5"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/007.png" id="96_201of"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/008.png" id="97_rf8y5"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/009.png" id="98_7cwh2"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/010.png" id="99_4ap1h"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/011.png" id="100_4fyki"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/012.png" id="101_j47sp"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/013.png" id="102_1y236"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/014.png" id="103_a2oal"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/015.png" id="104_a3b1g"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/016.png" id="105_3qlih"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/017.png" id="106_vtg1i"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/018.png" id="107_6vofh"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/019.png" id="108_rb6ps"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/020.png" id="109_uef32"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/021.png" id="110_yx0gh"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/022.png" id="111_kp52y"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/023.png" id="112_c8d4t"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/000.png" id="113_j8w52"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/001.png" id="114_tsg3y"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/002.png" id="115_ccnmk"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/003.png" id="116_60o3q"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/004.png" id="117_q4s1u"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/005.png" id="118_kjtdn"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/006.png" id="119_t17v5"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/007.png" id="120_gacbw"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/008.png" id="121_hpwtu"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/009.png" id="122_1w5ye"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/010.png" id="123_s1t2e"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/011.png" id="124_bm57g"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/012.png" id="125_u8kiu"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/013.png" id="126_qqgxw"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/014.png" id="127_pfer3"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/015.png" id="128_j6hxn"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/016.png" id="129_4xi2o"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/017.png" id="130_bji3w"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/018.png" id="131_fmx6u"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/019.png" id="132_4ega3"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/020.png" id="133_imc4c"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/021.png" id="134_ob50k"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/022.png" id="135_b0po3"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/023.png" id="136_cg4ky"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/024.png" id="137_irlb4"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/025.png" id="138_j07re"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/026.png" id="139_tqshk"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/027.png" id="140_2epn4"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/028.png" id="141_iuryl"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/029.png" id="142_7l4cc"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/030.png" id="143_vgtow"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/031.png" id="144_gxqlf"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/032.png" id="145_fxe2u"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/033.png" id="146_oihwb"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/034.png" id="147_esswl"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/035.png" id="148_uqp16"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/036.png" id="149_kjx1t"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/037.png" id="150_dnlr1"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/038.png" id="151_u7e72"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/039.png" id="152_t3xbe"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/040.png" id="153_glxgg"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/041.png" id="154_w5dui"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/042.png" id="155_b2tv3"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/043.png" id="156_nmiaa"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/044.png" id="157_kc7g4"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/045.png" id="158_adp8w"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/046.png" id="159_jiejt"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/047.png" id="160_yjavx"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/048.png" id="161_qfvhr"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/049.png" id="162_fbyub"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/050.png" id="163_3ie58"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/051.png" id="164_22b32"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/052.png" id="165_dyhj6"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/053.png" id="166_8k78n"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/054.png" id="167_vc1ph"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/055.png" id="168_0gckq"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/056.png" id="169_73naa"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/057.png" id="170_gwpm0"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/058.png" id="171_yk55y"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/059.png" id="172_fekea"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/060.png" id="173_uejdi"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/061.png" id="174_3w7ku"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/062.png" id="175_5phve"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/063.png" id="176_j26er"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/064.png" id="177_foma6"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/065.png" id="178_mhk4h"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/066.png" id="179_63uur"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/067.png" id="180_0phur"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/068.png" id="181_eyo34"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/069.png" id="182_bhx8t"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/070.png" id="183_nkyt7"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/071.png" id="184_8u285"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/000.png" id="185_o5ahm"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/001.png" id="186_aafa8"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/002.png" id="187_0eii0"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/003.png" id="188_6ufou"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/004.png" id="189_3djcb"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/005.png" id="190_lsbjn"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/006.png" id="191_qxytx"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/007.png" id="192_3d27q"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/008.png" id="193_ulf88"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/009.png" id="194_s8h8f"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/010.png" id="195_ojdtf"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/011.png" id="196_r5rdu"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/000.png" id="197_o74c8"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/001.png" id="198_83q4h"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/002.png" id="199_smjnn"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/003.png" id="200_px0sx"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/004.png" id="201_07b8a"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/005.png" id="202_j04oc"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/006.png" id="203_me4rm"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/007.png" id="204_akbqr"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/008.png" id="205_kag2y"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/009.png" id="206_gjwio"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/010.png" id="207_gyp7w"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/011.png" id="208_1iaq3"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/012.png" id="209_bux6g"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/013.png" id="210_ulf6c"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/014.png" id="211_bxp7k"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/015.png" id="212_7e2s3"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/016.png" id="213_2kcby"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/017.png" id="214_7vd3n"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/000.png" id="215_rnov4"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/001.png" id="216_i8q1c"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/002.png" id="217_btdot"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/003.png" id="218_gjly0"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/004.png" id="219_8whem"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/005.png" id="220_pcb5j"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/006.png" id="221_4ln5h"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/007.png" id="222_7a3se"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/008.png" id="223_uyfgc"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/009.png" id="224_lx3al"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/010.png" id="225_ax4a7"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/011.png" id="226_me05n"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/012.png" id="227_8e8ja"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/013.png" id="228_bfvkc"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/014.png" id="229_7idmu"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/015.png" id="230_fxcj7"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/016.png" id="231_jctyo"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/017.png" id="232_3akgp"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/018.png" id="233_qt4mi"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/019.png" id="234_0mfbe"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/020.png" id="235_22exd"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/021.png" id="236_yhvu0"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/022.png" id="237_jn312"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/023.png" id="238_rp7ks"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/024.png" id="239_w8qo3"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/025.png" id="240_v3rnm"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/000.png" id="241_m6iec"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/001.png" id="242_xp5lw"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/002.png" id="243_6cs1a"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/003.png" id="244_rr006"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/004.png" id="245_3jafh"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/005.png" id="246_1j4rk"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/006.png" id="247_dvhu2"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/007.png" id="248_e8wyc"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/008.png" id="249_8w2hy"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/009.png" id="250_35iwi"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/010.png" id="251_6mka1"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/011.png" id="252_qxfgo"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/012.png" id="253_7mqnp"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/013.png" id="254_83gu5"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/014.png" id="255_sqi5a"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/015.png" id="256_eecbo"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/000.png" id="257_e8j23"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/001.png" id="258_pg167"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/002.png" id="259_mb5lv"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/003.png" id="260_10bta"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/004.png" id="261_qf6gx"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/005.png" id="262_g1ixb"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/006.png" id="263_8qvb8"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/007.png" id="264_edw8r"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/008.png" id="265_x6tn0"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/009.png" id="266_el73i"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/010.png" id="267_j8ig6"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/011.png" id="268_8fb07"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/012.png" id="269_ukqfg"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/013.png" id="270_nkrgj"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/014.png" id="271_tapin"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/015.png" id="272_eex15"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/016.png" id="273_ecr1f"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/017.png" id="274_qypaf"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/018.png" id="275_nnh5y"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/019.png" id="276_rtdoj"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/000.png" id="277_os3pd"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/001.png" id="278_tpqn1"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/002.png" id="279_m26vv"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/003.png" id="280_yb4y5"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/004.png" id="281_3imkl"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/005.png" id="282_6n5r1"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/006.png" id="283_52xc6"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/007.png" id="284_41slj"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/008.png" id="285_bj3a0"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/009.png" id="286_awjt5"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/010.png" id="287_u62um"]
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/011.png" id="288_j015p"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/000.png" id="1_lo6s6"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/001.png" id="2_6yske"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/002.png" id="3_dcbgw"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/003.png" id="4_t5kd0"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/004.png" id="5_yn476"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/005.png" id="6_e6kjl"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/006.png" id="7_riuim"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/007.png" id="8_squ73"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/008.png" id="9_8oik3"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/009.png" id="10_3m66v"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/010.png" id="11_6enld"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_in/011.png" id="12_abny3"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/000.png" id="13_g7nil"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/001.png" id="14_wgnn6"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/002.png" id="15_yv3cq"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/003.png" id="16_30gox"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/004.png" id="17_wwojl"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/005.png" id="18_xkjqy"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/006.png" id="19_xamjm"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/007.png" id="20_58440"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/008.png" id="21_l471j"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/blink_out/009.png" id="22_dnljd"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/000.png" id="23_n5omh"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/001.png" id="24_orsll"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/002.png" id="25_csorq"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/003.png" id="26_q8fsh"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/004.png" id="27_0iqrm"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/005.png" id="28_1ln1t"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/006.png" id="29_335fj"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/007.png" id="30_be0yf"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/008.png" id="31_55gi0"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/009.png" id="32_7btgs"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/010.png" id="33_7c2j2"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/011.png" id="34_a2ty1"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/012.png" id="35_lbxxx"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/013.png" id="36_6ickw"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/014.png" id="37_13afk"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/015.png" id="38_cy2ff"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/016.png" id="39_6xncq"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_1/017.png" id="40_2f76i"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/000.png" id="41_pcoxi"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/001.png" id="42_o2sok"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/002.png" id="43_fckm6"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/003.png" id="44_5f23i"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/004.png" id="45_arl3k"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/005.png" id="46_6tmo5"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/006.png" id="47_mfeq5"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/007.png" id="48_vbwl4"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/008.png" id="49_551oo"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/009.png" id="50_fj03j"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/010.png" id="51_85ts5"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/011.png" id="52_35x8o"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/012.png" id="53_52bqd"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/013.png" id="54_4v4wi"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/014.png" id="55_jp8q4"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/015.png" id="56_i1iq1"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/016.png" id="57_dgidf"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_2/017.png" id="58_du3cv"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/000.png" id="59_3anqj"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/001.png" id="60_gamsb"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/002.png" id="61_42lnw"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/003.png" id="62_sg2qu"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/004.png" id="63_bh7pc"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/005.png" id="64_t5nar"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/006.png" id="65_rjl5q"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/007.png" id="66_qpipa"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/008.png" id="67_3ryba"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/009.png" id="68_4fuoc"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/010.png" id="69_jcecy"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/011.png" id="70_rqiuf"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/012.png" id="71_iidx8"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/013.png" id="72_6p3xw"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/014.png" id="73_kjtem"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/015.png" id="74_na4kq"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/016.png" id="75_17qen"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/017.png" id="76_1s6vq"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/018.png" id="77_ma1ik"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/019.png" id="78_k68js"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/020.png" id="79_kmj7u"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/021.png" id="80_w87at"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/022.png" id="81_jp1ty"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/claw_3/023.png" id="82_c1fvv"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/idle/000.png" id="83_b7ut0"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/000.png" id="84_qqcu8"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/001.png" id="85_n3581"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/002.png" id="86_dh3lo"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/003.png" id="87_qu72u"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/004.png" id="88_faywb"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/005.png" id="89_qo4xr"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/006.png" id="90_d3hov"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/007.png" id="91_4orr7"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/008.png" id="92_1j1bj"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/009.png" id="93_lhxsa"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/010.png" id="94_dlyov"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/011.png" id="95_pj7eh"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/012.png" id="96_glyeu"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/013.png" id="97_8slxb"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/014.png" id="98_7h0rl"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/015.png" id="99_vtbwe"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/016.png" id="100_vmpt7"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/017.png" id="101_yhtgs"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/018.png" id="102_kbfvd"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/019.png" id="103_4gcwd"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/020.png" id="104_45snp"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/021.png" id="105_7pfmf"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/022.png" id="106_os8eu"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/023.png" id="107_kgq08"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/024.png" id="108_npfgu"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/025.png" id="109_avtds"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/026.png" id="110_iexm4"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/027.png" id="111_1iycv"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/028.png" id="112_xb045"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/029.png" id="113_qaq1d"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/030.png" id="114_70pl3"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/031.png" id="115_6n6d1"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/032.png" id="116_7266x"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/033.png" id="117_r8108"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/034.png" id="118_7h63v"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/035.png" id="119_uqfdl"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/036.png" id="120_cyw1b"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/037.png" id="121_l65vp"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/038.png" id="122_4xtsd"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/039.png" id="123_iprtj"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/040.png" id="124_qo2r5"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/041.png" id="125_201of"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/042.png" id="126_rf8y5"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/043.png" id="127_7cwh2"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/044.png" id="128_4ap1h"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/045.png" id="129_4fyki"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/046.png" id="130_j47sp"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/047.png" id="131_1y236"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/048.png" id="132_a2oal"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/049.png" id="133_a3b1g"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/050.png" id="134_3qlih"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/051.png" id="135_vtg1i"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/052.png" id="136_6vofh"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/053.png" id="137_rb6ps"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/054.png" id="138_uef32"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/055.png" id="139_yx0gh"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/056.png" id="140_kp52y"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/057.png" id="141_c8d4t"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/058.png" id="142_j8w52"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/059.png" id="143_tsg3y"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/060.png" id="144_ccnmk"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/061.png" id="145_60o3q"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/062.png" id="146_q4s1u"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/063.png" id="147_kjtdn"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/064.png" id="148_t17v5"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/065.png" id="149_gacbw"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/066.png" id="150_hpwtu"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/067.png" id="151_1w5ye"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/068.png" id="152_s1t2e"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/069.png" id="153_bm57g"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/070.png" id="154_u8kiu"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/intro/071.png" id="155_qqgxw"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/000.png" id="156_pfer3"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/001.png" id="157_j6hxn"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/002.png" id="158_4xi2o"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/003.png" id="159_bji3w"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/004.png" id="160_fmx6u"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/005.png" id="161_4ega3"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/006.png" id="162_imc4c"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/007.png" id="163_ob50k"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/008.png" id="164_b0po3"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/009.png" id="165_cg4ky"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/010.png" id="166_irlb4"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/knocked/011.png" id="167_j07re"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/000.png" id="168_tqshk"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/001.png" id="169_2epn4"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/002.png" id="170_iuryl"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/003.png" id="171_7l4cc"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/004.png" id="172_vgtow"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/005.png" id="173_gxqlf"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/006.png" id="174_fxe2u"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/007.png" id="175_oihwb"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/008.png" id="176_esswl"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/009.png" id="177_uqp16"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/010.png" id="178_kjx1t"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/011.png" id="179_dnlr1"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/012.png" id="180_u7e72"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/013.png" id="181_t3xbe"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/014.png" id="182_glxgg"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/015.png" id="183_w5dui"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/016.png" id="184_b2tv3"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/staff_cast/017.png" id="185_nmiaa"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/000.png" id="186_kc7g4"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/001.png" id="187_adp8w"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/002.png" id="188_jiejt"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/003.png" id="189_yjavx"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/004.png" id="190_qfvhr"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/005.png" id="191_fbyub"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/006.png" id="192_3ie58"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/007.png" id="193_22b32"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/008.png" id="194_dyhj6"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/009.png" id="195_8k78n"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/010.png" id="196_vc1ph"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/011.png" id="197_0gckq"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/012.png" id="198_73naa"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/013.png" id="199_gwpm0"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/014.png" id="200_yk55y"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/015.png" id="201_fekea"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/016.png" id="202_uejdi"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/017.png" id="203_3w7ku"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/018.png" id="204_5phve"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/019.png" id="205_j26er"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/020.png" id="206_foma6"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/021.png" id="207_mhk4h"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/022.png" id="208_63uur"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/023.png" id="209_0phur"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/024.png" id="210_eyo34"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/thrust/025.png" id="211_bhx8t"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/000.png" id="212_nkyt7"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/001.png" id="213_8u285"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/002.png" id="214_o5ahm"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/003.png" id="215_aafa8"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/004.png" id="216_0eii0"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/005.png" id="217_6ufou"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/006.png" id="218_3djcb"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/007.png" id="219_lsbjn"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/008.png" id="220_qxytx"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/009.png" id="221_3d27q"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/010.png" id="222_ulf88"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/011.png" id="223_s8h8f"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/012.png" id="224_ojdtf"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/013.png" id="225_r5rdu"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/014.png" id="226_o74c8"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/walk/015.png" id="227_83q4h"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/000.png" id="228_smjnn"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/001.png" id="229_px0sx"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/002.png" id="230_07b8a"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/003.png" id="231_j04oc"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/004.png" id="232_me4rm"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/005.png" id="233_akbqr"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/006.png" id="234_kag2y"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/007.png" id="235_gjwio"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/008.png" id="236_gyp7w"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/009.png" id="237_1iaq3"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/010.png" id="238_bux6g"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/011.png" id="239_ulf6c"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/012.png" id="240_bxp7k"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/013.png" id="241_7e2s3"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/014.png" id="242_2kcby"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/015.png" id="243_7vd3n"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/016.png" id="244_rnov4"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/017.png" id="245_i8q1c"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/018.png" id="246_btdot"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened/019.png" id="247_gjly0"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/000.png" id="248_8whem"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/001.png" id="249_pcb5j"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/002.png" id="250_4ln5h"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/003.png" id="251_7a3se"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/004.png" id="252_uyfgc"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/005.png" id="253_lx3al"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/006.png" id="254_ax4a7"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/007.png" id="255_me05n"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/008.png" id="256_8e8ja"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/009.png" id="257_bfvkc"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/010.png" id="258_7idmu"]
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/weakened_fall/011.png" id="259_fxcj7"]
 
 [resource]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_be0yf")
+"texture": ExtResource("1_lo6s6")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_55gi0")
+"texture": ExtResource("2_6yske")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_7btgs")
+"texture": ExtResource("3_dcbgw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_7c2j2")
+"texture": ExtResource("4_t5kd0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_a2ty1")
+"texture": ExtResource("5_yn476")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_lbxxx")
+"texture": ExtResource("6_e6kjl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_6ickw")
+"texture": ExtResource("7_riuim")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_13afk")
+"texture": ExtResource("8_squ73")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_cy2ff")
+"texture": ExtResource("9_8oik3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_6xncq")
+"texture": ExtResource("10_3m66v")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_2f76i")
+"texture": ExtResource("11_6enld")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_pcoxi")
+"texture": ExtResource("12_abny3")
 }],
 "loop": 0,
 "name": &"blink_in",
@@ -334,34 +305,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("13_o2sok")
+"texture": ExtResource("13_g7nil")
 }, {
 "duration": 1.0,
-"texture": ExtResource("14_fckm6")
+"texture": ExtResource("14_wgnn6")
 }, {
 "duration": 1.0,
-"texture": ExtResource("15_5f23i")
+"texture": ExtResource("15_yv3cq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("16_arl3k")
+"texture": ExtResource("16_30gox")
 }, {
 "duration": 1.0,
-"texture": ExtResource("17_6tmo5")
+"texture": ExtResource("17_wwojl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("18_mfeq5")
+"texture": ExtResource("18_xkjqy")
 }, {
 "duration": 1.0,
-"texture": ExtResource("19_vbwl4")
+"texture": ExtResource("19_xamjm")
 }, {
 "duration": 1.0,
-"texture": ExtResource("20_551oo")
+"texture": ExtResource("20_58440")
 }, {
 "duration": 1.0,
-"texture": ExtResource("21_fj03j")
+"texture": ExtResource("21_l471j")
 }, {
 "duration": 1.0,
-"texture": ExtResource("22_85ts5")
+"texture": ExtResource("22_dnljd")
 }],
 "loop": 0,
 "name": &"blink_out",
@@ -369,58 +340,58 @@ animations = [{
 }, {
 "frames": [{
 "duration": 0.6666667,
-"texture": ExtResource("23_35x8o")
+"texture": ExtResource("23_n5omh")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("24_52bqd")
+"texture": ExtResource("24_orsll")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("25_4v4wi")
+"texture": ExtResource("25_csorq")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("26_jp8q4")
+"texture": ExtResource("26_q8fsh")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("27_i1iq1")
+"texture": ExtResource("27_0iqrm")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("28_dgidf")
+"texture": ExtResource("28_1ln1t")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("29_du3cv")
+"texture": ExtResource("29_335fj")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("30_3anqj")
+"texture": ExtResource("30_be0yf")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("31_gamsb")
+"texture": ExtResource("31_55gi0")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("32_42lnw")
+"texture": ExtResource("32_7btgs")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("33_sg2qu")
+"texture": ExtResource("33_7c2j2")
 }, {
 "duration": 0.5,
-"texture": ExtResource("34_bh7pc")
+"texture": ExtResource("34_a2ty1")
 }, {
 "duration": 0.5,
-"texture": ExtResource("35_t5nar")
+"texture": ExtResource("35_lbxxx")
 }, {
 "duration": 0.5,
-"texture": ExtResource("36_rjl5q")
+"texture": ExtResource("36_6ickw")
 }, {
 "duration": 0.5,
-"texture": ExtResource("37_qpipa")
+"texture": ExtResource("37_13afk")
 }, {
 "duration": 0.5,
-"texture": ExtResource("38_3ryba")
+"texture": ExtResource("38_cy2ff")
 }, {
 "duration": 0.5,
-"texture": ExtResource("39_4fuoc")
+"texture": ExtResource("39_6xncq")
 }, {
 "duration": 0.5,
-"texture": ExtResource("40_jcecy")
+"texture": ExtResource("40_2f76i")
 }],
 "loop": 0,
 "name": &"claw_1",
@@ -428,58 +399,58 @@ animations = [{
 }, {
 "frames": [{
 "duration": 0.6666667,
-"texture": ExtResource("41_rqiuf")
+"texture": ExtResource("41_pcoxi")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("42_iidx8")
+"texture": ExtResource("42_o2sok")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("43_6p3xw")
+"texture": ExtResource("43_fckm6")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("44_kjtem")
+"texture": ExtResource("44_5f23i")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("45_na4kq")
+"texture": ExtResource("45_arl3k")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("46_17qen")
+"texture": ExtResource("46_6tmo5")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("47_1s6vq")
+"texture": ExtResource("47_mfeq5")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("48_ma1ik")
+"texture": ExtResource("48_vbwl4")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("49_k68js")
+"texture": ExtResource("49_551oo")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("50_kmj7u")
+"texture": ExtResource("50_fj03j")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("51_w87at")
+"texture": ExtResource("51_85ts5")
 }, {
 "duration": 0.5,
-"texture": ExtResource("52_jp1ty")
+"texture": ExtResource("52_35x8o")
 }, {
 "duration": 0.5,
-"texture": ExtResource("53_c1fvv")
+"texture": ExtResource("53_52bqd")
 }, {
 "duration": 0.5,
-"texture": ExtResource("54_b7ut0")
+"texture": ExtResource("54_4v4wi")
 }, {
 "duration": 0.5,
-"texture": ExtResource("55_qqcu8")
+"texture": ExtResource("55_jp8q4")
 }, {
 "duration": 0.5,
-"texture": ExtResource("56_n3581")
+"texture": ExtResource("56_i1iq1")
 }, {
 "duration": 0.5,
-"texture": ExtResource("57_dh3lo")
+"texture": ExtResource("57_dgidf")
 }, {
 "duration": 0.5,
-"texture": ExtResource("58_qu72u")
+"texture": ExtResource("58_du3cv")
 }],
 "loop": 0,
 "name": &"claw_2",
@@ -487,76 +458,76 @@ animations = [{
 }, {
 "frames": [{
 "duration": 0.6666667,
-"texture": ExtResource("59_faywb")
+"texture": ExtResource("59_3anqj")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("60_qo4xr")
+"texture": ExtResource("60_gamsb")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("61_d3hov")
+"texture": ExtResource("61_42lnw")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("62_4orr7")
+"texture": ExtResource("62_sg2qu")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("63_1j1bj")
+"texture": ExtResource("63_bh7pc")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("64_lhxsa")
+"texture": ExtResource("64_t5nar")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("65_dlyov")
+"texture": ExtResource("65_rjl5q")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("66_pj7eh")
+"texture": ExtResource("66_qpipa")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("67_glyeu")
+"texture": ExtResource("67_3ryba")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("68_8slxb")
+"texture": ExtResource("68_4fuoc")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("69_7h0rl")
+"texture": ExtResource("69_jcecy")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("70_vtbwe")
+"texture": ExtResource("70_rqiuf")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("71_vmpt7")
+"texture": ExtResource("71_iidx8")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("72_yhtgs")
+"texture": ExtResource("72_6p3xw")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("73_kbfvd")
+"texture": ExtResource("73_kjtem")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("74_4gcwd")
+"texture": ExtResource("74_na4kq")
 }, {
 "duration": 0.6666667,
-"texture": ExtResource("75_45snp")
+"texture": ExtResource("75_17qen")
 }, {
 "duration": 0.5,
-"texture": ExtResource("76_7pfmf")
+"texture": ExtResource("76_1s6vq")
 }, {
 "duration": 0.5,
-"texture": ExtResource("77_os8eu")
+"texture": ExtResource("77_ma1ik")
 }, {
 "duration": 0.5,
-"texture": ExtResource("78_kgq08")
+"texture": ExtResource("78_k68js")
 }, {
 "duration": 0.5,
-"texture": ExtResource("79_npfgu")
+"texture": ExtResource("79_kmj7u")
 }, {
 "duration": 0.5,
-"texture": ExtResource("80_avtds")
+"texture": ExtResource("80_w87at")
 }, {
 "duration": 0.5,
-"texture": ExtResource("81_iexm4")
+"texture": ExtResource("81_jp1ty")
 }, {
 "duration": 0.5,
-"texture": ExtResource("82_1iycv")
+"texture": ExtResource("82_c1fvv")
 }],
 "loop": 0,
 "name": &"claw_3",
@@ -564,99 +535,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("83_xb045")
-}, {
-"duration": 1.0,
-"texture": ExtResource("84_qaq1d")
-}, {
-"duration": 1.0,
-"texture": ExtResource("85_70pl3")
-}, {
-"duration": 1.0,
-"texture": ExtResource("86_6n6d1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("87_7266x")
-}, {
-"duration": 1.0,
-"texture": ExtResource("88_r8108")
-}],
-"loop": 0,
-"name": &"hurt",
-"speed": 24.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("89_7h63v")
-}, {
-"duration": 1.0,
-"texture": ExtResource("90_uqfdl")
-}, {
-"duration": 1.0,
-"texture": ExtResource("91_cyw1b")
-}, {
-"duration": 1.0,
-"texture": ExtResource("92_l65vp")
-}, {
-"duration": 1.0,
-"texture": ExtResource("93_4xtsd")
-}, {
-"duration": 1.0,
-"texture": ExtResource("94_iprtj")
-}, {
-"duration": 1.0,
-"texture": ExtResource("95_qo2r5")
-}, {
-"duration": 1.0,
-"texture": ExtResource("96_201of")
-}, {
-"duration": 1.0,
-"texture": ExtResource("97_rf8y5")
-}, {
-"duration": 1.0,
-"texture": ExtResource("98_7cwh2")
-}, {
-"duration": 1.0,
-"texture": ExtResource("99_4ap1h")
-}, {
-"duration": 1.0,
-"texture": ExtResource("100_4fyki")
-}, {
-"duration": 1.0,
-"texture": ExtResource("101_j47sp")
-}, {
-"duration": 1.0,
-"texture": ExtResource("102_1y236")
-}, {
-"duration": 1.0,
-"texture": ExtResource("103_a2oal")
-}, {
-"duration": 1.0,
-"texture": ExtResource("104_a3b1g")
-}, {
-"duration": 1.0,
-"texture": ExtResource("105_3qlih")
-}, {
-"duration": 1.0,
-"texture": ExtResource("106_vtg1i")
-}, {
-"duration": 1.0,
-"texture": ExtResource("107_6vofh")
-}, {
-"duration": 1.0,
-"texture": ExtResource("108_rb6ps")
-}, {
-"duration": 1.0,
-"texture": ExtResource("109_uef32")
-}, {
-"duration": 1.0,
-"texture": ExtResource("110_yx0gh")
-}, {
-"duration": 1.0,
-"texture": ExtResource("111_kp52y")
-}, {
-"duration": 1.0,
-"texture": ExtResource("112_c8d4t")
+"texture": ExtResource("83_b7ut0")
 }],
 "loop": 1,
 "name": &"idle",
@@ -664,220 +543,220 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("113_j8w52")
+"texture": ExtResource("84_qqcu8")
 }, {
 "duration": 1.0,
-"texture": ExtResource("114_tsg3y")
+"texture": ExtResource("85_n3581")
 }, {
 "duration": 1.0,
-"texture": ExtResource("115_ccnmk")
+"texture": ExtResource("86_dh3lo")
 }, {
 "duration": 1.0,
-"texture": ExtResource("116_60o3q")
+"texture": ExtResource("87_qu72u")
 }, {
 "duration": 1.0,
-"texture": ExtResource("117_q4s1u")
+"texture": ExtResource("88_faywb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("118_kjtdn")
+"texture": ExtResource("89_qo4xr")
 }, {
 "duration": 1.0,
-"texture": ExtResource("119_t17v5")
+"texture": ExtResource("90_d3hov")
 }, {
 "duration": 1.0,
-"texture": ExtResource("120_gacbw")
+"texture": ExtResource("91_4orr7")
 }, {
 "duration": 1.0,
-"texture": ExtResource("121_hpwtu")
+"texture": ExtResource("92_1j1bj")
 }, {
 "duration": 1.0,
-"texture": ExtResource("122_1w5ye")
+"texture": ExtResource("93_lhxsa")
 }, {
 "duration": 1.0,
-"texture": ExtResource("123_s1t2e")
+"texture": ExtResource("94_dlyov")
 }, {
 "duration": 1.0,
-"texture": ExtResource("124_bm57g")
+"texture": ExtResource("95_pj7eh")
 }, {
 "duration": 1.0,
-"texture": ExtResource("125_u8kiu")
+"texture": ExtResource("96_glyeu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("126_qqgxw")
+"texture": ExtResource("97_8slxb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("127_pfer3")
+"texture": ExtResource("98_7h0rl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("128_j6hxn")
+"texture": ExtResource("99_vtbwe")
 }, {
 "duration": 1.0,
-"texture": ExtResource("129_4xi2o")
+"texture": ExtResource("100_vmpt7")
 }, {
 "duration": 1.0,
-"texture": ExtResource("130_bji3w")
+"texture": ExtResource("101_yhtgs")
 }, {
 "duration": 1.0,
-"texture": ExtResource("131_fmx6u")
+"texture": ExtResource("102_kbfvd")
 }, {
 "duration": 1.0,
-"texture": ExtResource("132_4ega3")
+"texture": ExtResource("103_4gcwd")
 }, {
 "duration": 1.0,
-"texture": ExtResource("133_imc4c")
+"texture": ExtResource("104_45snp")
 }, {
 "duration": 1.0,
-"texture": ExtResource("134_ob50k")
+"texture": ExtResource("105_7pfmf")
 }, {
 "duration": 1.0,
-"texture": ExtResource("135_b0po3")
+"texture": ExtResource("106_os8eu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("136_cg4ky")
+"texture": ExtResource("107_kgq08")
 }, {
 "duration": 1.0,
-"texture": ExtResource("137_irlb4")
+"texture": ExtResource("108_npfgu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("138_j07re")
+"texture": ExtResource("109_avtds")
 }, {
 "duration": 1.0,
-"texture": ExtResource("139_tqshk")
+"texture": ExtResource("110_iexm4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("140_2epn4")
+"texture": ExtResource("111_1iycv")
 }, {
 "duration": 1.0,
-"texture": ExtResource("141_iuryl")
+"texture": ExtResource("112_xb045")
 }, {
 "duration": 1.0,
-"texture": ExtResource("142_7l4cc")
+"texture": ExtResource("113_qaq1d")
 }, {
 "duration": 1.0,
-"texture": ExtResource("143_vgtow")
+"texture": ExtResource("114_70pl3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("144_gxqlf")
+"texture": ExtResource("115_6n6d1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("145_fxe2u")
+"texture": ExtResource("116_7266x")
 }, {
 "duration": 1.0,
-"texture": ExtResource("146_oihwb")
+"texture": ExtResource("117_r8108")
 }, {
 "duration": 1.0,
-"texture": ExtResource("147_esswl")
+"texture": ExtResource("118_7h63v")
 }, {
 "duration": 1.0,
-"texture": ExtResource("148_uqp16")
+"texture": ExtResource("119_uqfdl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("149_kjx1t")
+"texture": ExtResource("120_cyw1b")
 }, {
 "duration": 1.0,
-"texture": ExtResource("150_dnlr1")
+"texture": ExtResource("121_l65vp")
 }, {
 "duration": 1.0,
-"texture": ExtResource("151_u7e72")
+"texture": ExtResource("122_4xtsd")
 }, {
 "duration": 1.0,
-"texture": ExtResource("152_t3xbe")
+"texture": ExtResource("123_iprtj")
 }, {
 "duration": 1.0,
-"texture": ExtResource("153_glxgg")
+"texture": ExtResource("124_qo2r5")
 }, {
 "duration": 1.0,
-"texture": ExtResource("154_w5dui")
+"texture": ExtResource("125_201of")
 }, {
 "duration": 1.0,
-"texture": ExtResource("155_b2tv3")
+"texture": ExtResource("126_rf8y5")
 }, {
 "duration": 1.0,
-"texture": ExtResource("156_nmiaa")
+"texture": ExtResource("127_7cwh2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("157_kc7g4")
+"texture": ExtResource("128_4ap1h")
 }, {
 "duration": 1.0,
-"texture": ExtResource("158_adp8w")
+"texture": ExtResource("129_4fyki")
 }, {
 "duration": 1.0,
-"texture": ExtResource("159_jiejt")
+"texture": ExtResource("130_j47sp")
 }, {
 "duration": 1.0,
-"texture": ExtResource("160_yjavx")
+"texture": ExtResource("131_1y236")
 }, {
 "duration": 1.0,
-"texture": ExtResource("161_qfvhr")
+"texture": ExtResource("132_a2oal")
 }, {
 "duration": 1.0,
-"texture": ExtResource("162_fbyub")
+"texture": ExtResource("133_a3b1g")
 }, {
 "duration": 1.0,
-"texture": ExtResource("163_3ie58")
+"texture": ExtResource("134_3qlih")
 }, {
 "duration": 1.0,
-"texture": ExtResource("164_22b32")
+"texture": ExtResource("135_vtg1i")
 }, {
 "duration": 1.0,
-"texture": ExtResource("165_dyhj6")
+"texture": ExtResource("136_6vofh")
 }, {
 "duration": 1.0,
-"texture": ExtResource("166_8k78n")
+"texture": ExtResource("137_rb6ps")
 }, {
 "duration": 1.0,
-"texture": ExtResource("167_vc1ph")
+"texture": ExtResource("138_uef32")
 }, {
 "duration": 1.0,
-"texture": ExtResource("168_0gckq")
+"texture": ExtResource("139_yx0gh")
 }, {
 "duration": 1.0,
-"texture": ExtResource("169_73naa")
+"texture": ExtResource("140_kp52y")
 }, {
 "duration": 1.0,
-"texture": ExtResource("170_gwpm0")
+"texture": ExtResource("141_c8d4t")
 }, {
 "duration": 1.0,
-"texture": ExtResource("171_yk55y")
+"texture": ExtResource("142_j8w52")
 }, {
 "duration": 1.0,
-"texture": ExtResource("172_fekea")
+"texture": ExtResource("143_tsg3y")
 }, {
 "duration": 1.0,
-"texture": ExtResource("173_uejdi")
+"texture": ExtResource("144_ccnmk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("174_3w7ku")
+"texture": ExtResource("145_60o3q")
 }, {
 "duration": 1.0,
-"texture": ExtResource("175_5phve")
+"texture": ExtResource("146_q4s1u")
 }, {
 "duration": 1.0,
-"texture": ExtResource("176_j26er")
+"texture": ExtResource("147_kjtdn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("177_foma6")
+"texture": ExtResource("148_t17v5")
 }, {
 "duration": 1.0,
-"texture": ExtResource("178_mhk4h")
+"texture": ExtResource("149_gacbw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("179_63uur")
+"texture": ExtResource("150_hpwtu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("180_0phur")
+"texture": ExtResource("151_1w5ye")
 }, {
 "duration": 1.0,
-"texture": ExtResource("181_eyo34")
+"texture": ExtResource("152_s1t2e")
 }, {
 "duration": 1.0,
-"texture": ExtResource("182_bhx8t")
+"texture": ExtResource("153_bm57g")
 }, {
 "duration": 1.0,
-"texture": ExtResource("183_nkyt7")
+"texture": ExtResource("154_u8kiu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("184_8u285")
+"texture": ExtResource("155_qqgxw")
 }],
 "loop": 0,
 "name": &"intro",
@@ -885,40 +764,40 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("185_o5ahm")
+"texture": ExtResource("156_pfer3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("186_aafa8")
+"texture": ExtResource("157_j6hxn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("187_0eii0")
+"texture": ExtResource("158_4xi2o")
 }, {
 "duration": 1.0,
-"texture": ExtResource("188_6ufou")
+"texture": ExtResource("159_bji3w")
 }, {
 "duration": 1.0,
-"texture": ExtResource("189_3djcb")
+"texture": ExtResource("160_fmx6u")
 }, {
 "duration": 1.0,
-"texture": ExtResource("190_lsbjn")
+"texture": ExtResource("161_4ega3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("191_qxytx")
+"texture": ExtResource("162_imc4c")
 }, {
 "duration": 1.0,
-"texture": ExtResource("192_3d27q")
+"texture": ExtResource("163_ob50k")
 }, {
 "duration": 1.0,
-"texture": ExtResource("193_ulf88")
+"texture": ExtResource("164_b0po3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("194_s8h8f")
+"texture": ExtResource("165_cg4ky")
 }, {
 "duration": 1.0,
-"texture": ExtResource("195_ojdtf")
+"texture": ExtResource("166_irlb4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("196_r5rdu")
+"texture": ExtResource("167_j07re")
 }],
 "loop": 0,
 "name": &"knocked",
@@ -926,58 +805,58 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("197_o74c8")
+"texture": ExtResource("168_tqshk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("198_83q4h")
+"texture": ExtResource("169_2epn4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("199_smjnn")
+"texture": ExtResource("170_iuryl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("200_px0sx")
+"texture": ExtResource("171_7l4cc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("201_07b8a")
+"texture": ExtResource("172_vgtow")
 }, {
 "duration": 1.0,
-"texture": ExtResource("202_j04oc")
+"texture": ExtResource("173_gxqlf")
 }, {
 "duration": 1.0,
-"texture": ExtResource("203_me4rm")
+"texture": ExtResource("174_fxe2u")
 }, {
 "duration": 1.0,
-"texture": ExtResource("204_akbqr")
+"texture": ExtResource("175_oihwb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("205_kag2y")
+"texture": ExtResource("176_esswl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("206_gjwio")
+"texture": ExtResource("177_uqp16")
 }, {
 "duration": 1.0,
-"texture": ExtResource("207_gyp7w")
+"texture": ExtResource("178_kjx1t")
 }, {
 "duration": 1.0,
-"texture": ExtResource("208_1iaq3")
+"texture": ExtResource("179_dnlr1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("209_bux6g")
+"texture": ExtResource("180_u7e72")
 }, {
 "duration": 1.0,
-"texture": ExtResource("210_ulf6c")
+"texture": ExtResource("181_t3xbe")
 }, {
 "duration": 1.0,
-"texture": ExtResource("211_bxp7k")
+"texture": ExtResource("182_glxgg")
 }, {
 "duration": 1.0,
-"texture": ExtResource("212_7e2s3")
+"texture": ExtResource("183_w5dui")
 }, {
 "duration": 1.0,
-"texture": ExtResource("213_2kcby")
+"texture": ExtResource("184_b2tv3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("214_7vd3n")
+"texture": ExtResource("185_nmiaa")
 }],
 "loop": 0,
 "name": &"staff_cast",
@@ -985,82 +864,82 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("215_rnov4")
+"texture": ExtResource("186_kc7g4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("216_i8q1c")
+"texture": ExtResource("187_adp8w")
 }, {
 "duration": 1.0,
-"texture": ExtResource("217_btdot")
+"texture": ExtResource("188_jiejt")
 }, {
 "duration": 1.0,
-"texture": ExtResource("218_gjly0")
+"texture": ExtResource("189_yjavx")
 }, {
 "duration": 1.0,
-"texture": ExtResource("219_8whem")
+"texture": ExtResource("190_qfvhr")
 }, {
 "duration": 1.0,
-"texture": ExtResource("220_pcb5j")
+"texture": ExtResource("191_fbyub")
 }, {
 "duration": 1.0,
-"texture": ExtResource("221_4ln5h")
+"texture": ExtResource("192_3ie58")
 }, {
 "duration": 1.0,
-"texture": ExtResource("222_7a3se")
+"texture": ExtResource("193_22b32")
 }, {
 "duration": 1.0,
-"texture": ExtResource("223_uyfgc")
+"texture": ExtResource("194_dyhj6")
 }, {
 "duration": 1.0,
-"texture": ExtResource("224_lx3al")
+"texture": ExtResource("195_8k78n")
 }, {
 "duration": 1.0,
-"texture": ExtResource("225_ax4a7")
+"texture": ExtResource("196_vc1ph")
 }, {
 "duration": 1.0,
-"texture": ExtResource("226_me05n")
+"texture": ExtResource("197_0gckq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("227_8e8ja")
+"texture": ExtResource("198_73naa")
 }, {
 "duration": 1.0,
-"texture": ExtResource("228_bfvkc")
+"texture": ExtResource("199_gwpm0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("229_7idmu")
+"texture": ExtResource("200_yk55y")
 }, {
 "duration": 1.0,
-"texture": ExtResource("230_fxcj7")
+"texture": ExtResource("201_fekea")
 }, {
 "duration": 1.0,
-"texture": ExtResource("231_jctyo")
+"texture": ExtResource("202_uejdi")
 }, {
 "duration": 1.0,
-"texture": ExtResource("232_3akgp")
+"texture": ExtResource("203_3w7ku")
 }, {
 "duration": 1.0,
-"texture": ExtResource("233_qt4mi")
+"texture": ExtResource("204_5phve")
 }, {
 "duration": 1.0,
-"texture": ExtResource("234_0mfbe")
+"texture": ExtResource("205_j26er")
 }, {
 "duration": 1.0,
-"texture": ExtResource("235_22exd")
+"texture": ExtResource("206_foma6")
 }, {
 "duration": 1.0,
-"texture": ExtResource("236_yhvu0")
+"texture": ExtResource("207_mhk4h")
 }, {
 "duration": 1.0,
-"texture": ExtResource("237_jn312")
+"texture": ExtResource("208_63uur")
 }, {
 "duration": 1.0,
-"texture": ExtResource("238_rp7ks")
+"texture": ExtResource("209_0phur")
 }, {
 "duration": 1.0,
-"texture": ExtResource("239_w8qo3")
+"texture": ExtResource("210_eyo34")
 }, {
 "duration": 1.0,
-"texture": ExtResource("240_v3rnm")
+"texture": ExtResource("211_bhx8t")
 }],
 "loop": 0,
 "name": &"thrust",
@@ -1068,52 +947,52 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("241_m6iec")
+"texture": ExtResource("212_nkyt7")
 }, {
 "duration": 1.0,
-"texture": ExtResource("242_xp5lw")
+"texture": ExtResource("213_8u285")
 }, {
 "duration": 1.0,
-"texture": ExtResource("243_6cs1a")
+"texture": ExtResource("214_o5ahm")
 }, {
 "duration": 1.0,
-"texture": ExtResource("244_rr006")
+"texture": ExtResource("215_aafa8")
 }, {
 "duration": 1.0,
-"texture": ExtResource("245_3jafh")
+"texture": ExtResource("216_0eii0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("246_1j4rk")
+"texture": ExtResource("217_6ufou")
 }, {
 "duration": 1.0,
-"texture": ExtResource("247_dvhu2")
+"texture": ExtResource("218_3djcb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("248_e8wyc")
+"texture": ExtResource("219_lsbjn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("249_8w2hy")
+"texture": ExtResource("220_qxytx")
 }, {
 "duration": 1.0,
-"texture": ExtResource("250_35iwi")
+"texture": ExtResource("221_3d27q")
 }, {
 "duration": 1.0,
-"texture": ExtResource("251_6mka1")
+"texture": ExtResource("222_ulf88")
 }, {
 "duration": 1.0,
-"texture": ExtResource("252_qxfgo")
+"texture": ExtResource("223_s8h8f")
 }, {
 "duration": 1.0,
-"texture": ExtResource("253_7mqnp")
+"texture": ExtResource("224_ojdtf")
 }, {
 "duration": 1.0,
-"texture": ExtResource("254_83gu5")
+"texture": ExtResource("225_r5rdu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("255_sqi5a")
+"texture": ExtResource("226_o74c8")
 }, {
 "duration": 1.0,
-"texture": ExtResource("256_eecbo")
+"texture": ExtResource("227_83q4h")
 }],
 "loop": 1,
 "name": &"walk",
@@ -1121,64 +1000,64 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("257_e8j23")
+"texture": ExtResource("228_smjnn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("258_pg167")
+"texture": ExtResource("229_px0sx")
 }, {
 "duration": 1.0,
-"texture": ExtResource("259_mb5lv")
+"texture": ExtResource("230_07b8a")
 }, {
 "duration": 1.0,
-"texture": ExtResource("260_10bta")
+"texture": ExtResource("231_j04oc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("261_qf6gx")
+"texture": ExtResource("232_me4rm")
 }, {
 "duration": 1.0,
-"texture": ExtResource("262_g1ixb")
+"texture": ExtResource("233_akbqr")
 }, {
 "duration": 1.0,
-"texture": ExtResource("263_8qvb8")
+"texture": ExtResource("234_kag2y")
 }, {
 "duration": 1.0,
-"texture": ExtResource("264_edw8r")
+"texture": ExtResource("235_gjwio")
 }, {
 "duration": 1.0,
-"texture": ExtResource("265_x6tn0")
+"texture": ExtResource("236_gyp7w")
 }, {
 "duration": 1.0,
-"texture": ExtResource("266_el73i")
+"texture": ExtResource("237_1iaq3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("267_j8ig6")
+"texture": ExtResource("238_bux6g")
 }, {
 "duration": 1.0,
-"texture": ExtResource("268_8fb07")
+"texture": ExtResource("239_ulf6c")
 }, {
 "duration": 1.0,
-"texture": ExtResource("269_ukqfg")
+"texture": ExtResource("240_bxp7k")
 }, {
 "duration": 1.0,
-"texture": ExtResource("270_nkrgj")
+"texture": ExtResource("241_7e2s3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("271_tapin")
+"texture": ExtResource("242_2kcby")
 }, {
 "duration": 1.0,
-"texture": ExtResource("272_eex15")
+"texture": ExtResource("243_7vd3n")
 }, {
 "duration": 1.0,
-"texture": ExtResource("273_ecr1f")
+"texture": ExtResource("244_rnov4")
 }, {
 "duration": 1.0,
-"texture": ExtResource("274_qypaf")
+"texture": ExtResource("245_i8q1c")
 }, {
 "duration": 1.0,
-"texture": ExtResource("275_nnh5y")
+"texture": ExtResource("246_btdot")
 }, {
 "duration": 1.0,
-"texture": ExtResource("276_rtdoj")
+"texture": ExtResource("247_gjly0")
 }],
 "loop": 1,
 "name": &"weakened",
@@ -1186,40 +1065,40 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("277_os3pd")
+"texture": ExtResource("248_8whem")
 }, {
 "duration": 1.0,
-"texture": ExtResource("278_tpqn1")
+"texture": ExtResource("249_pcb5j")
 }, {
 "duration": 1.0,
-"texture": ExtResource("279_m26vv")
+"texture": ExtResource("250_4ln5h")
 }, {
 "duration": 1.0,
-"texture": ExtResource("280_yb4y5")
+"texture": ExtResource("251_7a3se")
 }, {
 "duration": 1.0,
-"texture": ExtResource("281_3imkl")
+"texture": ExtResource("252_uyfgc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("282_6n5r1")
+"texture": ExtResource("253_lx3al")
 }, {
 "duration": 1.0,
-"texture": ExtResource("283_52xc6")
+"texture": ExtResource("254_ax4a7")
 }, {
 "duration": 1.0,
-"texture": ExtResource("284_41slj")
+"texture": ExtResource("255_me05n")
 }, {
 "duration": 1.0,
-"texture": ExtResource("285_bj3a0")
+"texture": ExtResource("256_8e8ja")
 }, {
 "duration": 1.0,
-"texture": ExtResource("286_awjt5")
+"texture": ExtResource("257_bfvkc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("287_u62um")
+"texture": ExtResource("258_7idmu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("288_j015p")
+"texture": ExtResource("259_fxcj7")
 }],
 "loop": 0,
 "name": &"weakened_fall",

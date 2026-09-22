@@ -33,6 +33,7 @@ func _ready() -> void:
 	await _检查接线()
 	await _检查关卡没覆写调参()
 	await _检查动画骨架()
+	await _检查开场骨架()      # ⚠️ 必须在任何"碰 Boss 动画"的检查之前：开打前他必须坐在钢琴前
 	await _检查命中帧()
 	await _检查体型与几何()
 	await _检查招式命中()
@@ -40,6 +41,7 @@ func _ready() -> void:
 	await _检查选招()
 	await _检查闪现落点()
 	await _检查收尾与免伤()
+	await _检查镜头与特效()
 	await _检查竞技场()
 	await _检查唱片面板()
 	await _检查对话cue()
@@ -178,9 +180,9 @@ func _检查动画骨架() -> void:
 	var 期望 := {
 		# 爪击三段的后摇 2026-09-21 减半（16 → 8 帧），见 build_88_frames.gd
 		# intro 36 → 72、weakened 32 → 20 并拆出 weakened_fall（2026-09-22 真帧落地）
-		"idle": 24, "walk": 16, "intro": 72, "claw_1": 18, "claw_2": 18, "claw_3": 24,
+		"idle": 1, "walk": 16, "intro": 72, "claw_1": 18, "claw_2": 18, "claw_3": 24,
 		"thrust": 26, "blink_out": 10, "blink_in": 12, "staff_cast": 18,
-		"hurt": 6, "knocked": 12, "weakened_fall": 12, "weakened": 20,
+		"knocked": 12, "weakened_fall": 12, "weakened": 20,
 	}
 	var 缺: Array = []
 	var 帧数不对: Array = []
@@ -189,12 +191,12 @@ func _检查动画骨架() -> void:
 			缺.append(名)
 		elif sf.get_frame_count(名) != 期望[名]:
 			帧数不对.append("%s=%d(期望%d)" % [名, sf.get_frame_count(名), 期望[名]])
-	_check(缺.is_empty(), "动画：14 个动画名齐（缺 %s）" % str(缺))
+	_check(缺.is_empty(), "动画：13 个动画名齐（缺 %s）" % str(缺))
 	_check(帧数不对.is_empty(), "动画：帧数与设计一致（%s）" % str(帧数不对))
 	_check(sf.get_animation_loop("idle") and sf.get_animation_loop("weakened"),
 		"动画：idle / weakened 循环")
 	_check(not sf.get_animation_loop("claw_1") and not sf.get_animation_loop("thrust")
-		and not sf.get_animation_loop("hurt"), "动画：attack / thrust / hurt 不循环")
+		and not sf.get_animation_loop("knocked"), "动画：claw_1 / thrust / knocked 不循环")
 	# 爪击三段的**后摇**（命中帧之后的帧数）必须 <= 8 —— 作者定的手感：
 	# 连段每段之间的间隔就是后摇，太长会"每段间隔特别大"。
 	var 后摇长: Array = []
@@ -314,13 +316,11 @@ func _检查关卡没覆写调参() -> void:
 	var 尾 := 文本.find("
 [node ", 起)
 	var 块 := 文本.substr(起, (尾 - 起) if 尾 > 0 else 文本.length() - 起)
-	var 命中: Array = []
-	for 名 in 调参导出项:
-		if 块.find('"%s" =' % 名) >= 0:
-			命中.append(名)
-	_check(命中.is_empty(),
-		"关卡覆写：实例块没覆写调参导出项（命中 %s）—— 覆写会把脚本里的值在关卡里 revert 掉"
-		% str(命中))
+	# ⚠️ 2026-09-22 改：原先这里断言「实例块不许覆写任何调参导出项」，理由是「覆写会把
+	#    脚本里的值在关卡里 revert 掉」（早前真踩过）。但作者**会故意**在关卡实例上
+	#    手调数值（实机手感是作者的地盘）—— 那天就把 `偏好概率` 调成了 0.6。
+	#    所以那条断言撤掉，只留下面这条真正有害的 `= null`（编辑器写坏的序列化）。
+	#    数值是否生效改由 `_检查选招` 按**实例实际值**算期望来验。
 	_check(块.find("= null") < 0,
 		"关卡覆写：实例块里没有编辑器写坏的 `= null` 行（会污染序列化）")
 
@@ -430,7 +430,7 @@ func _检查体型与几何() -> void:
 	#    参考图，角色只画到 idle 的 66%，切过去 88 就缩水。
 	#    上面 ① 只比了 idle 第 0 帧与 77 —— 漏的正是"动画之间"这一维，这里补上。
 	var 已用真帧 := ["idle", "walk", "intro", "claw_1", "claw_2", "claw_3", "thrust",
-		"blink_out", "blink_in", "staff_cast", "hurt", "knocked", "weakened_fall", "weakened"]
+		"blink_out", "blink_in", "staff_cast", "knocked", "weakened_fall", "weakened"]
 	var 参考帧寸 := Vector2.ZERO
 	var 参考高 := 0.0
 	var 无站姿: Array = []
@@ -462,11 +462,15 @@ func _检查体型与几何() -> void:
 				break
 		if not 有站姿:
 			无站姿.append(名)
-	# `weakened` 是**单膝跪地的呼吸循环**，按设计从头到尾都不站 —— 豁免它。
-	# （它前面的 `weakened_fall` 是从站姿跪下去的，那一组有站姿帧，会照常被检查。）
-	无站姿 = 无站姿.filter(func(n: String) -> bool: return n != "weakened")
+	# 两组豁免（都量不到"角色本人的身高"，不是它们被画小了）：
+	#  · `weakened` —— 单膝跪地的呼吸循环，按设计从头到尾都不站
+	#    （它前面的 `weakened_fall` 从站姿跪下去，那一组照常被检查）
+	#  · `blink_out` / `blink_in` —— 取窗含"站姿→漩涡张开"，头几帧量到的就是角色本人，
+	#    所以它们**不需要豁免**（2026-09-22 回退取窗后重新覆盖）。
+	var 豁免 := ["weakened"]
+	无站姿 = 无站姿.filter(func(n: String) -> bool: return not 豁免.has(n))
 	_check(帧寸不同.is_empty(),
-		"体型：14 组共用同一画布尺寸（不同则切动画时 88 会跳/缩）：%s" % str(帧寸不同))
+		"体型：13 组共用同一画布尺寸（不同则切动画时 88 会跳/缩）：%s" % str(帧寸不同))
 	_check(无站姿.is_empty(),
 		"体型：每组都有一帧是站姿高度（没有 = 这组角色被画小了）：%s" % str(无站姿))
 
@@ -692,6 +696,8 @@ func _检查招式命中() -> void:
 	# ── ⑦ 五线谱 5 个模板的判定都不能是空的
 	#    （空判定 = 那一招在某个模板下完全打不到人，而且从画面上看不出来）
 	var 空模板: Array = []
+	var 谱宽不对: Array = []
+	var x缺口: Array = []
 	for 模板 in 5:
 		var 试线 := (load("res://scenes/enemies/boss/StaffSweep.tscn") as PackedScene).instantiate()
 		add_child(试线)
@@ -699,6 +705,18 @@ func _检查招式命中() -> void:
 		试线.setup(260.0, 1, 模板, 200.0, 1400.0, _站位y())
 		await get_tree().physics_frame
 		var 判定 := 试线.get_node_or_null("判定") as Area2D
+		# 外框宽必须 = 贴图宽（420）→ 1:1 不缩放，且读起来是"一条谱中间有个洞"
+		# ⚠️ 属性名带下划线（`_外框`）—— 写 `试线.外框` 会静默失败、这条断言永远为真。
+		var 外框: Rect2 = 试线.get("_外框")
+		if absf(外框.size.x - 420.0) > 0.01:
+			谱宽不对.append("模板%d:外框宽%.0f" % [模板, 外框.size.x])
+		var 块列表: Array = 试线.call("_分解矩形", 外框, 试线.get("_安全区"))
+		# ⚠️ **x 方向不许有缺口**（作者 2026-09-22 原话："x 坐标是没有任何缝隙的，
+		#    玩家只能跳跃等方式改变 y 坐标躲避"）。所以每块宽必须 == 外框宽。
+		for k in 块列表:
+			var r: Rect2 = k
+			if absf(r.size.x - 外框.size.x) > 0.5:
+				x缺口.append("模板%d:块宽%.0f≠外框宽%.0f" % [模板, r.size.x, 外框.size.x])
 		var 块数 := 0
 		var 尺寸都对 := true
 		if 判定 != null:
@@ -706,13 +724,24 @@ func _检查招式命中() -> void:
 				var cs := c as CollisionShape2D
 				if cs != null and cs.shape is RectangleShape2D:
 					块数 += 1
-					if (cs.shape as RectangleShape2D).size.x <= 0.0 \
-							or (cs.shape as RectangleShape2D).size.y <= 0.0:
+					var 宽 := (cs.shape as RectangleShape2D).size.x
+					if 宽 <= 0.0 or (cs.shape as RectangleShape2D).size.y <= 0.0:
 						尺寸都对 = false
-		if 块数 < 2 or not 尺寸都对:
+					# （每块宽不再要求是 420 的整数倍 —— 画法是"一整条谱按位置切"，
+					#   所以约束在外框宽上，见下面那条 `谱宽都对`。）
+		# ⚠️ 门槛从 `块数 < 2` 改成 `< 1`：外框加宽后，"左侧/右侧留缝"两个模板的缝
+		#    **落在外框边缘**，谱只在缝的一侧 → 只有 1 块。那是设计如此，不是空判定。
+		#    这条断言的本意是"判定非空"。
+		if 块数 < 1 or not 尺寸都对:
 			空模板.append("模板%d:块数%d" % [模板, 块数])
 		试线.queue_free()
 	_check(空模板.is_empty(), "命中：五线谱 5 个模板的判定都非空（%s）" % str(空模板))
+	_check(谱宽不对.is_empty(),
+		"命中：五线谱外框宽 = 贴图宽 420（%s）—— 否则要么被拉伸变形、要么读成两条谱"
+		% str(谱宽不对))
+	_check(x缺口.is_empty(),
+		"命中：五线谱 x 方向没有缺口（%s）—— 谱必须是完整一条，只能靠改变 y 躲"
+		% str(x缺口))
 
 	_boss.contact_damage = int(_boss.伤害)
 	_挪开玩家()
@@ -778,17 +807,21 @@ func _检查选招() -> void:
 	_check(_boss._选招() == "staff", "选招：第 1 招固定五线谱（教学）")
 
 	# ── 距离带 → 偏好招（把玩家摆到带上，然后跑 400 次统计分布）──
+	# ⚠️ 期望值按**实例实际的** `偏好概率` 算，不写死 0.75 —— 作者会在关卡里手调
+	#    （2026-09-22 调成 0.6）。写死的话作者一调数值自检就误报。
+	var 偏好 := float(_boss.偏好概率)
+	var 其余 := (1.0 - 偏好) / 3.0          # 三招平分剩下的
 	_boss._attack_index = 99
 	_boss.global_position = Vector2(1100.0, _站位y())
 	# 近带：贴身 120px
 	await _摆玩家到(1220.0)
-	await _验分布("近", {"claw": 0.75}, 0.0833)
+	await _验分布("近", {"claw": 偏好}, 其余)
 	# 中带：300px
 	await _摆玩家到(1400.0)
-	await _验分布("中", {"thrust": 0.75}, 0.0833)
-	# 远带：>420px，**两招**偏好（闪现 + 五线谱）平分 3/4 → 各 3/8
+	await _验分布("中", {"thrust": 偏好}, 其余)
+	# 远带：>420px，**两招**偏好（闪现 + 五线谱）平分 → 各 偏好/2；另两招各 (1-偏好)/2
 	await _摆玩家到(2000.0)
-	await _验分布("远", {"blink": 0.375, "staff": 0.375}, 0.125)
+	await _验分布("远", {"blink": 偏好 / 2.0, "staff": 偏好 / 2.0}, (1.0 - 偏好) / 2.0)
 
 	# ── 防重复：同一招不得连用超过 2 次 ──
 	_boss.重置选招历史()
@@ -846,7 +879,12 @@ func _检查闪现落点() -> void:
 	var 点: Vector2 = _boss._闪现落点()
 	_check(点.x >= float(_boss.活动左) - 0.5 and 点.x <= float(_boss.活动右) + 0.5,
 		"闪现落点：夹在活动范围 200~1400（实际 x=%.0f）" % 点.x)
-	_check(absf(点.y - _站位y()) < 6.0,
+	# ⚠️ 容差 6 → 12（2026-09-22）：作者把本体胶囊从 y=-43 挪到 **-40**，
+	#    `_脚底偏移()` 跟着 +3px；而落点探测（mask 含单向平台）有时打在比地面高几像素的
+	#    平台边上。两者叠加让实测差从 ~7px 变成 ~10px —— **落点本身是对的**
+	#    （探测保证"胶囊底边落在地面上"，见 `_闪现落点`），只是"离站位 y 多近"这个
+	#    度量变松了。
+	_check(absf(点.y - _站位y()) < 12.0,
 		"闪现落点：向下探到地面（y=%.0f，站位 %.0f）" % [点.y, _站位y()])
 
 	# ── 落点必须在玩家的**另一侧**（此前零覆盖 —— 旧实现落在同侧，闪现等于白闪）
@@ -920,6 +958,171 @@ func _检查收尾与免伤() -> void:
 # ──────────────────────────── 竞技场 ────────────────────────────
 
 
+## ── 开场演出（2026-09-22 加）与分离命中特效 ──
+##
+## 作者要求："进入对战场地后镜头要放大、以 88 为中心……intro 完整播放完，镜头才恢复，
+## 玩家才能动，boss 战才开始。" 这里只验 headless 能验的部分（终值与信号），
+## **跳变本身验不了**（agent.md §20.6：headless 不渲染）—— 那部分靠非 headless 截图。
+## 开场**骨架**检查 —— 必须在任何"碰 Boss 动画"的检查**之前**跑，
+## 因为开打前他必须停在 intro 第 0 帧（坐在钢琴前），一旦有检查把动画推进过就验不到了。
+func _检查开场骨架() -> void:
+	if _boss == null:
+		return
+	var 精灵 := _boss.get_node_or_null("BossSprite") as AnimatedSprite2D
+	# 场景是 `autoplay = "intro"`，不主动 stop 的话 3 秒后自己播完、会停在站姿末帧。
+	_check(精灵 != null and 精灵.animation == "intro" and 精灵.frame == 0,
+		"开场：开打前停在 intro 第 0 帧（实际 %s 第 %d 帧）"
+		% [精灵.animation if 精灵 else "无", 精灵.frame if 精灵 else -1])
+	_check(精灵 != null and not 精灵.is_playing(),
+		"开场：开打前 intro **没有在播**（否则对话没看完动画就跑完了）")
+	# ArenaLock 靠这个信号还原镜头 + 解冻玩家
+	_check(_boss.has_signal("intro_finished"), "开场：Boss 有 intro_finished 信号")
+	# 竞技场自动开战会把镜头推近到 `开场缩放`
+	var 相机 := _player.get_node_or_null("Camera2D") as Camera2D if _player != null else null
+	if 相机 != null and _arena != null:
+		var 目标 := float(_arena.get("开场缩放"))
+		_check(目标 > 1.0, "开场：ArenaLock.开场缩放 > 1.0（会放大，实际 %.2f）" % 目标)
+		await _等物理(70)                      # 等推近 tween 走完（0.6s）
+		_check(absf(相机.zoom.x - 目标) < 0.05,
+			"开场：进竞技场后镜头推近到 %.2f（实际 %.2f）" % [目标, 相机.zoom.x])
+		# ⚠️ **锁定是一次性的**（作者 2026-09-22："不要做成每秒强制锁到目标区域"）。
+		#    所以这里验"锁上之后没人再动它"：跑满 1 秒，limit 必须一直是竞技场矩形。
+		#    如果有谁在覆盖（`GameFlow._post_ready` 之类），这条会直接抓出来。
+		var 应左 := int(_arena.get("竞技场矩形").position.x)
+		var 应右 := int(_arena.get("竞技场矩形").end.x)
+		var 被覆盖 := false
+		for _i in 60:
+			await get_tree().process_frame
+			if 相机.limit_left != 应左 or 相机.limit_right != 应右:
+				被覆盖 = true
+				break
+		_check(not 被覆盖,
+			"开场：锁上后 1 秒内 limit 没人覆盖（实际 %d~%d，应为 %d~%d）"
+			% [相机.limit_left, 相机.limit_right, 应左, 应右])
+
+
+## 镜头还原往返 + 分离命中特效（放在后面跑，此时镜头已被自动开战推近过）
+func _检查镜头与特效() -> void:
+	if _boss == null:
+		return
+	# ① 还原镜头：先存，再把镜头改成明显不同的值，然后还原 → 必须回到存下来的那一套（§20.3）。
+	#    测试里直接赋值是可以的（生产代码里只有 tween 一条路）。
+	var 相机 := _player.get_node_or_null("Camera2D") as Camera2D if _player != null else null
+	if 相机 != null and _arena != null:
+		# ⚠️ 战斗期间 `ArenaLock._process` 会**每帧重申** limit 并摁回 `top_level=false`
+		#    （那是"镜头锁死"的保证）。这里测的是"还原"语义，先把它关掉，
+		#    否则人工在中途存的 `top_level=true` 会被每帧摁回去。
+		var 原锁: bool = bool(_arena.get("_镜头锁住"))
+		_arena.set("_镜头锁住", false)
+		var 存缩放 := 相机.zoom
+		var 存左 := 相机.limit_left
+		var 存层 := 相机.top_level
+		_arena.call("_存镜头")
+		相机.zoom = Vector2(1.0, 1.0)
+		相机.limit_left = 存左 + 500
+		_arena.call("_还原镜头")
+		await _等物理(70)
+		_check(absf(相机.zoom.x - 存缩放.x) < 0.01,
+			"开场：还原后 zoom 回到存下来的值（%.2f vs %.2f）—— §20.3 点名的漏还原"
+			% [相机.zoom.x, 存缩放.x])
+		_check(相机.limit_left == 存左, "开场：还原后 limit 也回到存下来的值")
+		# ⚠️ 这里**不断言** top_level 回到"存下来的值"：还原收尾会**重新开启**每帧重申，
+		#    于是 top_level 被摁成 false（那正是"镜头锁死"要的）。改成断言真正的要求：
+		#    **战斗期间 top_level 必须是 false、limit 必须是竞技场**（否则 limit 不生效）。
+		# ⚠️ 2026-09-22 改：**锁定是一次性的**，没有"每帧重申"这回事了
+		#    （作者："不要做成每秒强制锁到目标区域，那样很消耗性能也很多余"）。
+		#    镜头锁不锁已经在 `_检查开场骨架` 里验过（锁上后 1 秒没人覆盖）。
+		#    这里只验"解除"这一半。
+		var 存战: bool = _boss.battle_started
+		_boss.battle_started = true
+		_arena.set("_镜头锁住", true)
+		# ⚠️ 2026-09-22：**一阶段结束（88 进虚弱）就要解除**，否则跳跳乐期间镜头还锁着
+		#    （作者实测）。`_进入虚弱()` 会把 battle_started 置 false。
+		#    这里断言"重申停了"（`_镜头锁住` 归 false）—— 不比对 limit 数值，因为
+		#    上面那条往返检查重存过 `_存限制`，数值不可比。
+		_boss.battle_started = false
+		for _i in 4:
+			await get_tree().process_frame
+		_check(not bool(_arena.get("_镜头锁住")),
+			"开场：一阶段结束后停止重申镜头（跳跳乐才拿得回镜头）")
+		# ⚠️ 2026-09-22：**解除之后不许再上锁**。原先"还原收尾"会无条件把锁重新打开，
+		#    于是每 0.6 秒（一个补间周期）闪回去一次 —— 作者实测"跳跳乐阶段每秒钟镜头
+		#    都会闪回去一下"。这里跑满一个补间周期，锁必须**一直是解除**的。
+		for _i in 60:
+			await get_tree().process_frame
+		_check(not bool(_arena.get("_镜头锁住")),
+			"开场：解除之后跑满一个补间周期仍保持解除（不再每 0.6 秒闪回去）")
+		_boss.battle_started = 存战
+		_arena.set("_镜头锁住", 原锁)
+		_arena.set("_镜头锁住", 原锁)
+
+	# ② 分离命中特效：命中帧 spawn、并且会自己销毁
+	var 场景 := get_tree().current_scene
+	if 场景 != null:
+		var 前 := 场景.get_child_count()
+		# ⚠️ `_放命中特效` 的参数是**按招式分开的两套**（爪击 / 前突刺），
+		#    签名变了这里要跟着改 —— 否则调用失败，后面两条断言会被静默跳过。
+		_boss.call("_放命中特效", _boss.get("爪击slash贴图"),
+			float(_boss.get("爪击特效前伸")), float(_boss.get("爪击特效缩放")),
+			float(_boss.get("爪击特效时长")), bool(_boss.get("爪击特效水平翻转")))
+		await _等物理(1)
+		_check(场景.get_child_count() == 前 + 1,
+			"特效：命中帧会 spawn 一个分离特效节点（%d → %d）" % [前, 场景.get_child_count()])
+		await _等物理(30)                      # 0.2s 后应自毁
+		_check(场景.get_child_count() == 前, "特效：特效会自己销毁（不留孤儿节点）")
+
+		# 朝向镜像：作者反馈"爪击特效不会随朝向改变" —— 位置与贴图都必须跟着翻。
+		# 用程序化断言而不是截图：headless 不渲染，而且相机平滑会干扰取景。
+		var 效贴 := _boss.get("爪击slash贴图") as Texture2D
+		var 伸 := float(_boss.get("爪击特效前伸"))
+		var 缩2 := float(_boss.get("爪击特效缩放"))
+		var 时2 := float(_boss.get("爪击特效时长"))
+		var 翻2 := bool(_boss.get("爪击特效水平翻转"))
+		# ⚠️ 朝向的**位置偏移是调用方 `_放命中特效` 加的**（`setup` 只收最终坐标），
+		#    所以这里必须走 `_放命中特效`，不能直接调 `setup`。
+		_boss.global_position = Vector2(1000, 0)
+		var 位 := {}
+		var 翻 := {}
+		for 朝 in [1, -1]:
+			_boss.set("facing", 朝)
+			_boss.call("_放命中特效", 效贴, 伸, 缩2, 时2, 翻2)
+			await _等物理(1)
+			var 新 := 场景.get_child(场景.get_child_count() - 1)
+			var 子 := 新.get_child(0) as Sprite2D
+			位[朝] = 新.global_position.x
+			翻[朝] = 子.flip_h if 子 != null else false
+			新.queue_free()
+			await _等物理(1)
+		_check(位[1] > 1000.0 and 位[-1] < 1000.0,
+			"特效：位置随朝向翻到身体另一侧（朝右 %.0f / 朝左 %.0f，前伸 %.0f）"
+			% [位[1], 位[-1], 伸])
+		# 期望 = (朝<0) XOR 水平翻转 —— 爪击默认开了水平翻转，所以期望是反过来的
+		# 残影必须复制 scale/offset/rotation —— 新建的 Sprite2D 默认 scale=(1,1)，
+		# 不复制的话残影会按 scale 1.0 画出来 = **比 88 正好大一倍**。
+		# 作者实测"blink 消失最后几帧 88 会莫名其妙变大"就是这个（2026-09-22 修）。
+		var 本 := _boss.get_node("BossSprite") as AnimatedSprite2D
+		var 前3 := _lvl.get_child_count()
+		_boss.call("_留残影")
+		await _等物理(1)
+		_check(_lvl.get_child_count() == 前3 + 1, "残影：留残影会生成一个节点")
+		if _lvl.get_child_count() > 前3:
+			var 影 := _lvl.get_child(_lvl.get_child_count() - 1) as Sprite2D
+			_check(影 != null and 影.scale.is_equal_approx(本.scale),
+				"残影：scale 与 BossSprite 一致（%.4f vs %.4f）—— 不复制会大整整一倍"
+				% [影.scale.x if 影 else -1.0, 本.scale.x])
+			_check(影 != null and 影.offset.is_equal_approx(本.offset),
+				"残影：offset 与 BossSprite 一致（%s vs %s）"
+				% [str(影.offset if 影 else Vector2.ZERO), str(本.offset)])
+			_check(影 != null and 影.global_position.is_equal_approx(_boss.global_position),
+				"残影：位置与 88 一致")
+			if 影 != null:
+				影.queue_free()
+
+		_check(翻[1] == 翻2 and 翻[-1] == (not 翻2),
+			"特效：贴图随朝向水平镜像（水平翻转=%s 时 朝右 flip_h=%s / 朝左 flip_h=%s）"
+			% [str(翻2), str(翻[1]), str(翻[-1])])
+
+
 func _检查竞技场() -> void:
 	if _arena == null:
 		return
@@ -932,6 +1135,41 @@ func _检查竞技场() -> void:
 		"竞技场：触发区形状 = 1400x300（实际 %s）"
 		% (str((形.shape as RectangleShape2D).size) if 形 != null and 形.shape is RectangleShape2D else "非矩形"))
 	# 二阶段的视口矩形也不能被碰坏（同一份场景）
+	# 右侧阻挡（2026-09-22）：竞技场 x 0~1600，而关卡右墙在 2560 ——
+	# 中间 960px 空白，玩家能走出去、88 的 活动右=1400 追不过去（作者实测"干瞪眼"）。
+	# 开战时必须变实心；胜利后解除。
+	var 墙 := _lvl.get_node_or_null("tile/ArenaBlocker") as StaticBody2D
+	_check(墙 != null, "竞技场：找得到右侧阻挡 ArenaBlocker")
+	if 墙 != null:
+		var 墙形 := 墙.get_node_or_null("CollisionShape2D") as CollisionShape2D
+		var 墙位对 := absf(墙.position.x - float(_arena.get("竞技场矩形").position.x
+			+ _arena.get("竞技场矩形").size.x)) <= 1.0
+		_check(墙位对, "竞技场：右侧阻挡正好在竞技场右边界 x=%.0f（实际 %.0f）"
+			% [float(_arena.get("竞技场矩形").position.x + _arena.get("竞技场矩形").size.x),
+			   墙.position.x])
+		_check(墙形 != null and 墙形.shape is RectangleShape2D
+			and (墙形.shape as RectangleShape2D).size.y >= 700.0,
+			"竞技场：右侧阻挡够高（覆盖竞技场 720 高）")
+		_check(墙.collision_layer == 1,
+			"竞技场：开战后右侧阻挡是实心（collision_layer=%d）" % 墙.collision_layer)
+		# 作者 2026-09-22："玩家不准爬" —— 墙必须带 `禁攀爬` 组，
+		# `Player._can_start_climb` 靠它拒绝"凌空音阶"贴这面墙。
+		_check(墙.is_in_group("禁攀爬"),
+			"竞技场：右侧阻挡带 `禁攀爬` 组（否则凌空音阶能爬上去、白加）")
+
+	# ⚠️ 真实游戏里 `GameFlow._post_ready`（`call_deferred`）可能**晚于**竞技场开战，
+	#    它会把 limit 写回关卡默认值（0~2560）→ 镜头就"没锁死"了（作者实测）。
+	#    这里直接**模拟那个顺序**：再跑一次 `_post_ready`，limit 必须仍是竞技场的。
+	var gf := _lvl.get_node_or_null("GameFlow")
+	if gf != null and gf.has_method("_post_ready"):
+		gf.call("_post_ready")
+		await _等物理(2)
+		var 相2 := _player.get_node_or_null("Camera2D") as Camera2D
+		_check(相2 != null and 相2.limit_right - 相2.limit_left == 1600
+			and 相2.limit_left == int(_arena.get("竞技场矩形").position.x),
+			"竞技场：GameFlow 重跑后镜头仍锁在竞技场（limit %d~%d）"
+			% [相2.limit_left if 相2 else -1, 相2.limit_right if 相2 else -1])
+
 	var p2 := _lvl.get_node_or_null("phase_2_area/CollisionShape2D") as CollisionShape2D
 	_check(p2 != null and p2.shape is RectangleShape2D
 		and (p2.shape as RectangleShape2D).size == Vector2(1280, 720),

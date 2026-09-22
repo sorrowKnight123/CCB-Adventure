@@ -11,3 +11,7 @@
 # 已删除调试脚本遗留的孤儿 .uid（源 .gd 已不存在）
 test_collision.gd.uid
 tests/_debug_*.uid
+
+# 大体积原始音频（90MB m4a）：Godot 不支持 m4a 导入，游戏用转出来的 .ogg。
+# 原件留在磁盘上备查，但不进 git（否则仓库被永久撑大）。
+audio/music/*.m4a

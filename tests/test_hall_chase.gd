@@ -191,6 +191,43 @@ func _检查浮现只增不减() -> void:
 	var s := _状态()
 	_check(_chase.追逐中 == true, "追逐：开始追逐后状态位置位")
 	_check(s["显示"] == [1, 2], "追逐：开始追逐才浮现 1、2（实际 %s）" % str(s["显示"]))
+	# 作者 2026-09-22：压暗从"跳跳乐出现"（开始追逐）就该开，不是等二阶段 ——
+	# 否则跳跳乐先浮在亮背景上、二阶段才暗，观感割裂。
+	var 遮 := _lvl.get_node_or_null("背景压暗遮罩")
+	if 遮 != null and 遮.has_method("是否变暗"):
+		_check(bool(遮.call("是否变暗")), "追逐：一开始追逐就压暗（不是等二阶段）")
+	# ⚠️ 2026-09-22：一阶段战胜 + 给《狂喜之诗》→ 变身对话结束 → 进跳跳乐。
+	#    原先 `Boss88Phase1.收尾完成` **没有任何人监听**，跳跳乐只能靠调试键 Y 触发。
+	var boss := _lvl.get_node_or_null("Boss88Phase1")
+	_check(boss != null and boss.has_signal("收尾完成"),
+		"收尾：找得到 Boss88Phase1 且有 收尾完成 信号")
+	if boss != null and boss.has_signal("收尾完成"):
+		_check(boss.收尾完成.is_connected(Callable(_chase, "_on_收尾完成")),
+			"收尾：追逐段已接上 Boss 的 收尾完成（给《狂喜之诗》后自动进跳跳乐）")
+		# ── 功能验证：真跑一遍"真结局 → 对话结束 → 自动开始追逐" ──
+		# ⚠️ 这段会改 `追逐中`，**测完必须还原**，否则后面的"浮现"用例全崩
+		#    （实测踩过：踩 1 之后游标没变、显示只剩 [1,2]）。
+		var 存追: bool = _chase.追逐中
+		var 存二: bool = _chase.二阶段
+		_chase.追逐中 = false
+		boss.收尾完成.emit(true)
+		await _等一帧()
+		_check(DialogueBridge.is_active, "收尾：走真结局会放出变身对话")
+		_check(not _chase.追逐中, "收尾：对话**还没结束**时不许开跳跳乐")
+		DialogueBridge.interrupt()          # 模拟玩家读完对话（打断也算结束）
+		for _i in 8:
+			await get_tree().process_frame
+		_check(_chase.追逐中, "收尾：变身对话结束后自动开始追逐（跳跳乐，效果同 Y 键）")
+		# 普通唱片那条路不该进跳跳乐
+		_chase.追逐中 = false
+		boss.收尾完成.emit(false)
+		for _i in 8:
+			await get_tree().process_frame
+		_check(not _chase.追逐中, "收尾：给普通唱片**不**进跳跳乐（那条走普通结局）")
+		# 还原状态
+		_chase.追逐中 = 存追
+		_chase.二阶段 = 存二
+		_chase.重新收集()
 
 	_踩(1)
 	s = _状态()
@@ -323,6 +360,9 @@ func _检查二阶段() -> void:
 		"二阶段：找得到 背景压暗遮罩 且它有 是否变暗 接口")
 	if 遮罩 != null and 遮罩.has_method("是否变暗"):
 		_check(bool(遮罩.call("是否变暗")), "二阶段：背景压暗已打开")
+		# 作者 2026-09-22：压暗从"跳跳乐出现"（开始追逐）就该开，不是等二阶段
+		_check(float(遮罩.get("渐变时长")) >= 1.0,
+			"二阶段：压暗渐变为 1 秒（实际 %.2f）" % float(遮罩.get("渐变时长")))
 
 	# ── 镜头 limits 必须收到二阶段区域 ──
 	#    一阶段的 ArenaLock 会把 limits 夹到竞技场（y 2880~3600），而二阶段区域在

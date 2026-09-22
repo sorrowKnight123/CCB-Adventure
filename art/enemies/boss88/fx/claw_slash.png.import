@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://churhuxkpt8ly"
-path="res://.godot/imported/003.png-076daea322b557b46b4a9e932999c483.ctex"
+uid="uid://diebq2sa0dfwa"
+path="res://.godot/imported/claw_slash.png-a4bea397bb6bb99854cc6c9d55bff747.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/enemies/boss88/idle/003.png"
-dest_files=["res://.godot/imported/003.png-076daea322b557b46b4a9e932999c483.ctex"]
+source_file="res://art/enemies/boss88/fx/claw_slash.png"
+dest_files=["res://.godot/imported/claw_slash.png-a4bea397bb6bb99854cc6c9d55bff747.ctex"]
 
 [params]
 

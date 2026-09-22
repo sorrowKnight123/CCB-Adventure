@@ -27,7 +27,13 @@ func _post_ready() -> void:
 	if player:
 		_tracked_player = player
 		var cam := player.get_node_or_null("Camera2D") as Camera2D
-		if cam:
+		# ⚠️ 2026-09-22 修：**竞技场开战时不要覆盖 limit**。
+		#    `ArenaLock.开始()` 是从触发区 `body_entered` 里跑的，可能**早于**本函数
+		#    （本函数是 `call_deferred`）—— 那时它已经把 limit 收到竞技场矩形（0~1600），
+		#    这里再写一次关卡默认值（0~2560）就把它覆盖回去了 → 作者实测"镜头没锁死"。
+		var 竞技场 := get_tree().get_first_node_in_group("boss_arena")
+		var 被竞技场锁 := 竞技场 != null and bool(竞技场.get("战斗中"))
+		if cam and not 被竞技场锁:
 			cam.limit_left = camera_left
 			cam.limit_right = camera_right
 			cam.limit_top = camera_top

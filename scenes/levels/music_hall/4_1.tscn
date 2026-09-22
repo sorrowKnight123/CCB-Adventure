@@ -29,6 +29,9 @@ size = Vector2(42, 4000)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dkmxd"]
 size = Vector2(42, 4000)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_block"]
+size = Vector2(42, 920)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sh7fj"]
 size = Vector2(2960, 42)
 
@@ -100,6 +103,14 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="tile/WallRight" unique_id=820726252]
 shape = SubResource("RectangleShape2D_dkmxd")
+
+[node name="ArenaBlocker" type="StaticBody2D" parent="tile" unique_id=1903000001 groups=["禁攀爬"]]
+position = Vector2(1600, 3140)
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="tile/ArenaBlocker" unique_id=1903000002]
+shape = SubResource("RectangleShape2D_arena_block")
 
 [node name="Ceiling" type="StaticBody2D" parent="tile" unique_id=1286153688]
 position = Vector2(1280, -21)
@@ -269,6 +280,9 @@ collision_mask = 49
 
 [node name="Boss88Phase1" parent="." unique_id=159574816 instance=ExtResource("30_boss88")]
 position = Vector2(1100, 3426)
+"出手间隔" = 1.4
+"出手间隔_半血" = 0.6
+"偏好概率" = 0.6
 
 [node name="ArenaLock" type="Node2D" parent="." unique_id=1902000001]
 script = ExtResource("31_arena")

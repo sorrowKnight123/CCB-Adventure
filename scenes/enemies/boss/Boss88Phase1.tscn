@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://b2twyputjtuww"]
 
 [ext_resource type="Script" uid="uid://6m4pwhy105cv" path="res://scripts/enemy/boss/Boss88Phase1.gd" id="1_boss"]
-[ext_resource type="SpriteFrames" uid="uid://boaxigamvs2g1" path="res://art/enemies/boss88/88_frames.tres" id="2_frames"]
+[ext_resource type="SpriteFrames" path="res://art/enemies/boss88/88_frames.tres" id="2_frames"]
 [ext_resource type="PackedScene" path="res://scenes/ui/InteractBubble.tscn" id="3_bubble"]
 [ext_resource type="AudioStream" uid="uid://bmvf576l4mdpj" path="res://audio/enemy/effect/piano_notes_C4-C5/C4.wav" id="4_c4"]
 [ext_resource type="AudioStream" uid="uid://cjcn4ix54gmc" path="res://audio/enemy/effect/piano_notes_C4-C5/E4.wav" id="5_e4"]
 [ext_resource type="AudioStream" uid="uid://bafrju81rl474" path="res://audio/enemy/effect/piano_notes_C4-C5/G4.wav" id="6_g4"]
 [ext_resource type="AudioStream" uid="uid://kad83iyiejum" path="res://audio/enemy/effect/piano_notes_C4-C5/A4.wav" id="7_a4"]
-[ext_resource type="AudioStream" uid="uid://btxnpumiardhh" path="res://audio/music/moss_2.ogg" id="8_music"]
+[ext_resource type="AudioStream" path="res://audio/music/coriolan_overture.ogg" id="8_music"]
 [ext_resource type="AudioStream" uid="uid://cmjex2g0sub8y" path="res://audio/enemy/boss88/claw_swing.wav" id="9_claw"]
 [ext_resource type="AudioStream" uid="uid://c0c5n87ug5t1p" path="res://audio/enemy/boss88/staff_cast.wav" id="10_staff"]
 [ext_resource type="AudioStream" uid="uid://bsyo2wqioflhe" path="res://audio/enemy/boss88/thrust.wav" id="11_thrust"]
@@ -16,18 +16,19 @@
 [ext_resource type="AudioStream" uid="uid://dj13x60icqvct" path="res://audio/enemy/boss88/hurt.wav" id="14_hurt"]
 [ext_resource type="AudioStream" uid="uid://cxh1rr4hdgsy" path="res://audio/enemy/boss88/knocked_land.wav" id="15_land"]
 [ext_resource type="AudioStream" uid="uid://ks1pqxkdw8fm" path="res://audio/enemy/boss88/armor_break.wav" id="16_break"]
-
-[ext_resource type="Texture2D" path="res://art/enemies/boss88/fx/blink_marker.png" id="17_marker"]
+[ext_resource type="Texture2D" uid="uid://crwskcluhfu2w" path="res://art/enemies/boss88/fx/blink_marker.png" id="17_marker"]
+[ext_resource type="Texture2D" uid="uid://diebq2sa0dfwa" path="res://art/enemies/boss88/fx/claw_slash.png" id="18_slash"]
+[ext_resource type="Texture2D" uid="uid://40ek8clj0kqt" path="res://art/enemies/boss88/fx/thrust_streak.png" id="19_streak"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1vtww"]
-radius = 20.0
-height = 114.0
+radius = 24.0
+height = 128.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
 size = Vector2(150, 90)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_near"]
-radius = 150.0
+radius = 224.0558
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mid"]
 radius = 420.0
@@ -39,6 +40,14 @@ size = Vector2(200, 180)
 collision_layer = 4
 collision_mask = 17
 script = ExtResource("1_boss")
+"出手间隔" = 1.2
+"出手间隔_半血" = 0.6
+"偏好概率" = 0.6
+"落点标记贴图" = ExtResource("17_marker")
+"爪击slash贴图" = ExtResource("18_slash")
+"爪击特效缩放" = 0.3
+"爪击特效垂直翻转" = true
+"突刺slash贴图" = ExtResource("19_streak")
 "起手音_爪击" = ExtResource("4_c4")
 "起手音_五线谱" = ExtResource("5_e4")
 "起手音_突刺" = ExtResource("6_g4")
@@ -52,17 +61,15 @@ script = ExtResource("1_boss")
 "音效_击退落地" = ExtResource("15_land")
 "音效_破甲" = ExtResource("16_break")
 "一阶段曲" = ExtResource("8_music")
-"落点标记贴图" = ExtResource("17_marker")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1549596240]
-position = Vector2(0, -43)
+position = Vector2(0, -40)
 shape = SubResource("CapsuleShape2D_1vtww")
 
 [node name="BossSprite" type="AnimatedSprite2D" parent="." unique_id=1901230003]
 scale = Vector2(0.5077, 0.5077)
 sprite_frames = ExtResource("2_frames")
-animation = &"intro"
-frame = 0
+animation = &"idle"
 autoplay = "intro"
 offset = Vector2(0, -81.86)
 
@@ -76,7 +83,8 @@ monitoring = false
 shape = SubResource("RectangleShape2D_attack")
 
 [node name="近身盒" type="Area2D" parent="." unique_id=1901230006]
-position = Vector2(0, -43)
+visible = false
+position = Vector2(0, -40)
 collision_layer = 0
 collision_mask = 2
 
@@ -84,7 +92,8 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_near")
 
 [node name="中距盒" type="Area2D" parent="." unique_id=1901230008]
-position = Vector2(0, -43)
+visible = false
+position = Vector2(0, -40)
 collision_layer = 0
 collision_mask = 2
 
@@ -92,7 +101,8 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_mid")
 
 [node name="InteractArea" type="Area2D" parent="." unique_id=1901230010]
-position = Vector2(0, -43)
+visible = false
+position = Vector2(0, -40)
 collision_layer = 0
 collision_mask = 2
 
@@ -100,7 +110,8 @@ collision_mask = 2
 shape = SubResource("RectangleShape2D_interact")
 
 [node name="Bubble" parent="." unique_id=1901230012 instance=ExtResource("3_bubble")]
-offset_top = -140.0
+offset_top = -32.0
+offset_bottom = 108.0
 "按键文本" = "W"
 
 [node name="SfxPlayer" type="AudioStreamPlayer" parent="." unique_id=1901230013]

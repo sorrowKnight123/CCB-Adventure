@@ -663,6 +663,17 @@ func _can_start_climb(input_dir: float) -> bool:
 		return false
 	if not is_on_wall():
 		return false
+	# ⚠️ 2026-09-22 作者要求："玩家不准爬"带标签的墙。
+	#    竞技场的右侧阻挡（`tile/ArenaBlocker`）就是为了把玩家关在竞技场里，
+	#    能爬上去就等于白加 —— 所以给它打 `禁攀爬` 组，这里直接拒绝。
+	#    用 `get_slide_collision` 拿到真正贴着的那面墙（`is_on_wall()` 只说"贴了墙"，
+	#    不说贴的是哪一面）。
+	for i in get_slide_collision_count():
+		var 撞 := get_slide_collision(i)
+		if 撞 == null or 撞.get_collider() == null:
+			continue
+		if (撞.get_collider() as Node).is_in_group("禁攀爬"):
+			return false
 	var wn := get_wall_normal()
 	if absf(wn.x) < 0.5:
 		return false
