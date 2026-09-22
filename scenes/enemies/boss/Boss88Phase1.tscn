@@ -17,6 +17,8 @@
 [ext_resource type="AudioStream" uid="uid://cxh1rr4hdgsy" path="res://audio/enemy/boss88/knocked_land.wav" id="15_land"]
 [ext_resource type="AudioStream" uid="uid://ks1pqxkdw8fm" path="res://audio/enemy/boss88/armor_break.wav" id="16_break"]
 
+[ext_resource type="Texture2D" path="res://art/enemies/boss88/fx/blink_marker.png" id="17_marker"]
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1vtww"]
 radius = 20.0
 height = 114.0
@@ -50,6 +52,7 @@ script = ExtResource("1_boss")
 "音效_击退落地" = ExtResource("15_land")
 "音效_破甲" = ExtResource("16_break")
 "一阶段曲" = ExtResource("8_music")
+"落点标记贴图" = ExtResource("17_marker")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1549596240]
 position = Vector2(0, -43)
@@ -58,8 +61,9 @@ shape = SubResource("CapsuleShape2D_1vtww")
 [node name="BossSprite" type="AnimatedSprite2D" parent="." unique_id=1901230003]
 scale = Vector2(0.5077, 0.5077)
 sprite_frames = ExtResource("2_frames")
-animation = &"idle"
-autoplay = "idle"
+animation = &"intro"
+frame = 0
+autoplay = "intro"
 offset = Vector2(0, -81.86)
 
 [node name="AttackHitbox" type="Area2D" parent="." unique_id=1901230004]

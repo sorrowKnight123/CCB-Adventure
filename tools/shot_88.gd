@@ -22,18 +22,30 @@ const PLAYER := preload("res://scenes/player/Player.tscn")
 const LEVEL := preload("res://scenes/levels/music_hall/4_1.tscn")
 
 ## 动画名 → 要拍的帧号。命中帧来自《技术实现与美术资源清单》§5：claw_1/2 = 10、claw_3 = 16。
+## 2026-09-22 扩到全部 14 组（真帧落地）。
 const 要拍的 := {
-	"idle": [0],
-	"claw_1": [8, 10, 12, 16],
-	"claw_2": [8, 10, 12, 16],
-	"claw_3": [12, 16, 18, 22],
+	"idle": [0, 12],
+	"walk": [0, 8],
+	"intro": [0, 20, 40, 56, 66, 71],
+	"claw_1": [10],
+	"claw_2": [10],
+	"claw_3": [16],
+	"thrust": [12, 16, 20],
+	"blink_out": [4, 7, 9],
+	"blink_in": [0, 3, 8],
+	"staff_cast": [8, 14, 17],
+	"hurt": [0],
+	"knocked": [0, 5, 11],
+	"weakened_fall": [0, 6, 11],
+	"weakened": [0, 10],
 }
 
-## 关卡内只拍命中帧附近，够看拖尾了
+## 关卡内只拍几个代表帧，够看特效在真背景上可不可见
 const 关卡内要拍的 := {
-	"claw_1": [10, 12],
-	"claw_2": [10, 12],
-	"claw_3": [16, 18],
+	"claw_1": [10],
+	"thrust": [16],
+	"blink_out": [7],
+	"intro": [40],
 }
 
 

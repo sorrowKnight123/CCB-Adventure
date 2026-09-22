@@ -15,8 +15,15 @@ extends Node2D
 @export var 行距: float = 18.0
 @export var 行进速度: float = 260.0
 @export var 伤害: int = 1
-## 音符点缀的数量（纯视觉）
+## 音符点缀的数量（纯视觉）。**2026-09-22 起贴图自带音符，这个只在没贴图时兜底。**
 @export var 音符数: int = 7
+## 谱贴图（作者 2026-09-22 定：五线谱整条 + 音符 + 谱号 + 左右血溅，是一张图）。
+## 一图 2 条谱，共 4 张（2 高音谱号 + 2 低音谱号），实战随机取一张。
+## 尺寸 420×72 —— 与旧的程序化谱（5 线 × 行距 18 = 72）一致。
+@export var 谱贴图集: Array[Texture2D] = []
+## 贴图左端**谱号**占的宽度比例。除最左那一段外，其余段从谱号右侧起裁，
+## 否则"缝"把谱切开后每段都会顶着一个谱号。
+@export_range(0.0, 0.4, 0.01) var 谱头宽比例: float = 0.13
 @export var 调试显示范围: bool = false
 
 ## 每个模板 = { 说明, 外框, 安全区 }，坐标是**本节点局部**（y 向上为负）
@@ -39,6 +46,10 @@ var _左界: float = 0.0
 var _模板: int = 0
 var _外框: Rect2 = Rect2()
 var _安全区: Rect2 = Rect2()
+var _贴图: Texture2D = null
+
+## 贴图集为空时的兜底目录（Inspector 里挂了就以 Inspector 为准）
+const 贴图目录 := "res://art/enemies/boss88/staff"
 
 @onready var 判定: Area2D = $判定
 
@@ -57,6 +68,9 @@ func setup(速度: float, 招伤: int, 模板序号: int, 活动左: float, 活�
 	var 条 := 模板表[_模板]
 	_外框 = 条["外框"]
 	_安全区 = 条["安全区"]
+	# 谱贴图**随机取一张**（作者："实战技能中可以随机放"）。4 张尺寸完全一致，
+	# 只有谱号（高/低音）与音符、血溅形状不同。
+	_贴图 = _取贴图()
 	# 从场地右侧推入，纵向贴在 88 所在的地面高度上
 	global_position = Vector2(活动右 + 220.0, 锚点y)
 	_重建判定()
@@ -71,6 +85,26 @@ func _ready() -> void:
 	add_to_group("boss_hazard")
 	if 判定 != null:
 		判定.body_entered.connect(_on_body_entered)
+
+
+## 随机取一张谱贴图。Inspector 里挂了 `谱贴图集` 就用它，没挂就扫 `贴图目录` ——
+## 这样场景资源不用改也能跑，同时保留"换美术拖 Inspector"的既有约定。
+func _取贴图() -> Texture2D:
+	if not 谱贴图集.is_empty():
+		return 谱贴图集[randi() % 谱贴图集.size()]
+	var 名: Array[String] = []
+	var d := DirAccess.open(贴图目录)
+	if d != null:
+		d.list_dir_begin()
+		var f := d.get_next()
+		while f != "":
+			if f.ends_with(".png") and not f.ends_with(".import"):
+				名.append(f)
+			f = d.get_next()
+	名.sort()
+	if 名.is_empty():
+		return null
+	return load(贴图目录 + "/" + 名[randi() % 名.size()]) as Texture2D
 
 
 func _physics_process(delta: float) -> void:
@@ -134,35 +168,68 @@ func _分解矩形(外框: Rect2, 安全: Rect2) -> Array[Rect2]:
 	return 出
 
 
-# ──────────────────────────── 视觉（程序化） ────────────────────────────
+# ──────────────────────────── 视觉 ────────────────────────────
+#
+# 2026-09-22 起改用**贴图**（作者："整个五线谱加上面点缀的音符，是一张图，用 GPT 生成"）。
+# 贴图用 `create_image_gpt.py -b transparent` 出的**真 alpha**，不用抠图 ——
+# 旧方案是 `draw_line` 程序化画 5 条线，洋红底抠图会把细线抠脏。
+# 判定形状（5 个模板 / 缝的位置）**完全没动**，只换了画法。
 
 
 func _draw() -> void:
 	if _外框.size == Vector2.ZERO:
 		return
-	# 5 条平行线，遇到安全区断开 —— 让"缝"一眼看得见
+	var 贴 := _贴图
+	if 贴 == null:
+		_画兜底线()
+		return
+	var 贴宽 := float(贴.get_width())
+	var 贴高 := float(贴.get_height())
+	var 全宽 := _外框.size.x
+	# 谱高 = 5 条线的总跨度（与旧程序化谱一致：行距 × 4 + 线宽 × 2）
+	var 谱高 := 行距 * maxf(线数 - 1, 1) + 线宽 * 2.0
+	var 头宽 := 贴宽 * 谱头宽比例
+	# **每一块危险区里画一条谱** —— 危险区 = 外框挖掉安全区（`_分解矩形`）。
+	# 这样"上下夹击"（模板 4/5）真的画出上下两条；"中间留缝"（模板 1~3）画出来
+	# 就是一条被缝断开的谱（两块的 y 相同）。
+	var 首块 := true
+	for 块 in _分解矩形(_外框, _安全区):
+		if 块.size.x <= 0.5 or 块.size.y <= 0.5:
+			continue
+		var 谱顶 := 块.position.y + (块.size.y - 谱高) * 0.5
+		var 段左 := 块.position.x
+		var 段宽 := 块.size.x
+		var 源左 := (段左 - _外框.position.x) / 全宽 * 贴宽
+		var 源宽 := 段宽 / 全宽 * 贴宽
+		if not 首块 and 源左 < 头宽:
+			# 非首块：从谱号右侧起裁，避免谱号重复出现
+			var 削源 := 头宽 - 源左
+			var 削像素 := 削源 / 贴宽 * 全宽
+			源左 = 头宽
+			段左 += 削像素
+			段宽 -= 削像素
+			源宽 -= 削源
+		if 段宽 <= 0.5 or 源宽 <= 0.5:
+			首块 = false
+			continue
+		draw_texture_rect_region(贴, Rect2(段左, 谱顶, 段宽, 谱高),
+			Rect2(源左, 0.0, 源宽, 贴高))
+		首块 = false
+	if 调试显示范围:
+		draw_rect(_外框, Color(1, 0.3, 0.3, 0.5), false, 2.0)
+		draw_rect(_安全区, Color(0.3, 1.0, 0.4, 0.8), false, 2.0)
+
+
+## 没挂贴图时的兜底：老的程序化 5 条线（保证场景没配贴图也能看见东西）
+func _画兜底线() -> void:
 	var 外框左 := _外框.position.x
 	var 外框右 := _外框.end.x
 	var 中高 := (_外框.position.y + _外框.end.y) * 0.5
 	var 起 := 中高 - 行距 * (线数 - 1) * 0.5
 	for i in 线数:
 		var y := 起 + 行距 * i
-		# 在这条线的 y 上，安全区是否贯通？贯通则断开
-		var 段列表 := _该行的可见段(Rect2(外框左, y, 外框右 - 外框左, 1.0))
-		for 段 in 段列表:
+		for 段 in _该行的可见段(Rect2(外框左, y, 外框右 - 外框左, 1.0)):
 			draw_line(Vector2(段.position.x, y), Vector2(段.end.x, y), 线色, 线宽)
-	# 音符点缀（纯视觉，位置由模板固定，不参与判定）
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 88 * 100 + _模板
-	for _i in 音符数:
-		var x := rng.randf_range(外框左 + 10.0, 外框右 - 10.0)
-		var y := 起 + 行距 * rng.randi_range(0, 线数 - 1)
-		if not _安全区.has_point(Vector2(x, y)):
-			draw_circle(Vector2(x, y + 6.0), 5.0, Color(1, 1, 1, 0.9))
-			draw_line(Vector2(x + 4.0, y + 6.0), Vector2(x + 4.0, y - 16.0), Color(1, 1, 1, 0.9), 2.0)
-	if 调试显示范围:
-		draw_rect(_外框, Color(1, 0.3, 0.3, 0.5), false, 2.0)
-		draw_rect(_安全区, Color(0.3, 1.0, 0.4, 0.8), false, 2.0)
 
 
 ## 某一条水平线在安全区内要断开，返回它可见的区段

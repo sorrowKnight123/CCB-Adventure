@@ -110,6 +110,13 @@ const 全部招式: Array[String] = ["claw", "thrust", "blink", "staff"]
 @export var 五线谱速度: float = 260.0
 @export var 五线谱伤害: int = 1
 
+@export_group("闪现落点预警")
+## 落点预警标记贴图 —— **就是 blink 消失动画里那个血红黑洞漩涡**
+## （`art/enemies/boss88/fx/blink_marker.png`，从 blink 的帧里取的）。留空则不显示。
+@export var 落点标记贴图: Texture2D
+## 标记存在多久（秒）。`_出闪现背刺` 提前这么多秒放它。
+@export var 落点标记时长: float = 0.3
+
 @export_group("音效 · 起手音（预备拍）")
 ## 四招各一个起手音，**在动画第 0 帧播** —— 音乐主题的 Boss，让玩家"听出下一招"。
 ## ⚠️ 这几个音是玩家的判断依据，播放时**不做音高抖动**（抖了就分不清是哪一招）。
@@ -517,9 +524,18 @@ func _出闪现背刺(token: int) -> void:
 	boss_sprite.visible = false
 	_闪屏(1.0)
 	_播(招式音_闪现消失, 0.04)
-	if not await _等秒(0.5, token):
+	# 落点预警标记（作者 2026-09-22 定）：消失后 0.2s 就在**落点**放一个血红黑洞漩涡，
+	# 提前 0.3 秒告诉玩家"我会从这儿冒出来"。所以落点要**提前算** ——
+	# 原来是在瞬移那一刻才算的，来不及预警。
+	# 副作用（是设计意图）：落点按玩家**0.2s 时**的位置算，玩家看到标记后有 0.3s 可以走开，
+	# 于是"必有预警、可以躲"这条成立。
+	if not await _等秒(0.2, token):
 		return
-	global_position = _闪现落点()
+	var 落点 := _闪现落点()
+	_放落点预警(落点)
+	if not await _等秒(0.3, token):
+		return
+	global_position = 落点
 	boss_sprite.visible = true
 	_播(招式音_闪现现身, 0.04)
 	_face_player()
@@ -532,6 +548,29 @@ func _出闪现背刺(token: int) -> void:
 	if not await _冲刺(突刺距离, 突刺速度, token):
 		return
 	await _等动画结束(token)
+
+
+## 在落点放一个血红黑洞漩涡标记：由小放大 + 淡入 → 淡出 → 自毁。
+## 用 Tween 而不是单开一个场景 —— 它是一次性的纯视觉提示，不值得为它建节点场景。
+func _放落点预警(点: Vector2) -> void:
+	if 落点标记贴图 == null:
+		return
+	var 场景 := get_tree().current_scene
+	if 场景 == null:
+		return
+	var 标记 := Sprite2D.new()
+	标记.texture = 落点标记贴图
+	标记.z_index = z_index + 1
+	# 贴图中心抬到地面之上半个高度 —— 漩涡是"立"在落点上的，不是平铺在地上
+	标记.global_position = 点 + Vector2(0.0, -落点标记贴图.get_height() * 0.5)
+	标记.scale = Vector2(0.35, 0.35)
+	标记.modulate.a = 0.0
+	场景.add_child(标记)
+	var 补 := 标记.create_tween()
+	补.tween_property(标记, "modulate:a", 1.0, 0.08)
+	补.parallel().tween_property(标记, "scale", Vector2.ONE, 落点标记时长 * 0.7)
+	补.tween_property(标记, "modulate:a", 0.0, 落点标记时长 * 0.3)
+	补.tween_callback(标记.queue_free)
 
 
 ## 原点往下到胶囊底边（脚底）的距离。落点要按它上抬，否则 88 会瞬移进地面里。
@@ -614,8 +653,13 @@ func _进入击退() -> void:
 		方向 = 1.0
 	else:
 		方向 = -1.0
-	velocity = Vector2(方向 * 击退速度, -140.0)
-	await _等秒(0.45)
+	# ⚠️ 上抛初速决定**腾空时长**，必须对上 `knocked` 动画的长度：
+	#    腾空 = 2 × |vy| / 重力 = 2 × 300 / 1200 = **0.5s** = 12 帧动画。
+	#    曾经是 -140（腾空只有 0.233s）→ 角色早就物理落地了，动画还在演被击退的后仰；
+	#    落地音还写死在 0.45s，比真正的触地晚 0.22 秒。作者 2026-09-22 实测发现，
+	#    现在"初速对上动画 + 落地音正好放在触地那一刻"。
+	velocity = Vector2(方向 * 击退速度, -300.0)
+	await _等秒(0.5)
 	if not is_inside_tree():
 		return
 	_播(音效_击退落地)
@@ -633,13 +677,30 @@ func _进入虚弱() -> void:
 	velocity = Vector2.ZERO
 	hp = 0
 	health_changed.emit(hp, max_hp)       # HUD 契约：current<=0 就隐藏血条
-	_摆("weakened")                       # 呼吸循环，不是倒地
+	# 虚弱拆两段播（2026-09-22）：`weakened_fall` 站立→双腿撑不住→单膝跪地（不循环），
+	# 播完再接 `weakened` 的单膝跪地呼吸循环。
+	# 为什么必须两段：`AnimatedSprite2D` **不能只循环一段动画的一部分** ——
+	# 单条 32 帧循环会把"跪下"那一段也一起重播（作者："分两个动画也行，你怎么效果好怎么来"）。
+	_摆("weakened_fall")
+	_播虚弱呼吸()
 	GameState.mark_boss_defeated(BOSS_ID)
 	GameState.save_game()
 	# 静场：把 Boss 曲停住，突出"按 W 交互"这一下（AudioManager 的暂停位置在恢复时会接上）
 	AudioManager.pause_current_music()
 	if not DialogueBridge.is_active:
 		DialogueBridge.show_cue(DIALOGUE_FILE, "boss88_weakened")
+
+
+## 等 `weakened_fall` 播完再切到呼吸循环。单独开协程是为了让 `_进入虚弱` 本身保持同步
+## （它被 `_进入击退` 直接调用，不该把收尾流程挂在一个 await 上）。
+func _播虚弱呼吸() -> void:
+	if boss_sprite == null:
+		return
+	if boss_sprite.is_playing():
+		await boss_sprite.animation_finished
+	if not is_inside_tree() or state != State.WEAKENED:
+		return
+	_摆("weakened")
 
 
 func _process(_delta: float) -> void:

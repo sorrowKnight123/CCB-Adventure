@@ -177,9 +177,10 @@ func _检查动画骨架() -> void:
 		return
 	var 期望 := {
 		# 爪击三段的后摇 2026-09-21 减半（16 → 8 帧），见 build_88_frames.gd
-		"idle": 24, "walk": 16, "intro": 36, "claw_1": 18, "claw_2": 18, "claw_3": 24,
+		# intro 36 → 72、weakened 32 → 20 并拆出 weakened_fall（2026-09-22 真帧落地）
+		"idle": 24, "walk": 16, "intro": 72, "claw_1": 18, "claw_2": 18, "claw_3": 24,
 		"thrust": 26, "blink_out": 10, "blink_in": 12, "staff_cast": 18,
-		"hurt": 6, "knocked": 12, "weakened": 32,
+		"hurt": 6, "knocked": 12, "weakened_fall": 12, "weakened": 20,
 	}
 	var 缺: Array = []
 	var 帧数不对: Array = []
@@ -188,7 +189,7 @@ func _检查动画骨架() -> void:
 			缺.append(名)
 		elif sf.get_frame_count(名) != 期望[名]:
 			帧数不对.append("%s=%d(期望%d)" % [名, sf.get_frame_count(名), 期望[名]])
-	_check(缺.is_empty(), "动画：13 个动画名齐（缺 %s）" % str(缺))
+	_check(缺.is_empty(), "动画：14 个动画名齐（缺 %s）" % str(缺))
 	_check(帧数不对.is_empty(), "动画：帧数与设计一致（%s）" % str(帧数不对))
 	_check(sf.get_animation_loop("idle") and sf.get_animation_loop("weakened"),
 		"动画：idle / weakened 循环")
@@ -428,9 +429,12 @@ func _检查体型与几何() -> void:
 	#    必须共用同一画布尺寸，且中立姿势身高要一致。爪击那几组当初抽帧用了小尺寸的首帧
 	#    参考图，角色只画到 idle 的 66%，切过去 88 就缩水。
 	#    上面 ① 只比了 idle 第 0 帧与 77 —— 漏的正是"动画之间"这一维，这里补上。
-	var 已用真帧 := ["idle", "claw_1", "claw_2", "claw_3"]
+	var 已用真帧 := ["idle", "walk", "intro", "claw_1", "claw_2", "claw_3", "thrust",
+		"blink_out", "blink_in", "staff_cast", "hurt", "knocked", "weakened_fall", "weakened"]
 	var 参考帧寸 := Vector2.ZERO
 	var 参考高 := 0.0
+	var 无站姿: Array = []
+	var 帧寸不同: Array = []
 	for 名 in 已用真帧:
 		if 八八精灵 == null or not 八八精灵.sprite_frames.has_animation(名):
 			continue
@@ -441,13 +445,30 @@ func _检查体型与几何() -> void:
 		var 内容 := _内容盒(贴, Rect2i(0, 0, int(寸.x), int(寸.y)))
 		if 参考帧寸 == Vector2.ZERO:
 			参考帧寸 = 寸
-			参考高 = 内容.size.y
-		_check(寸 == 参考帧寸,
-			"体型：%s 的画布尺寸与 idle 相同（%s vs %s —— 不同则切动画时 88 会跳/缩）"
-			% [名, str(寸), str(参考帧寸)])
-		_check(absf(内容.size.y - 参考高) <= 参考高 * 0.06,
-			"体型：%s 的中立姿势身高与 idle 一致（%.0f vs %.0f，容差 6%%）"
-			% [名, 内容.size.y, 参考高])
+			参考高 = 内容.size.y            # idle 第 0 帧 = 中立姿势 = 尺寸基准
+		if 寸 != 参考帧寸:
+			帧寸不同.append("%s%s" % [名, str(寸)])
+		# ⚠️ 不能拿"每组第 0 帧"比身高：取窗后不少组的第 0 帧是**招式中途**
+		#    （claw_3 举着手臂、thrust 已经俯身、intro 还坐在钢琴前），身高天然不同。
+		#    改成"这组里**有没有某一帧**是站姿高度" —— 有就说明角色没被画小。
+		var 有站姿 := false
+		for i in 八八精灵.sprite_frames.get_frame_count(名):
+			var t := 八八精灵.sprite_frames.get_frame_texture(名, i)
+			if t == null:
+				continue
+			var c := _内容盒(t, Rect2i(0, 0, t.get_width(), t.get_height()))
+			if absf(c.size.y - 参考高) <= 参考高 * 0.06:
+				有站姿 = true
+				break
+		if not 有站姿:
+			无站姿.append(名)
+	# `weakened` 是**单膝跪地的呼吸循环**，按设计从头到尾都不站 —— 豁免它。
+	# （它前面的 `weakened_fall` 是从站姿跪下去的，那一组有站姿帧，会照常被检查。）
+	无站姿 = 无站姿.filter(func(n: String) -> bool: return n != "weakened")
+	_check(帧寸不同.is_empty(),
+		"体型：14 组共用同一画布尺寸（不同则切动画时 88 会跳/缩）：%s" % str(帧寸不同))
+	_check(无站姿.is_empty(),
+		"体型：每组都有一帧是站姿高度（没有 = 这组角色被画小了）：%s" % str(无站姿))
 
 	# ── ③ 判定盒前缘必须 >= 近身盒半径，否则"玩家站在近身带边缘"时爪击够不着
 	var 判形 := _boss.get_node_or_null("AttackHitbox/CollisionShape2D") as CollisionShape2D
