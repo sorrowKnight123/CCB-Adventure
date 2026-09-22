@@ -76,7 +76,6 @@ color = Color(0, 0, 0, 0)
 script = ExtResource("3_esdw1")
 
 [node name="二阶段背景" type="Sprite2D" parent="." unique_id=1600111222]
-visible = false
 z_index = -1
 position = Vector2(1516, 565)
 texture = ExtResource("28_bloodnet")
@@ -280,9 +279,6 @@ collision_mask = 49
 
 [node name="Boss88Phase1" parent="." unique_id=159574816 instance=ExtResource("30_boss88")]
 position = Vector2(1100, 3426)
-"出手间隔" = 1.4
-"出手间隔_半血" = 0.6
-"偏好概率" = 0.6
 
 [node name="ArenaLock" type="Node2D" parent="." unique_id=1902000001]
 script = ExtResource("31_arena")
